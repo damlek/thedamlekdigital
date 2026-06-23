@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Growth Leak Audit for Small Businesses | thedamlek digital</title>
+<meta name="description" content="Get a free Growth Leak Audit from thedamlek digital. We review your website, offer, ads, and tracking to show you where your business may be losing leads, sales, and ad money.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --orange:#E16638;
+    --soft-orange:#FF9972;
+    --sage:#95AD7C;
+    --black:#15130F;
+    --white:#FFFFFF;
+    --tint-orange:#FFF3EC;
+    --tint-sage:#F3F6EF;
+    --border:#E7E2DC;
+    --serif:'Playfair Display', serif;
+    --sans:'DM Sans', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--sans);color:var(--black);background:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  img,svg{display:block;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+  section{padding:88px 0;}
+  h1,h2,h3{font-family:var(--serif);font-weight:800;line-height:1.12;letter-spacing:-0.01em;}
+  h2{font-size:clamp(28px,4vw,42px);margin-bottom:16px;}
+  h3{font-size:20px;margin-bottom:8px;}
+  .eyebrow{font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+  .section-intro{max-width:680px;margin:0 auto 44px;text-align:center;}
+  .section-intro h2{margin-bottom:14px;}
+  .section-intro p{font-size:17px;color:#4a463f;}
+  .center{text-align:center;}
+  .body-copy{max-width:680px;margin:0 auto;}
+  .body-copy p{font-size:16.5px;color:#3f3b35;margin-bottom:14px;}
+  .mini-cta{display:flex;justify-content:center;margin-top:36px;}
+
+  /* Logo */
+  .logo-lockup{display:flex;align-items:center;gap:10px;}
+  .logo-text{display:flex;flex-direction:column;line-height:1;}
+  .logo-text .top{font-family:var(--sans);font-weight:800;font-size:21px;letter-spacing:-0.02em;color:var(--black);}
+  .logo-text .rule{height:1.5px;background:var(--black);margin:3px 0 2px;}
+  .logo-text .bottom{font-family:var(--sans);font-weight:500;font-size:11px;letter-spacing:0.04em;text-align:right;color:var(--black);}
+
+  .topbar{background:var(--black);color:var(--white);text-align:center;font-size:13px;font-weight:700;letter-spacing:0.02em;padding:10px 16px;}
+  .topbar span{color:var(--soft-orange);}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--sans);font-weight:700;font-size:15px;padding:14px 26px;border-radius:8px;border:2px solid var(--black);cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;white-space:nowrap;}
+  .btn-primary{background:var(--orange);border-color:var(--orange);color:var(--white);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 0 0 #00000022;}
+  .btn-outline{background:transparent;color:var(--black);}
+  .btn-outline:hover{background:var(--black);color:var(--white);}
+  .btn-sm{padding:10px 18px;font-size:14px;}
+  header .btn{padding:11px 20px;font-size:14px;}
+
+  .hero{padding:72px 0 56px;background:linear-gradient(180deg,var(--white) 0%, var(--tint-orange) 100%);}
+  .hero .wrap{text-align:center;max-width:800px;}
+  .hero h1{font-size:clamp(32px,5vw,52px);margin-bottom:22px;}
+  .hero h1 em{font-style:normal;color:var(--orange);}
+  .hero .subhead{font-size:18px;color:#3f3b35;max-width:620px;margin:0 auto 8px;}
+  .hero .cta-row{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:26px;}
+  .hero .microcopy{font-size:13px;color:#766f64;font-weight:700;}
+  .hero .microcopy span{color:var(--orange);}
+  .trust-line{margin-top:38px;font-size:14px;color:#766f64;max-width:640px;margin-left:auto;margin-right:auto;padding-top:24px;border-top:1px solid var(--border);}
+
+  .problem-list{max-width:720px;margin:0 auto 36px;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .leak-item{display:flex;gap:10px;align-items:flex-start;background:var(--tint-orange);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;font-size:14.5px;}
+  .leak-item svg{flex-shrink:0;margin-top:2px;}
+  .dream-box{border-radius:16px;background:var(--black);color:var(--white);padding:36px 40px;text-align:center;max-width:760px;margin:0 auto;}
+  .dream-box p{font-size:17px;max-width:680px;margin:0 auto;color:#f1efe9;}
+  .dream-box p strong{color:var(--soft-orange);}
+
+  .glance{background:var(--tint-sage);}
+  .glance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .glance-card{background:var(--white);border-radius:14px;padding:24px 22px;border:1.5px solid var(--border);}
+  .glance-card .num-badge{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--orange);color:var(--white);font-weight:800;font-size:14px;margin-bottom:14px;}
+  .glance-card h3{font-size:16.5px;margin-bottom:8px;}
+  .glance-card p{font-size:14.5px;color:#5d584e;}
+
+  .value-table{width:100%;border-collapse:collapse;margin-top:8px;max-width:720px;margin-left:auto;margin-right:auto;}
+  .value-table td{padding:16px 4px;border-bottom:1px solid var(--border);font-size:15.5px;}
+  .value-table td.amt{font-weight:700;white-space:nowrap;text-align:right;color:var(--orange);}
+  .value-totals{margin-top:24px;border-radius:16px;background:var(--black);color:var(--white);padding:28px 36px;display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center;max-width:720px;margin-left:auto;margin-right:auto;}
+  .value-totals .vt-block{flex:1;min-width:160px;text-align:center;}
+  .value-totals .vt-block .vt-num{font-family:var(--serif);font-weight:800;font-size:26px;color:var(--soft-orange);}
+  .value-totals .vt-block .vt-label{font-size:12.5px;color:#cfcabf;margin-top:2px;}
+  .value-totals .vt-price .vt-num{color:var(--white);}
+
+  .why{background:var(--white);}
+  .why-strip{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin:18px 0 30px;}
+  .why-strip span{font-family:var(--serif);font-weight:800;font-size:16px;color:#9a948a;}
+
+  .compare2{background:var(--tint-sage);}
+  .compare2-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .compare2-card{background:var(--white);border-radius:16px;border:1.5px solid var(--border);padding:32px;}
+  .compare2-card.for{border-top:4px solid var(--sage);}
+  .compare2-card.not-for{border-top:4px solid var(--orange);}
+  .compare2-card h3{font-size:19px;margin-bottom:18px;}
+  .compare2-card ul{list-style:none;}
+  .compare2-card li{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:#3f3b35;margin-bottom:12px;}
+  .compare2-card li svg{flex-shrink:0;margin-top:3px;}
+  .compare2-card .strong-line{margin-top:18px;font-weight:700;font-size:15px;color:var(--black);border-top:1px solid var(--border);padding-top:16px;}
+
+  .steps{background:var(--white);}
+  .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .step-card{position:relative;background:var(--tint-orange);border:1.5px solid var(--border);border-radius:14px;padding:26px 20px;}
+  .step-card .step-num{font-family:var(--serif);font-weight:800;font-size:30px;color:var(--orange);margin-bottom:10px;}
+  .step-card h3{font-size:16px;}
+  .step-card p{font-size:14px;color:#5d584e;}
+  .step-card a{display:inline-block;margin-top:10px;font-size:13px;font-weight:700;color:var(--orange);border-bottom:1.5px solid var(--orange);}
+
+  .about{background:var(--black);color:#dedad1;}
+  .about .wrap{max-width:760px;text-align:center;}
+  .about .eyebrow{justify-content:center;color:var(--soft-orange);}
+  .about h2{color:var(--white);}
+  .about p{font-size:16px;margin-bottom:14px;}
+
+  .bottom-cta{background:var(--tint-orange);border-top:1px solid var(--border);}
+  .bottom-cta .wrap{text-align:center;padding:64px 24px;max-width:680px;}
+  .bottom-cta h2{margin-bottom:14px;}
+  .bottom-cta p{color:#5d584e;font-size:16px;margin-bottom:10px;}
+  .bottom-cta .microcopy{font-size:13px;color:#8c8578;margin-top:14px;}
+
+  .apply{background:var(--tint-sage);}
+  .apply-card{max-width:760px;margin:0 auto;background:var(--white);border-radius:18px;border:1.5px solid var(--border);padding:44px;}
+  .apply-card .eyebrow{justify-content:center;}
+  .apply-card .apply-head{text-align:center;margin-bottom:32px;}
+  .apply-card .apply-head p{color:#5d584e;font-size:15px;margin-top:8px;}
+  .field{margin-bottom:20px;}
+  .field label{display:block;font-size:13.5px;font-weight:700;margin-bottom:6px;}
+  .field .req{color:var(--orange);}
+  .field input, .field select, .field textarea{width:100%;padding:13px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:15px;background:var(--white);color:var(--black);}
+  .field textarea{resize:vertical;min-height:72px;}
+  .field input:focus, .field select:focus, .field textarea:focus{outline:none;border-color:var(--orange);}
+  .checkbox-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .checkbox-pill{display:flex;align-items:center;gap:8px;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;cursor:pointer;}
+  .checkbox-pill input{accent-color:var(--orange);width:16px;height:16px;}
+  .apply-card .submit-btn{width:100%;margin-top:8px;padding:16px;font-size:16px;}
+  .form-note{font-size:12.5px;color:#8c8578;text-align:center;margin-top:16px;}
+
+  .result-panel{display:none;text-align:center;padding:20px 0;}
+  .result-panel.show{display:block;}
+  .result-panel .ricon{font-size:40px;margin-bottom:14px;}
+  .result-panel h3{font-size:22px;margin-bottom:10px;}
+  .result-panel p{color:#3f3b35;font-size:15.5px;margin-bottom:10px;}
+  .result-panel .next-step{margin-top:18px;padding-top:18px;border-top:1px solid var(--border);}
+  .result-panel .next-step a{font-weight:700;color:var(--orange);border-bottom:2px solid var(--orange);}
+
+  footer{background:var(--black);color:#cfcabf;padding:48px 0 28px;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  footer .foot-logo .top{color:var(--white);}
+  footer .foot-logo .rule{background:var(--white);}
+  footer .foot-logo .bottom{color:var(--white);}
+  footer .copy{font-size:13px;color:#8c8578;}
+
+  @media (max-width:860px){
+    .problem-list,.glance-grid,.compare2-grid,.steps-grid,.checkbox-grid{grid-template-columns:1fr;}
+    section{padding:60px 0;}
+    .apply-card{padding:28px;}
+    .value-totals{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">Limited <span>free audit slots</span> available each week</div>
+
+<header>
+  <div class="wrap">
+    <a href="#top" class="logo-lockup">
+      <svg width="30" height="30" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="14" y1="86" x2="34" y2="36" stroke="#15130F" stroke-width="10" stroke-linecap="round"/>
+        <line x1="36" y1="96" x2="61" y2="14" stroke="#E16638" stroke-width="10" stroke-linecap="round"/>
+        <line x1="56" y1="86" x2="81" y2="36" stroke="#15130F" stroke-width="10" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text"><span class="top">thedamlek</span><span class="rule"></span><span class="bottom">digital</span></span>
+    </a>
+    <a href="#apply" class="btn btn-primary">Apply Now</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow center" style="justify-content:center;">// FREE GROWTH LEAK AUDIT&trade;</div>
+      <h1>Your Business May Not Need More Traffic. It May Need <em>Fewer Growth Leaks.</em></h1>
+      <p class="subhead">Get a free Growth Leak Audit&trade; from thedamlek digital and discover where your website, offer, ads, or tracking may be costing you leads and sales.</p>
+      <p class="subhead">In 48 hours, we'll show you 3 to 5 specific areas to fix so your business can convert more of the attention it already gets.</p>
+      <div class="cta-row">
+        <a href="#apply" class="btn btn-primary">Apply for a Free Growth Leak Audit</a>
+        <div class="microcopy">Limited <span>free audit slots</span> available each week.</div>
+      </div>
+      <p class="trust-line">For service businesses, local businesses, consultants, wellness brands, e-commerce brands, and founders who want clearer marketing, better conversion, and more qualified leads.</p>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="problem">
+    <div class="wrap">
+      <div class="section-intro">
+        <div class="eyebrow" style="justify-content:center;">The Real Issue</div>
+        <h2>More Ads Will Not Fix A Leaky Growth System.</h2>
+      </div>
+      <div class="body-copy center" style="margin-bottom:36px;">
+        <p>A lot of businesses believe the answer is to spend more money on ads.</p>
+        <p>But many times, the real issue is not traffic.</p>
+        <p>The real issue is that people are seeing your business, visiting your website, clicking your ads, checking your offer, and still not taking action.</p>
+        <p>That usually means something in the customer journey is leaking.</p>
+      </div>
+      <p class="center" style="font-weight:700;margin-bottom:18px;">Your business may be losing leads or sales because:</p>
+      <div class="problem-list">
+        <div class="leak-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#E16638" stroke-width="2.5" stroke-linecap="round" transform="rotate(45 12 12)"/></svg>Your offer is not clear enough</div>
+        <div class="leak-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#E16638" stroke-width="2.5" stroke-linecap="round" transform="rotate(45 12 12)"/></svg>Your landing page is not converting visitors</div>
+        <div class="leak-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#E16638" stroke-width="2.5" stroke-linecap="round" transform="rotate(45 12 12)"/></svg>Your message does not speak directly to the customer's problem</div>
+        <div class="leak-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#E16638" stroke-width="2.5" stroke-linecap="round" transform="rotate(45 12 12)"/></svg>Your call-to-action is weak or confusing</div>
+        <div class="leak-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#E16638" stroke-width="2.5" stroke-linecap="round" transform="rotate(45 12 12)"/></svg>Your follow-up system is not strong enough</div>
+        <div class="leak-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#E16638" stroke-width="2.5" stroke-linecap="round" transform="rotate(45 12 12)"/></svg>Your tracking is not showing what is really working</div>
+        <div class="leak-item" style="grid-column:1 / -1;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#E16638" stroke-width="2.5" stroke-linecap="round" transform="rotate(45 12 12)"/></svg>Your ads are sending people into a funnel that is not ready to convert</div>
+      </div>
+      <div class="dream-box">
+        <p>Before you spend more money trying to get more customers, it makes sense to first find out <strong>where the leaks are.</strong></p>
+      </div>
+      <div class="mini-cta"><a href="#apply" class="btn btn-outline btn-sm">Apply for a Free Growth Leak Audit</a></div>
+    </div>
+  </section>
+
+  <!-- OFFER INTRODUCTION -->
+  <section class="glance">
+    <div class="wrap">
+      <div class="section-intro">
+        <div class="eyebrow" style="justify-content:center;">Introducing</div>
+        <h2>Introducing The Growth Leak Audit&trade;</h2>
+        <p>A free 48-hour review that shows where your business may be losing leads, sales, and ad money.</p>
+      </div>
+      <div class="body-copy center">
+        <p>The Growth Leak Audit&trade; is a practical review of your current online growth system.</p>
+        <p>We look at your website, offer, messaging, ad readiness, and tracking setup to identify the areas that may be stopping more people from taking action.</p>
+        <p>This is not a generic consultation.</p>
+        <p>It is a clear, focused review designed to help you understand what to fix first so your business can attract, convert, and track customers better.</p>
+      </div>
+      <div class="mini-cta"><a href="#apply" class="btn btn-primary">Apply for a Free Growth Leak Audit</a></div>
+    </div>
+  </section>
+
+  <!-- WHAT YOU GET -->
+  <section class="what-you-get">
+    <div class="wrap">
+      <div class="section-intro">
+        <div class="eyebrow" style="justify-content:center;">What's Included</div>
+        <h2>What We Review During Your Audit</h2>
+        <p>We look at the key parts of your customer acquisition system and give you a simple breakdown of what may be working, what may be broken, and what needs to improve first.</p>
+      </div>
+      <div class="glance-grid">
+        <div class="glance-card"><div class="num-badge">1</div><h3>Website or Landing Page Review</h3><p>We check whether your website clearly explains what you sell, who it is for, why people should trust you, and what action they should take next.</p></div>
+        <div class="glance-card"><div class="num-badge">2</div><h3>Offer Review</h3><p>We review your offer to see if it is clear, valuable, specific, and strong enough to make your ideal customer take action.</p></div>
+        <div class="glance-card"><div class="num-badge">3</div><h3>Messaging Review</h3><p>We check whether your message is focused on what your customer actually wants, not just what your business does.</p></div>
+        <div class="glance-card"><div class="num-badge">4</div><h3>Ad Readiness Review</h3><p>We look at whether your business is ready to run paid ads, or whether there are things that need to be fixed before ad spend can work better.</p></div>
+        <div class="glance-card"><div class="num-badge">5</div><h3>Tracking and Measurement Check</h3><p>We review whether you are set up to properly track leads, sales, conversions, and campaign performance.</p></div>
+        <div class="glance-card"><div class="num-badge">6</div><h3>Growth Leak Action Plan</h3><p>You get 3 to 5 specific growth leaks we identify, plus a simple action plan showing what to fix first.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUE STACK -->
+  <section class="stack" style="background:var(--tint-orange);">
+    <div class="wrap">
+      <div class="section-intro">
+        <div class="eyebrow" style="justify-content:center;">What's It Worth</div>
+        <h2>What This Audit Is Worth</h2>
+        <p>Even though this audit is free, the goal is to give you real clarity you can use.</p>
+      </div>
+      <table class="value-table">
+        <tr><td>Website conversion review</td><td class="amt">$250</td></tr>
+        <tr><td>Offer clarity review</td><td class="amt">$300</td></tr>
+        <tr><td>Messaging and CTA review</td><td class="amt">$250</td></tr>
+        <tr><td>Ad readiness check</td><td class="amt">$250</td></tr>
+        <tr><td>Tracking and measurement review</td><td class="amt">$200</td></tr>
+        <tr><td>Growth leak action plan</td><td class="amt">$500</td></tr>
+      </table>
+      <div class="value-totals">
+        <div class="vt-block"><div class="vt-num">$1,750</div><div class="vt-label">Total Value</div></div>
+        <div class="vt-block vt-price"><div class="vt-num">Free</div><div class="vt-label">Your Cost</div></div>
+      </div>
+      <div class="mini-cta"><a href="#apply" class="btn btn-primary">Apply for a Free Growth Leak Audit</a></div>
+    </div>
+  </section>
+
+  <!-- WHY THIS MATTERS -->
+  <section class="why">
+    <div class="wrap">
+      <div class="section-intro">
+        <div class="eyebrow" style="justify-content:center;">Why This Matters</div>
+        <h2>The Problem Is Not Always Visibility. Sometimes, It Is Conversion.</h2>
+      </div>
+      <div class="body-copy center">
+        <p>Getting more attention is good.</p>
+        <p>But attention alone does not grow a business.</p>
+        <p>Your business grows when the right people see your offer, understand the value, trust the message, take action, and can be followed up with properly.</p>
+        <p>That is why this audit focuses on the full growth journey.</p>
+      </div>
+      <div class="why-strip"><span>Not Just Ads.</span><span>Not Just Traffic.</span><span>Not Just Impressions.</span></div>
+      <div class="body-copy center"><p>We look at what happens before, during, and after someone discovers your business online.</p></div>
+      <div class="dream-box">
+        <p>Because if your offer, website, tracking, and follow-up system are weak, <strong>more traffic may only expose the problem faster.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO THIS IS FOR / NOT FOR -->
+  <section class="compare2">
+    <div class="wrap">
+      <div class="section-intro">
+        <div class="eyebrow" style="justify-content:center;">Fit Check</div>
+        <h2>Is This Audit For You?</h2>
+      </div>
+      <div class="compare2-grid">
+        <div class="compare2-card for">
+          <h3>This Audit Is For You If...</h3>
+          <ul>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#95AD7C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>You have a business but you are not getting enough leads or sales online</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#95AD7C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>You are getting traffic but people are not taking action</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#95AD7C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>You are running ads but you are not sure what is working</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#95AD7C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>You want to start running paid ads but you are not sure if your business is ready</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#95AD7C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>You have a website but it is not converting well</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#95AD7C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>You want clearer messaging and a better customer journey</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#95AD7C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>You want to know what to fix before spending more money on marketing</li>
+          </ul>
+        </div>
+        <div class="compare2-card not-for">
+          <h3>This Is Not For Everyone</h3>
+          <ul>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#E16638" stroke-width="2.5" stroke-linecap="round"/></svg>You're looking for magic results without fixing the real issues</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#E16638" stroke-width="2.5" stroke-linecap="round"/></svg>You only want to "run ads" without reviewing your offer, landing page, tracking, or follow-up system</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#E16638" stroke-width="2.5" stroke-linecap="round"/></svg>You're not open to honest feedback about what may be stopping people from becoming customers</li>
+          </ul>
+          <div class="strong-line">This is for business owners who want clarity, better decisions, and a stronger path to growth.</div>
+        </div>
+      </div>
+      <div class="mini-cta"><a href="#apply" class="btn btn-outline">Apply for a Free Growth Leak Audit</a></div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="steps">
+    <div class="wrap">
+      <div class="section-intro">
+        <div class="eyebrow" style="justify-content:center;">The Process</div>
+        <h2>How The Free Audit Works</h2>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card"><div class="step-num">01</div><h3>Apply</h3><p>Fill out the short application form with your business details, website link, and current marketing challenge.</p></div>
+        <div class="step-card"><div class="step-num">02</div><h3>We Review Your Growth System</h3><p>We review your website, offer, messaging, ad readiness, and tracking setup.</p></div>
+        <div class="step-card"><div class="step-num">03</div><h3>You Get Your Growth Leaks</h3><p>Within 48 hours, we send you 3 to 5 key growth leaks we found and what you should fix first.</p></div>
+        <div class="step-card"><div class="step-num">04</div><h3>Decide Your Next Step</h3><p>Use the recommendations yourself, or work with us to fix the leaks and build a stronger growth system.</p><a href="7-day-ad-profit-leak-audit-landing-page.html">See The 7-Day Ad Profit Leak Audit &rarr;</a></div>
+      </div>
+      <div class="mini-cta"><a href="#apply" class="btn btn-primary">Apply for a Free Growth Leak Audit</a></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about">
+    <div class="wrap">
+      <div class="eyebrow">About thedamlek digital</div>
+      <h2>Built For Businesses That Want More Than Ads</h2>
+      <p>thedamlek digital helps businesses turn their offer, website, paid media, and tracking into a clearer growth system.</p>
+      <p>We do not just run ads.</p>
+      <p>We help you understand what customers want, position your offer better, build campaigns around the right message, track what matters, and improve performance over time.</p>
+      <p>Our focus is simple: help businesses get more qualified leads, better conversions, and a stronger customer acquisition system.</p>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="bottom-cta">
+    <div class="wrap">
+      <h2>Find Out Where Your Business Is Losing Leads And Sales.</h2>
+      <p>Before you spend more money on ads, let us help you identify the leaks that may be holding your business back.</p>
+      <p>Apply for a free Growth Leak Audit&trade; and get a clear breakdown of what to fix first.</p>
+      <a href="#apply" class="btn btn-primary">Apply for a Free Growth Leak Audit</a>
+      <div class="microcopy">No pressure. No obligation. Just a clear review of what may be affecting your growth.</div>
+    </div>
+  </section>
+
+  <!-- APPLICATION FORM -->
+  <section class="apply" id="apply">
+    <div class="wrap">
+      <div class="apply-card">
+        <div class="apply-head">
+          <div class="eyebrow">Apply Now</div>
+          <h2 style="font-size:28px;">Apply For Your Free Growth Leak Audit&trade;</h2>
+          <p>Fill out the form below so we can understand your business and review the right areas.</p>
+        </div>
+
+        <form id="audit-form">
+          <div class="field">
+            <label>Business Name <span class="req">*</span></label>
+            <input type="text" name="business_name" required placeholder="Your business name">
+          </div>
+          <div class="field">
+            <label>Website or Landing Page Link <span class="req">*</span></label>
+            <input type="url" name="website" required placeholder="https://yourbusiness.com">
+          </div>
+          <div class="field">
+            <label>What Do You Sell? <span class="req">*</span></label>
+            <textarea name="what_you_sell" required placeholder="Tell us about your product or service"></textarea>
+          </div>
+          <div class="field">
+            <label>Who Is Your Ideal Customer? <span class="req">*</span></label>
+            <textarea name="ideal_customer" required placeholder="Describe who you serve"></textarea>
+          </div>
+          <div class="field">
+            <label>What Is Your Biggest Marketing Challenge Right Now? <span class="req">*</span></label>
+            <textarea name="challenge" required placeholder="What's not working right now?"></textarea>
+          </div>
+          <div class="field">
+            <label>Are You Currently Running Ads? <span class="req">*</span></label>
+            <select name="running_ads" required>
+              <option value="" disabled selected>Select one</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+              <option value="before">I have run ads before, but not currently</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>What Platforms Are You Currently Using Or Considering?</label>
+            <div class="checkbox-grid">
+              <label class="checkbox-pill"><input type="checkbox" name="platforms" value="meta">Meta Ads</label>
+              <label class="checkbox-pill"><input type="checkbox" name="platforms" value="google">Google Ads</label>
+              <label class="checkbox-pill"><input type="checkbox" name="platforms" value="linkedin">LinkedIn Ads</label>
+              <label class="checkbox-pill"><input type="checkbox" name="platforms" value="tiktok">TikTok Ads</label>
+              <label class="checkbox-pill"><input type="checkbox" name="platforms" value="email">Email Marketing</label>
+              <label class="checkbox-pill"><input type="checkbox" name="platforms" value="seo">SEO</label>
+              <label class="checkbox-pill"><input type="checkbox" name="platforms" value="organic_social">Organic Social Media</label>
+              <label class="checkbox-pill"><input type="checkbox" name="platforms" value="not_sure">Not sure yet</label>
+              <label class="checkbox-pill"><input type="checkbox" name="platforms" value="other">Other</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>What Is Your Current Or Planned Monthly Marketing Budget? <span class="req">*</span></label>
+            <select name="budget" required>
+              <option value="" disabled selected>Select one</option>
+              <option value="under500">Less than $500</option>
+              <option value="500to1000">$500 to $1,000</option>
+              <option value="1000to3000">$1,000 to $3,000</option>
+              <option value="3000to5000">$3,000 to $5,000</option>
+              <option value="over5000">$5,000+</option>
+              <option value="not_sure">Not sure yet</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>What Result Would Make This Audit Valuable For You? <span class="req">*</span></label>
+            <textarea name="desired_result" required placeholder="What would make this worth your time?"></textarea>
+          </div>
+          <div class="field">
+            <label>Are You Open To Getting Help Implementing The Recommendations? <span class="req">*</span></label>
+            <select name="open_to_help" required>
+              <option value="" disabled selected>Select one</option>
+              <option value="yes">Yes, if the recommendations make sense</option>
+              <option value="maybe">Maybe, I want to see the audit first</option>
+              <option value="no">No, I only want the audit</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary submit-btn">Submit My Application</button>
+          <p class="form-note">No pressure, no obligation — just a clear review of what may be affecting your growth.</p>
+        </form>
+
+        <div id="result-panel" class="result-panel">
+          <div class="ricon">&#9989;</div>
+          <h3>Thank You For Applying.</h3>
+          <p>We'll review your submission and, if your business is a good fit, we'll send your audit within 48 hours.</p>
+          <div id="next-step" class="next-step" style="display:none;">
+            <p>Based on what you shared, you might also want a head start: many businesses that ask for implementation help end up using our <a href="7-day-ad-profit-leak-audit-landing-page.html">7-Day Ad Profit Leak Audit</a> or <a href="profitable-scale-sprint-landing-page.html">Profitable Scale Sprint</a> right after their audit lands.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="logo-lockup foot-logo">
+      <svg width="26" height="26" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="14" y1="86" x2="34" y2="36" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+        <line x1="36" y1="96" x2="61" y2="14" stroke="#E16638" stroke-width="10" stroke-linecap="round"/>
+        <line x1="56" y1="86" x2="81" y2="36" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text"><span class="top">thedamlek</span><span class="rule"></span><span class="bottom">digital</span></span>
+    </span>
+    <span class="copy">&copy; 2026 thedamlek Digital. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+  // ─── FORMSPREE SETUP ──────────────────────────────────────────────────────
+  // 1. Go to https://formspree.io and sign up (free — 50 submissions/month).
+  // 2. Click "New Form", name it "Growth Leak Audit", set notification email to
+  //    thedamlekdigital@gmail.com, and copy the form ID (looks like "xpwzabcd").
+  // 3. Replace YOUR_FORM_ID below with that ID.
+  // Every submission will be emailed to thedamlekdigital@gmail.com AND stored
+  // in your Formspree dashboard (searchable, exportable — your database).
+  var FORMSPREE_ID = 'YOUR_FORM_ID';
+  // ─────────────────────────────────────────────────────────────────────────
+
+  var form = document.getElementById('audit-form');
+  var resultPanel = document.getElementById('result-panel');
+  var nextStep = document.getElementById('next-step');
+  var submitBtn = form.querySelector('.submit-btn');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var budget = form.budget.value;
+    var openToHelp = form.open_to_help.value;
+
+    var highBudget = (budget === '1000to3000' || budget === '3000to5000' || budget === 'over5000');
+    var wantsHelp  = (openToHelp === 'yes');
+    var isHighFit  = highBudget && wantsHelp;
+
+    var data = new FormData(form);
+    data.append('lead_fit_tag', isHighFit ? 'high_fit_ascension_ready' : 'standard_audit_lead');
+
+    // Disable button while submitting
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting…';
+
+    fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(function(response){
+      if (response.ok) {
+        form.style.display = 'none';
+        resultPanel.classList.add('show');
+        if (isHighFit) {
+          nextStep.style.display = 'block';
+        }
+      } else {
+        return response.json().then(function(json){
+          throw new Error(json.errors ? json.errors.map(function(e){ return e.message; }).join(', ') : 'Submission failed.');
+        });
+      }
+    })
+    .catch(function(err){
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit My Application';
+      alert('Sorry, there was a problem submitting your application: ' + err.message + '\n\nPlease try again or email us directly at thedamlekdigital@gmail.com.');
+    });
+  });
+</script>
+
+</body>
+</html>
