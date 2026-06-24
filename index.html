@@ -167,6 +167,45 @@
     .apply-card{padding:28px;}
     .value-totals{flex-direction:column;}
   }
+
+  /* ── Animations ── */
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(28px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  @keyframes fadeIn{
+    from{opacity:0;}
+    to{opacity:1;}
+  }
+
+  /* Hero loads immediately */
+  .hero .eyebrow{animation:fadeUp .6s ease both;}
+  .hero h1{animation:fadeUp .7s .1s ease both;}
+  .hero .subhead{animation:fadeUp .7s .2s ease both;}
+  .hero .cta-row{animation:fadeUp .7s .35s ease both;}
+  .hero .trust-line{animation:fadeUp .7s .45s ease both;}
+
+  /* Scroll-reveal base state */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .55s ease, transform .55s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  /* Staggered children */
+  .stagger > *{opacity:0;transform:translateY(24px);transition:opacity .5s ease, transform .5s ease;}
+  .stagger.visible > *:nth-child(1){transition-delay:.05s;}
+  .stagger.visible > *:nth-child(2){transition-delay:.15s;}
+  .stagger.visible > *:nth-child(3){transition-delay:.25s;}
+  .stagger.visible > *:nth-child(4){transition-delay:.35s;}
+  .stagger.visible > *:nth-child(5){transition-delay:.45s;}
+  .stagger.visible > *:nth-child(6){transition-delay:.55s;}
+  .stagger.visible > *:nth-child(7){transition-delay:.65s;}
+  .stagger.visible > *{opacity:1;transform:translateY(0);}
+
+  /* Card hover lifts */
+  .glance-card,.step-card,.compare2-card{transition:transform .2s ease, box-shadow .2s ease;}
+  .glance-card:hover,.step-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.08);}
+
+  /* Value totals count-up flash */
+  .value-totals.visible .vt-num{animation:fadeIn .6s ease both;}
 </style>
 </head>
 <body>
@@ -202,18 +241,18 @@
   <!-- PROBLEM -->
   <section class="problem">
     <div class="wrap">
-      <div class="section-intro">
+      <div class="section-intro reveal">
         <div class="eyebrow" style="justify-content:center;">The Real Issue</div>
         <h2>More Ads Will Not Fix A Leaky Growth System.</h2>
       </div>
-      <div class="body-copy center" style="margin-bottom:36px;">
+      <div class="body-copy center reveal" style="margin-bottom:36px;">
         <p>A lot of businesses believe the answer is to spend more money on ads.</p>
         <p>But many times, the real issue is not traffic.</p>
         <p>The real issue is that people are seeing your business, visiting your website, clicking your ads, checking your offer, and still not taking action.</p>
         <p>That usually means something in the customer journey is leaking.</p>
       </div>
-      <p class="center" style="font-weight:700;margin-bottom:18px;">Your business may be losing leads or sales because:</p>
-      <div class="problem-list">
+      <p class="center reveal" style="font-weight:700;margin-bottom:18px;">Your business may be losing leads or sales because:</p>
+      <div class="problem-list stagger">
         <div class="leak-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#E16638" stroke-width="2.5" stroke-linecap="round" transform="rotate(45 12 12)"/></svg>Your offer is not clear enough</div>
         <div class="leak-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#E16638" stroke-width="2.5" stroke-linecap="round" transform="rotate(45 12 12)"/></svg>Your landing page is not converting visitors</div>
         <div class="leak-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#E16638" stroke-width="2.5" stroke-linecap="round" transform="rotate(45 12 12)"/></svg>Your message does not speak directly to the customer's problem</div>
@@ -222,7 +261,7 @@
         <div class="leak-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#E16638" stroke-width="2.5" stroke-linecap="round" transform="rotate(45 12 12)"/></svg>Your tracking is not showing what is really working</div>
         <div class="leak-item" style="grid-column:1 / -1;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#E16638" stroke-width="2.5" stroke-linecap="round" transform="rotate(45 12 12)"/></svg>Your ads are sending people into a funnel that is not ready to convert</div>
       </div>
-      <div class="dream-box">
+      <div class="dream-box reveal">
         <p>Before you spend more money trying to get more customers, it makes sense to first find out <strong>where the leaks are.</strong></p>
       </div>
       <div class="mini-cta"><a href="#apply" class="btn btn-outline btn-sm">Apply for a Free Growth Leak Audit</a></div>
@@ -232,12 +271,12 @@
   <!-- OFFER INTRODUCTION -->
   <section class="glance">
     <div class="wrap">
-      <div class="section-intro">
+      <div class="section-intro reveal">
         <div class="eyebrow" style="justify-content:center;">Introducing</div>
         <h2>Introducing The Growth Leak Audit&trade;</h2>
         <p>A free 48-hour review that shows where your business may be losing leads, sales, and ad money.</p>
       </div>
-      <div class="body-copy center">
+      <div class="body-copy center reveal">
         <p>The Growth Leak Audit&trade; is a practical review of your current online growth system.</p>
         <p>We look at your website, offer, messaging, ad readiness, and tracking setup to identify the areas that may be stopping more people from taking action.</p>
         <p>This is not a generic consultation.</p>
@@ -250,12 +289,12 @@
   <!-- WHAT YOU GET -->
   <section class="what-you-get">
     <div class="wrap">
-      <div class="section-intro">
+      <div class="section-intro reveal">
         <div class="eyebrow" style="justify-content:center;">What's Included</div>
         <h2>What We Review During Your Audit</h2>
         <p>We look at the key parts of your customer acquisition system and give you a simple breakdown of what may be working, what may be broken, and what needs to improve first.</p>
       </div>
-      <div class="glance-grid">
+      <div class="glance-grid stagger">
         <div class="glance-card"><div class="num-badge">1</div><h3>Website or Landing Page Review</h3><p>We check whether your website clearly explains what you sell, who it is for, why people should trust you, and what action they should take next.</p></div>
         <div class="glance-card"><div class="num-badge">2</div><h3>Offer Review</h3><p>We review your offer to see if it is clear, valuable, specific, and strong enough to make your ideal customer take action.</p></div>
         <div class="glance-card"><div class="num-badge">3</div><h3>Messaging Review</h3><p>We check whether your message is focused on what your customer actually wants, not just what your business does.</p></div>
@@ -269,12 +308,12 @@
   <!-- VALUE STACK -->
   <section class="stack" style="background:var(--tint-orange);">
     <div class="wrap">
-      <div class="section-intro">
+      <div class="section-intro reveal">
         <div class="eyebrow" style="justify-content:center;">What's It Worth</div>
         <h2>What This Audit Is Worth</h2>
         <p>Even though this audit is free, the goal is to give you real clarity you can use.</p>
       </div>
-      <table class="value-table">
+      <table class="value-table reveal">
         <tr><td>Website conversion review</td><td class="amt">$250</td></tr>
         <tr><td>Offer clarity review</td><td class="amt">$300</td></tr>
         <tr><td>Messaging and CTA review</td><td class="amt">$250</td></tr>
@@ -282,7 +321,7 @@
         <tr><td>Tracking and measurement review</td><td class="amt">$200</td></tr>
         <tr><td>Growth leak action plan</td><td class="amt">$500</td></tr>
       </table>
-      <div class="value-totals">
+      <div class="value-totals reveal">
         <div class="vt-block"><div class="vt-num">$1,750</div><div class="vt-label">Total Value</div></div>
         <div class="vt-block vt-price"><div class="vt-num">Free</div><div class="vt-label">Your Cost</div></div>
       </div>
@@ -293,19 +332,19 @@
   <!-- WHY THIS MATTERS -->
   <section class="why">
     <div class="wrap">
-      <div class="section-intro">
+      <div class="section-intro reveal">
         <div class="eyebrow" style="justify-content:center;">Why This Matters</div>
         <h2>The Problem Is Not Always Visibility. Sometimes, It Is Conversion.</h2>
       </div>
-      <div class="body-copy center">
+      <div class="body-copy center reveal">
         <p>Getting more attention is good.</p>
         <p>But attention alone does not grow a business.</p>
         <p>Your business grows when the right people see your offer, understand the value, trust the message, take action, and can be followed up with properly.</p>
         <p>That is why this audit focuses on the full growth journey.</p>
       </div>
-      <div class="why-strip"><span>Not Just Ads.</span><span>Not Just Traffic.</span><span>Not Just Impressions.</span></div>
-      <div class="body-copy center"><p>We look at what happens before, during, and after someone discovers your business online.</p></div>
-      <div class="dream-box">
+      <div class="why-strip stagger"><span>Not Just Ads.</span><span>Not Just Traffic.</span><span>Not Just Impressions.</span></div>
+      <div class="body-copy center reveal"><p>We look at what happens before, during, and after someone discovers your business online.</p></div>
+      <div class="dream-box reveal">
         <p>Because if your offer, website, tracking, and follow-up system are weak, <strong>more traffic may only expose the problem faster.</strong></p>
       </div>
     </div>
@@ -314,11 +353,11 @@
   <!-- WHO THIS IS FOR / NOT FOR -->
   <section class="compare2">
     <div class="wrap">
-      <div class="section-intro">
+      <div class="section-intro reveal">
         <div class="eyebrow" style="justify-content:center;">Fit Check</div>
         <h2>Is This Audit For You?</h2>
       </div>
-      <div class="compare2-grid">
+      <div class="compare2-grid stagger">
         <div class="compare2-card for">
           <h3>This Audit Is For You If...</h3>
           <ul>
@@ -348,11 +387,11 @@
   <!-- HOW IT WORKS -->
   <section class="steps">
     <div class="wrap">
-      <div class="section-intro">
+      <div class="section-intro reveal">
         <div class="eyebrow" style="justify-content:center;">The Process</div>
         <h2>How The Free Audit Works</h2>
       </div>
-      <div class="steps-grid">
+      <div class="steps-grid stagger">
         <div class="step-card"><div class="step-num">01</div><h3>Apply</h3><p>Fill out the short application form with your business details, website link, and current marketing challenge.</p></div>
         <div class="step-card"><div class="step-num">02</div><h3>We Review Your Growth System</h3><p>We review your website, offer, messaging, ad readiness, and tracking setup.</p></div>
         <div class="step-card"><div class="step-num">03</div><h3>You Get Your Growth Leaks</h3><p>Within 48 hours, we send you 3 to 5 key growth leaks we found and what you should fix first.</p></div>
@@ -364,7 +403,7 @@
 
   <!-- ABOUT -->
   <section class="about">
-    <div class="wrap">
+    <div class="wrap reveal">
       <div class="eyebrow">About thedamlek digital</div>
       <h2>Built For Businesses That Want More Than Ads</h2>
       <p>thedamlek digital helps businesses turn their offer, website, paid media, and tracking into a clearer growth system.</p>
@@ -376,7 +415,7 @@
 
   <!-- FINAL CTA -->
   <section class="bottom-cta">
-    <div class="wrap">
+    <div class="wrap reveal">
       <h2>Find Out Where Your Business Is Losing Leads And Sales.</h2>
       <p>Before you spend more money on ads, let us help you identify the leaks that may be holding your business back.</p>
       <p>Apply for a free Growth Leak Audit&trade; and get a clear breakdown of what to fix first.</p>
@@ -549,5 +588,19 @@
   });
 </script>
 
+<script>
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {threshold: 0.12});
+
+  document.querySelectorAll('.reveal, .stagger').forEach(function(el){
+    observer.observe(el);
+  });
+</script>
 </body>
 </html>
