@@ -84,7 +84,7 @@ module.exports = async function handler(req, res) {
 
   // 2 — Send email notification
   try {
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: process.env.GMAIL_USER,
