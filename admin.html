@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — thedamlek digital</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #E16638;
+    --black: #15130F;
+    --white: #FFFFFF;
+    --tint: #FFF3EC;
+    --border: #E7E2DC;
+    --muted: #9a948a;
+    --text: #3f3b35;
+    --sans: 'DM Sans', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--sans); background: #F5F4F1; color: var(--black); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+
+  /* ── LOGIN ── */
+  #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--black); }
+  .login-card { background: var(--white); border-radius: 16px; padding: 44px 40px; width: 100%; max-width: 400px; }
+  .login-card img { height: 48px; margin-bottom: 32px; }
+  .login-card h1 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  .login-card p  { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+  .login-card label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .login-card input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-family: var(--sans); font-size: 15px; outline: none; transition: border-color .15s; }
+  .login-card input:focus { border-color: var(--orange); }
+  .login-btn { width: 100%; margin-top: 16px; padding: 14px; background: var(--orange); color: #fff; border: none; border-radius: 8px; font-family: var(--sans); font-weight: 800; font-size: 15px; cursor: pointer; transition: opacity .15s; }
+  .login-btn:hover { opacity: .88; }
+  .login-btn:disabled { opacity: .5; cursor: default; }
+  .login-error { display: none; margin-top: 12px; background: #FEE2E2; color: #991B1B; border-radius: 6px; padding: 10px 14px; font-size: 13px; font-weight: 600; }
+
+  /* ── DASHBOARD ── */
+  #dashboard { display: none; min-height: 100vh; }
+
+  /* Header */
+  .dash-header { background: var(--black); padding: 0 28px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+  .dash-header img { height: 40px; filter: brightness(0) invert(1); }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .refresh-btn { background: transparent; border: 1px solid #3a3730; color: #9a948a; font-family: var(--sans); font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 6px; cursor: pointer; transition: all .15s; }
+  .refresh-btn:hover { border-color: var(--orange); color: var(--orange); }
+  .logout-btn { background: transparent; border: none; color: var(--muted); font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer; padding: 7px 0; transition: color .15s; }
+  .logout-btn:hover { color: var(--white); }
+
+  /* Main */
+  .dash-main { max-width: 1160px; margin: 0 auto; padding: 32px 24px; }
+
+  /* Stats */
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+  .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; }
+  .stat-card .sc-label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .stat-card .sc-num { font-size: 32px; font-weight: 800; color: var(--black); line-height: 1; }
+  .stat-card.orange .sc-num { color: var(--orange); }
+
+  /* Toolbar */
+  .toolbar { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 16px; flex-wrap: wrap; }
+  .filter-tabs { display: flex; gap: 4px; }
+  .filter-tab { padding: 7px 16px; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; border: none; background: transparent; color: var(--muted); font-family: var(--sans); transition: all .15s; }
+  .filter-tab:hover { background: #f5f4f1; color: var(--black); }
+  .filter-tab.active { background: var(--black); color: var(--white); }
+  .search-box { position: relative; }
+  .search-box input { padding: 8px 14px 8px 36px; border: 1.5px solid var(--border); border-radius: 8px; font-family: var(--sans); font-size: 14px; outline: none; width: 240px; transition: border-color .15s; color: var(--black); background: #f9f8f6; }
+  .search-box input:focus { border-color: var(--orange); background: #fff; }
+  .search-box svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+
+  /* Table */
+  .table-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th { padding: 12px 16px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); background: #f9f8f6; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  tbody tr.data-row { transition: background .1s; cursor: pointer; border-bottom: 1px solid var(--border); }
+  tbody tr.data-row:last-child { border-bottom: none; }
+  tbody tr.data-row:hover { background: #faf9f7; }
+  tbody tr.data-row.active { background: var(--tint); }
+  tbody td { padding: 14px 16px; font-size: 14px; vertical-align: middle; }
+  .empty-row td { text-align: center; padding: 60px 16px; color: var(--muted); font-size: 15px; }
+
+  /* Badges */
+  .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; text-transform: uppercase; letter-spacing: .04em; }
+  .badge-audit { background: #EEF2FF; color: #3730A3; }
+  .badge-contact { background: #F0FDF4; color: #166534; }
+  .badge-highfit { background: var(--tint); color: var(--orange); }
+  .badge-standard { background: #f5f4f1; color: #9a948a; }
+
+  /* Chevron */
+  .chevron { display: inline-block; font-size: 11px; color: var(--muted); transition: transform .2s; }
+  .chevron.open { transform: rotate(180deg); }
+
+  /* Detail panel */
+  tr.detail-tr td { padding: 0; border-bottom: 1px solid var(--border); }
+  .detail-panel { background: #fdfcfb; padding: 24px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .detail-field { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+  .detail-field:nth-last-child(-n+2) { border-bottom: none; }
+  .detail-field .df-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 4px; }
+  .detail-field .df-value { font-size: 14px; color: var(--black); line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+  .detail-actions { grid-column: 1 / -1; padding: 16px 16px 0; display: flex; gap: 10px; border-top: 1px solid var(--border); margin-top: 4px; }
+  .action-btn { display: inline-block; padding: 9px 20px; border-radius: 7px; font-family: var(--sans); font-weight: 700; font-size: 13px; cursor: pointer; text-decoration: none; border: 1.5px solid var(--border); background: var(--white); color: var(--black); transition: all .15s; }
+  .action-btn:hover { border-color: var(--black); background: var(--black); color: var(--white); }
+  .action-btn.primary { background: var(--orange); border-color: var(--orange); color: var(--white); }
+  .action-btn.primary:hover { opacity: .88; }
+
+  /* Loading */
+  .loading { text-align: center; padding: 60px; color: var(--muted); font-size: 15px; }
+  .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--orange); border-radius: 50%; animation: spin .7s linear infinite; margin-right: 10px; vertical-align: middle; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 780px) {
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .search-box input { width: 180px; }
+    .detail-panel { grid-template-columns: 1fr; }
+    .detail-field:last-of-type { border-bottom: 1px solid var(--border); }
+  }
+  @media (max-width: 520px) {
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .toolbar { flex-direction: column; align-items: stretch; }
+    .search-box input { width: 100%; }
+    thead th:nth-child(4), tbody td:nth-child(4) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <img src="logo.png" alt="thedamlek digital">
+    <h1>Team Login</h1>
+    <p>Enter your team password to access the submissions dashboard.</p>
+    <form id="login-form">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter team password" autocomplete="current-password" required>
+      <button type="submit" class="login-btn" id="login-btn">Log In</button>
+      <div class="login-error" id="login-error">Incorrect password. Please try again.</div>
+    </form>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <header class="dash-header">
+    <img src="logo.png" alt="thedamlek digital">
+    <div class="header-right">
+      <button class="refresh-btn" id="refresh-btn">&#8635; Refresh</button>
+      <button class="logout-btn" id="logout-btn">Log out</button>
+    </div>
+  </header>
+
+  <div class="dash-main">
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="sc-label">Total Submissions</div>
+        <div class="sc-num" id="stat-total">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-label">Audit Applications</div>
+        <div class="sc-num" id="stat-audits">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-label">Contact Messages</div>
+        <div class="sc-num" id="stat-contacts">—</div>
+      </div>
+      <div class="stat-card orange">
+        <div class="sc-label">High-Fit Leads</div>
+        <div class="sc-num" id="stat-highfit">—</div>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">All</button>
+        <button class="filter-tab" data-filter="audit">Audit Applications</button>
+        <button class="filter-tab" data-filter="contact">Contact Messages</button>
+      </div>
+      <div class="search-box">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="search" placeholder="Search name or email…">
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Name / Business</th>
+            <th>Email</th>
+            <th>Lead Tag</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr><td colspan="6" class="loading"><span class="spinner"></span>Loading submissions…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  var allData = [];
+  var activeFilter = 'all';
+  var expandedId = null;
+
+  // ── Auth ──────────────────────────────────────────────────────────────────
+  function getToken() { return sessionStorage.getItem('tdm_admin'); }
+  function saveToken(t) { sessionStorage.setItem('tdm_admin', t); }
+  function clearToken() { sessionStorage.removeItem('tdm_admin'); }
+
+  window.addEventListener('load', function () {
+    var t = getToken();
+    t ? showDashboard(t) : showLogin();
+  });
+
+  function showLogin() {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('dashboard').style.display = 'none';
+  }
+  function showDashboard(token) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    loadSubmissions(token);
+  }
+
+  // ── Login form ─────────────────────────────────────────────────────────────
+  document.getElementById('login-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var pw = document.getElementById('password').value;
+    var btn = document.getElementById('login-btn');
+    var err = document.getElementById('login-error');
+    btn.disabled = true;
+    btn.textContent = 'Logging in…';
+    err.style.display = 'none';
+
+    fetch('/api/submissions', { headers: { 'Authorization': 'Bearer ' + pw } })
+      .then(function (res) {
+        if (!res.ok) throw new Error('bad');
+        return res.json();
+      })
+      .then(function (data) {
+        saveToken(pw);
+        allData = data;
+        showDashboard(pw);
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'Log In';
+        err.style.display = 'block';
+        document.getElementById('password').value = '';
+        document.getElementById('password').focus();
+      });
+  });
+
+  // ── Logout ─────────────────────────────────────────────────────────────────
+  document.getElementById('logout-btn').addEventListener('click', function () {
+    clearToken();
+    showLogin();
+  });
+
+  // ── Refresh ────────────────────────────────────────────────────────────────
+  document.getElementById('refresh-btn').addEventListener('click', function () {
+    var t = getToken();
+    if (t) { expandedId = null; loadSubmissions(t); }
+  });
+
+  // ── Load submissions ───────────────────────────────────────────────────────
+  function loadSubmissions(token) {
+    document.getElementById('table-body').innerHTML =
+      '<tr><td colspan="6" class="loading"><span class="spinner"></span>Loading…</td></tr>';
+
+    fetch('/api/submissions', { headers: { 'Authorization': 'Bearer ' + token } })
+      .then(function (res) {
+        if (res.status === 401) { clearToken(); showLogin(); throw new Error('unauth'); }
+        return res.json();
+      })
+      .then(function (data) {
+        allData = data;
+        renderStats();
+        renderTable();
+      })
+      .catch(function (err) {
+        if (err.message !== 'unauth') {
+          document.getElementById('table-body').innerHTML =
+            '<tr><td colspan="6" class="loading">Failed to load. <a href="#" onclick="document.getElementById(\'refresh-btn\').click()">Try again</a></td></tr>';
+        }
+      });
+  }
+
+  // ── Stats ──────────────────────────────────────────────────────────────────
+  function renderStats() {
+    var audits   = allData.filter(function (d) { return d.form_type === 'audit'; }).length;
+    var contacts = allData.filter(function (d) { return d.form_type === 'contact'; }).length;
+    var highFit  = allData.filter(function (d) { return d.lead_fit_tag === 'high_fit_ascension_ready'; }).length;
+    document.getElementById('stat-total').textContent    = allData.length;
+    document.getElementById('stat-audits').textContent   = audits;
+    document.getElementById('stat-contacts').textContent = contacts;
+    document.getElementById('stat-highfit').textContent  = highFit;
+  }
+
+  // ── Filter & search ────────────────────────────────────────────────────────
+  document.querySelectorAll('.filter-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      activeFilter = this.dataset.filter;
+      document.querySelectorAll('.filter-tab').forEach(function (t) { t.classList.remove('active'); });
+      this.classList.add('active');
+      expandedId = null;
+      renderTable();
+    });
+  });
+
+  document.getElementById('search').addEventListener('input', function () {
+    expandedId = null;
+    renderTable();
+  });
+
+  function getFiltered() {
+    var q = document.getElementById('search').value.toLowerCase().trim();
+    return allData.filter(function (d) {
+      var typeOk = activeFilter === 'all' || d.form_type === activeFilter;
+      var searchOk = !q ||
+        (d.name          && d.name.toLowerCase().includes(q)) ||
+        (d.email         && d.email.toLowerCase().includes(q)) ||
+        (d.business_name && d.business_name.toLowerCase().includes(q));
+      return typeOk && searchOk;
+    });
+  }
+
+  // ── Table ──────────────────────────────────────────────────────────────────
+  function renderTable() {
+    var rows = getFiltered();
+    var tbody = document.getElementById('table-body');
+
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="6" class="loading">No submissions found.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = rows.map(function (r) {
+      var dt   = new Date(r.created_at);
+      var date = dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      var time = dt.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      var name = esc(r.name || r.business_name || '—');
+      var isAudit   = r.form_type === 'audit';
+      var isHighFit = r.lead_fit_tag === 'high_fit_ascension_ready';
+      var open = expandedId === r.id;
+
+      var tagBadge = isHighFit
+        ? '<span class="badge badge-highfit">&#9889; High Fit</span>'
+        : isAudit
+          ? '<span class="badge badge-standard">Standard</span>'
+          : '<span style="color:var(--muted);font-size:13px;">—</span>';
+
+      var row = '<tr class="data-row' + (open ? ' active' : '') + '" onclick="toggle(\'' + r.id + '\')">' +
+        '<td><div style="font-weight:600;font-size:14px;">' + date + '</div>' +
+            '<div style="font-size:12px;color:var(--muted);">' + time + '</div></td>' +
+        '<td><span class="badge ' + (isAudit ? 'badge-audit' : 'badge-contact') + '">' + (isAudit ? 'Audit' : 'Contact') + '</span></td>' +
+        '<td style="font-weight:600;">' + name + '</td>' +
+        '<td style="color:var(--text);">' + esc(r.email || '—') + '</td>' +
+        '<td>' + tagBadge + '</td>' +
+        '<td style="text-align:right;"><span class="chevron' + (open ? ' open' : '') + '">&#9660;</span></td>' +
+        '</tr>';
+
+      return open ? row + detailRow(r) : row;
+    }).join('');
+  }
+
+  function detailRow(r) {
+    var fields = [
+      ['Business Name',    r.business_name],
+      ['Email',            r.email],
+      ['Website',          r.website],
+      ['What They Sell',   r.what_you_sell],
+      ['Ideal Customer',   r.ideal_customer],
+      ['Challenge',        r.challenge],
+      ['Running Ads',      r.running_ads],
+      ['Platforms',        r.platforms],
+      ['Budget',           r.budget],
+      ['Desired Result',   r.desired_result],
+      ['Open to Help',     r.open_to_help],
+      ['Subject',          r.subject],
+      ['Message',          r.message],
+      ['Lead Tag',         r.lead_fit_tag],
+    ].filter(function (f) { return f[1]; });
+
+    var cells = fields.map(function (f) {
+      return '<div class="detail-field">' +
+        '<div class="df-label">' + f[0] + '</div>' +
+        '<div class="df-value">' + esc(f[1]) + '</div>' +
+        '</div>';
+    }).join('');
+
+    var replyHref = r.email ? 'mailto:' + r.email + '?subject=Re: Your ' +
+      (r.form_type === 'audit' ? 'Growth Leak Audit Application' : 'Message to thedamlek digital') : '#';
+
+    return '<tr class="detail-tr"><td colspan="6">' +
+      '<div class="detail-panel">' + cells +
+      '<div class="detail-actions">' +
+      (r.email ? '<a href="' + replyHref + '" class="action-btn primary">Reply via Email</a>' : '') +
+      '</div></div></td></tr>';
+  }
+
+  function toggle(id) {
+    expandedId = expandedId === id ? null : id;
+    renderTable();
+  }
+
+  function esc(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+</script>
+</body>
+</html>
