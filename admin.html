@@ -102,6 +102,16 @@
   .action-btn.primary { background: var(--orange); border-color: var(--orange); color: var(--white); }
   .action-btn.primary:hover { opacity: .88; }
 
+  /* Notes */
+  .notes-section { grid-column: 1 / -1; padding: 16px; border-top: 1px solid var(--border); }
+  .notes-section .df-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 8px; }
+  .notes-textarea { width: 100%; min-height: 80px; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: var(--sans); font-size: 14px; color: var(--black); resize: vertical; outline: none; transition: border-color .15s; background: var(--white); }
+  .notes-textarea:focus { border-color: var(--orange); }
+  .notes-save-btn { margin-top: 8px; padding: 8px 20px; background: var(--black); color: var(--white); border: none; border-radius: 7px; font-family: var(--sans); font-weight: 700; font-size: 13px; cursor: pointer; transition: opacity .15s; }
+  .notes-save-btn:hover { opacity: .8; }
+  .notes-save-btn:disabled { opacity: .4; cursor: default; }
+  .notes-status { display: inline-block; margin-left: 10px; font-size: 13px; color: var(--muted); vertical-align: middle; }
+
   /* Loading */
   .loading { text-align: center; padding: 60px; color: var(--muted); font-size: 15px; }
   .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--orange); border-radius: 50%; animation: spin .7s linear infinite; margin-right: 10px; vertical-align: middle; }
@@ -400,11 +410,61 @@
     var replyHref = r.email ? 'mailto:' + r.email + '?subject=Re: Your ' +
       (r.form_type === 'audit' ? 'Growth Leak Audit Application' : 'Message to thedamlek digital') : '#';
 
+    var notesHtml = '<div class="notes-section">' +
+      '<div class="df-label">Team Notes</div>' +
+      '<textarea class="notes-textarea" id="notes-' + r.id + '" placeholder="Add a note about this prospect…">' + esc(r.notes || '') + '</textarea>' +
+      '<br><button class="notes-save-btn" onclick="saveNote(\'' + r.id + '\', event)">Save Note</button>' +
+      '<span class="notes-status" id="notes-status-' + r.id + '"></span>' +
+      '</div>';
+
     return '<tr class="detail-tr"><td colspan="6">' +
       '<div class="detail-panel">' + cells +
+      notesHtml +
       '<div class="detail-actions">' +
       (r.email ? '<a href="' + replyHref + '" class="action-btn primary">Reply via Email</a>' : '') +
       '</div></div></td></tr>';
+  }
+
+  function saveNote(id, e) {
+    e.stopPropagation();
+    var textarea = document.getElementById('notes-' + id);
+    var status   = document.getElementById('notes-status-' + id);
+    var btn      = e.target;
+    var note     = textarea.value;
+
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+    status.textContent = '';
+
+    fetch('/api/update-note', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + getToken(),
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id: id, note: note })
+    })
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      btn.disabled = false;
+      btn.textContent = 'Save Note';
+      if (data.success) {
+        var row = allData.find(function (r) { return r.id === id; });
+        if (row) row.notes = note;
+        status.textContent = '✓ Saved';
+        status.style.color = '#166534';
+      } else {
+        status.textContent = 'Error saving';
+        status.style.color = '#991B1B';
+      }
+      setTimeout(function () { status.textContent = ''; }, 3000);
+    })
+    .catch(function () {
+      btn.disabled = false;
+      btn.textContent = 'Save Note';
+      status.textContent = 'Error saving';
+      status.style.color = '#991B1B';
+    });
   }
 
   function toggle(id) {
