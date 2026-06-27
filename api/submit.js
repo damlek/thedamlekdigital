@@ -104,7 +104,7 @@ module.exports = async function handler(req, res) {
       html: buildEmailHtml(data),
     });
   } catch (emailErr) {
-    console.error('Email error:', emailErr.message);
+    console.error('Email error:', emailErr.message, emailErr.code || '');
   }
 
   if (dbError) {
