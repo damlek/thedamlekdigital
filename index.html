@@ -577,10 +577,6 @@
 
 <script>
   // ── Contact form ──────────────────────────────────────────────────────────
-  // Sign up at formspree.io, create a second form called "Contact",
-  // and replace YOUR_CONTACT_FORM_ID below with the new form ID.
-  var CONTACT_FORM_ID = 'YOUR_CONTACT_FORM_ID';
-
   var contactForm = document.getElementById('contact-form');
   var cfSuccess   = document.getElementById('cf-success');
   var cfSubmitBtn = contactForm.querySelector('.cf-submit');
@@ -590,23 +586,27 @@
     cfSubmitBtn.disabled = true;
     cfSubmitBtn.textContent = 'Sending…';
 
-    fetch('https://formspree.io/f/' + CONTACT_FORM_ID, {
+    var fd = new FormData(contactForm);
+    var data = Object.fromEntries(fd.entries());
+    data.form_type = 'contact';
+
+    fetch('/api/submit', {
       method: 'POST',
-      body: new FormData(contactForm),
-      headers: { 'Accept': 'application/json' }
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' }
     })
     .then(function(res) {
       if (res.ok) {
         contactForm.style.display = 'none';
         cfSuccess.classList.add('show');
       } else {
-        throw new Error('Submission failed');
+        return res.json().then(function(j) { throw new Error(j.error || 'Failed'); });
       }
     })
-    .catch(function() {
+    .catch(function(err) {
       cfSubmitBtn.disabled = false;
       cfSubmitBtn.textContent = 'Send Message';
-      alert('Something went wrong. Please email us directly at thedamlekdigital@gmail.com');
+      alert('Something went wrong: ' + err.message + '\n\nPlease email us at thedamlekdigital@gmail.com');
     });
   });
   // ─────────────────────────────────────────────────────────────────────────

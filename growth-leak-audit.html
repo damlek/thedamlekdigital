@@ -530,16 +530,6 @@
 </footer>
 
 <script>
-  // ─── FORMSPREE SETUP ──────────────────────────────────────────────────────
-  // 1. Go to https://formspree.io and sign up (free — 50 submissions/month).
-  // 2. Click "New Form", name it "Growth Leak Audit", set notification email to
-  //    thedamlekdigital@gmail.com, and copy the form ID (looks like "xpwzabcd").
-  // 3. Replace YOUR_FORM_ID below with that ID.
-  // Every submission will be emailed to thedamlekdigital@gmail.com AND stored
-  // in your Formspree dashboard (searchable, exportable — your database).
-  var FORMSPREE_ID = 'mdarkbyd';
-  // ─────────────────────────────────────────────────────────────────────────
-
   var form = document.getElementById('audit-form');
   var resultPanel = document.getElementById('result-panel');
   var nextStep = document.getElementById('next-step');
@@ -548,42 +538,45 @@
   form.addEventListener('submit', function(e){
     e.preventDefault();
 
-    var budget = form.budget.value;
+    var budget     = form.budget.value;
     var openToHelp = form.open_to_help.value;
-
     var highBudget = (budget === '1000to3000' || budget === '3000to5000' || budget === 'over5000');
-    var wantsHelp  = (openToHelp === 'yes');
-    var isHighFit  = highBudget && wantsHelp;
+    var isHighFit  = highBudget && (openToHelp === 'yes');
 
-    var data = new FormData(form);
-    data.append('lead_fit_tag', isHighFit ? 'high_fit_ascension_ready' : 'standard_audit_lead');
+    // Collect all fields including multi-select checkboxes
+    var fd = new FormData(form);
+    var data = {};
+    fd.forEach(function(val, key) {
+      if (key === 'platforms') {
+        data.platforms = data.platforms ? data.platforms + ', ' + val : val;
+      } else {
+        data[key] = val;
+      }
+    });
+    data.form_type    = 'audit';
+    data.lead_fit_tag = isHighFit ? 'high_fit_ascension_ready' : 'standard_audit_lead';
 
-    // Disable button while submitting
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting…';
 
-    fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+    fetch('/api/submit', {
       method: 'POST',
-      body: data,
-      headers: { 'Accept': 'application/json' }
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' }
     })
-    .then(function(response){
-      if (response.ok) {
+    .then(function(res){
+      if (res.ok) {
         form.style.display = 'none';
         resultPanel.classList.add('show');
-        if (isHighFit) {
-          nextStep.style.display = 'block';
-        }
+        if (isHighFit) nextStep.style.display = 'block';
       } else {
-        return response.json().then(function(json){
-          throw new Error(json.errors ? json.errors.map(function(e){ return e.message; }).join(', ') : 'Submission failed.');
-        });
+        return res.json().then(function(j){ throw new Error(j.error || 'Submission failed'); });
       }
     })
     .catch(function(err){
       submitBtn.disabled = false;
       submitBtn.textContent = 'Submit My Application';
-      alert('Sorry, there was a problem submitting your application: ' + err.message + '\n\nPlease try again or email us directly at thedamlekdigital@gmail.com.');
+      alert('Sorry, something went wrong: ' + err.message + '\n\nPlease email us directly at thedamlekdigital@gmail.com.');
     });
   });
 </script>

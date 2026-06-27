@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@supabase/supabase-js": "^2.108.2",
+    "nodemailer": "^9.0.1",
+    "puppeteer": "^25.2.1"
+  },
+  "allowScripts": {
+    "puppeteer@25.2.1": true
+  }
+}
