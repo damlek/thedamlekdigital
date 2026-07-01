@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MX5G8NK5');</script>
+<!-- End Google Tag Manager -->
+<title>Growth Readiness Scorecard | thedamlek digital</title>
+<meta name="description" content="Find out what is stopping your business from getting consistent leads and customers online. Take the free 2-minute Growth Readiness Scorecard from thedamlek digital.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+  :root{
+    --orange:#E16638;
+    --soft-orange:#FF9972;
+    --sage:#95AD7C;
+    --black:#15130F;
+    --white:#FFFFFF;
+    --tint-orange:#FFF3EC;
+    --tint-sage:#F3F6EF;
+    --border:#E7E2DC;
+    --serif:'Playfair Display', serif;
+    --sans:'DM Sans', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--sans);color:var(--black);background:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  img,svg{display:block;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+  h1,h2,h3{font-family:var(--serif);font-weight:800;line-height:1.15;letter-spacing:-0.01em;}
+  .eyebrow{font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+
+  /* Logo */
+  .logo-lockup{display:flex;align-items:center;gap:10px;}
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--sans);font-weight:700;font-size:15px;padding:14px 26px;border-radius:8px;border:2px solid var(--black);cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;white-space:nowrap;}
+  .btn-primary{background:var(--orange);border-color:var(--orange);color:var(--white);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 0 0 #00000022;}
+  .btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none;}
+  .btn-outline{background:transparent;color:var(--black);}
+  .btn-outline:hover{background:var(--black);color:var(--white);}
+  footer{background:var(--black);color:#cfcabf;padding:40px 0 24px;margin-top:40px;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  footer .copy{font-size:13px;color:#8c8578;}
+
+  /* ── Quiz shell ── */
+  main{padding:48px 0 80px;}
+  .quiz-shell{max-width:680px;margin:0 auto;padding:0 20px;}
+
+  .progress-wrap{margin-bottom:28px;}
+  .progress-meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;color:#766f64;margin-bottom:8px;}
+  .progress-meta .cat-label{color:var(--orange);text-transform:uppercase;letter-spacing:0.06em;font-size:12px;}
+  .progress-track{height:8px;border-radius:99px;background:var(--tint-sage);overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--soft-orange));border-radius:99px;width:0%;transition:width .4s ease;}
+
+  /* Intro screen */
+  .intro-screen{text-align:center;padding:24px 0;}
+  .intro-screen h1{font-size:clamp(28px,4.5vw,42px);margin-bottom:18px;}
+  .intro-screen h1 em{font-style:normal;color:var(--orange);}
+  .intro-screen p{font-size:17px;color:#4a463f;max-width:560px;margin:0 auto 14px;}
+  .intro-stats{display:flex;justify-content:center;gap:28px;margin:28px 0;flex-wrap:wrap;}
+  .intro-stat{text-align:center;}
+  .intro-stat .num{font-family:var(--serif);font-weight:800;font-size:24px;color:var(--orange);}
+  .intro-stat .lab{font-size:12.5px;color:#766f64;font-weight:700;}
+  .intro-screen .btn{margin-top:10px;padding:17px 36px;font-size:16px;}
+  .intro-screen .microcopy{font-size:13px;color:#8c8578;margin-top:14px;}
+
+  /* Question card */
+  .q-card{display:none;}
+  .q-card.active{display:block;animation:fadeUp .4s ease both;}
+  .q-card h2{font-size:clamp(21px,3vw,27px);margin-bottom:22px;}
+  .opt-list{display:flex;flex-direction:column;gap:10px;}
+  .opt{display:flex;align-items:center;gap:14px;text-align:left;background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:16px 18px;font-family:var(--sans);font-size:15.5px;font-weight:600;color:var(--black);cursor:pointer;transition:border-color .15s ease, background .15s ease, transform .1s ease;width:100%;}
+  .opt:hover{border-color:var(--orange);background:var(--tint-orange);}
+  .opt:active{transform:scale(0.99);}
+  .opt.selected{border-color:var(--orange);background:var(--tint-orange);}
+  .opt .opt-letter{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--tint-sage);color:#5d584e;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .opt.selected .opt-letter{background:var(--orange);color:var(--white);}
+
+  .q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;}
+  .q-back{font-size:14px;font-weight:700;color:#766f64;cursor:pointer;display:flex;align-items:center;gap:6px;}
+  .q-back:hover{color:var(--black);}
+  .q-back.hidden{visibility:hidden;}
+
+  /* Lead capture */
+  .lead-screen{display:none;}
+  .lead-screen.active{display:block;animation:fadeUp .4s ease both;}
+  .lead-card{background:var(--tint-sage);border:1.5px solid var(--border);border-radius:18px;padding:36px;}
+  .lead-card h2{font-size:24px;margin-bottom:8px;}
+  .lead-card p{color:#5d584e;font-size:15px;margin-bottom:24px;}
+  .field{margin-bottom:18px;}
+  .field label{display:block;font-size:13.5px;font-weight:700;margin-bottom:6px;}
+  .field .req{color:var(--orange);}
+  .field input, .field select{width:100%;padding:13px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:15px;background:var(--white);color:var(--black);}
+  .field input:focus, .field select:focus{outline:none;border-color:var(--orange);}
+  .lead-card .submit-btn{width:100%;margin-top:6px;padding:17px;font-size:16px;}
+  .form-note{font-size:12.5px;color:#8c8578;text-align:center;margin-top:14px;}
+
+  /* Results */
+  .result-screen{display:none;}
+  .result-screen.active{display:block;animation:fadeUp .5s ease both;}
+  .score-hero{text-align:center;padding:8px 0 32px;}
+  .score-ring{width:180px;height:180px;margin:0 auto 20px;position:relative;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--tint-sage);stroke-width:12;}
+  .score-ring .ring-fill{fill:none;stroke:var(--orange);stroke-width:12;stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(.16,1,.3,1);}
+  .score-ring .ring-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .score-ring .ring-num .n{font-family:var(--serif);font-weight:800;font-size:42px;}
+  .score-ring .ring-num .of{font-size:12px;color:#766f64;font-weight:700;}
+  .tier-badge{display:inline-block;background:var(--black);color:var(--white);font-weight:700;font-size:13px;letter-spacing:0.04em;text-transform:uppercase;padding:8px 18px;border-radius:99px;margin-bottom:16px;}
+  .score-hero h2{font-size:clamp(24px,4vw,32px);margin-bottom:14px;}
+  .score-hero p{color:#3f3b35;font-size:16px;max-width:560px;margin:0 auto;}
+
+  .gap-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:32px 0;}
+  .gap-card{background:var(--tint-orange);border:1.5px solid var(--border);border-radius:12px;padding:18px;}
+  .gap-card .gap-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--orange);margin-bottom:6px;}
+  .gap-card .gap-name{font-weight:800;font-size:16px;margin-bottom:8px;}
+  .gap-bar-track{height:6px;border-radius:99px;background:#fff;overflow:hidden;}
+  .gap-bar-fill{height:100%;background:var(--orange);border-radius:99px;}
+
+  .cat-breakdown{margin:32px 0;}
+  .cat-row{display:flex;align-items:center;gap:14px;padding:10px 0;border-bottom:1px solid var(--border);}
+  .cat-row .cat-name{flex:0 0 160px;font-size:14px;font-weight:700;}
+  .cat-row .cat-track{flex:1;height:8px;border-radius:99px;background:var(--tint-sage);overflow:hidden;}
+  .cat-row .cat-fill{height:100%;background:var(--sage);border-radius:99px;transition:width 1s ease;}
+  .cat-row .cat-pct{flex:0 0 42px;text-align:right;font-size:13px;font-weight:700;color:#5d584e;}
+
+  .result-cta{background:var(--black);color:var(--white);border-radius:18px;padding:36px;text-align:center;margin-top:32px;}
+  .result-cta h3{color:var(--white);font-size:22px;margin-bottom:10px;}
+  .result-cta p{color:#cfcabf;font-size:15px;margin-bottom:22px;max-width:480px;margin-left:auto;margin-right:auto;}
+  .result-cta .btn-primary{padding:17px 32px;font-size:16px;}
+
+  @media (max-width:600px){
+    .gap-cards{grid-template-columns:1fr;}
+    .cat-row .cat-name{flex-basis:120px;font-size:13px;}
+    .lead-card{padding:24px;}
+    .result-cta{padding:28px 22px;}
+  }
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MX5G8NK5"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<header>
+  <div class="wrap">
+    <a href="index.html">
+      <img src="logo.png" alt="thedamlek digital" style="height:64px;width:auto;display:block;">
+    </a>
+    <a href="index.html" class="btn btn-outline" style="padding:11px 20px;font-size:14px;">Back to Site</a>
+  </div>
+</header>
+
+<main>
+  <div class="quiz-shell">
+
+    <!-- INTRO -->
+    <div id="intro-screen" class="intro-screen">
+      <div class="eyebrow" style="justify-content:center;">// FREE GROWTH READINESS SCORECARD</div>
+      <h1>Find Out What's Stopping Your Business From Getting <em>Consistent Leads</em> And Customers Online.</h1>
+      <p>Answer 30 quick questions about your offer, message, funnel, ads, and tracking. Get an instant score out of 100 and see exactly where your growth system is leaking.</p>
+      <div class="intro-stats">
+        <div class="intro-stat"><div class="num">2 min</div><div class="lab">To Complete</div></div>
+        <div class="intro-stat"><div class="num">6</div><div class="lab">Areas Reviewed</div></div>
+        <div class="intro-stat"><div class="num">100%</div><div class="lab">Free</div></div>
+      </div>
+      <button class="btn btn-primary" id="start-btn">Start My Scorecard &rarr;</button>
+      <p class="microcopy">No credit card. No obligation. Instant results.</p>
+    </div>
+
+    <!-- QUESTIONS -->
+    <div id="quiz-screen" style="display:none;">
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span class="cat-label" id="cat-label">Offer Strength</span>
+          <span id="progress-text">Question 1 of 30</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      </div>
+      <div id="questions-mount"></div>
+      <div class="q-nav">
+        <span class="q-back hidden" id="back-btn">&larr; Back</span>
+        <span></span>
+      </div>
+    </div>
+
+    <!-- LEAD CAPTURE -->
+    <div id="lead-screen" class="lead-screen">
+      <div class="lead-card">
+        <div class="eyebrow">Almost Done</div>
+        <h2>Enter Your Details To See Your Results</h2>
+        <p>We'll show your score instantly and email you a personalized breakdown of what to fix first.</p>
+        <form id="lead-form">
+          <div class="field">
+            <label>Full Name <span class="req">*</span></label>
+            <input type="text" name="name" required placeholder="Your name">
+          </div>
+          <div class="field">
+            <label>Email <span class="req">*</span></label>
+            <input type="email" name="email" required placeholder="you@business.com">
+          </div>
+          <div class="field">
+            <label>Business Name <span class="req">*</span></label>
+            <input type="text" name="business_name" required placeholder="Your business name">
+          </div>
+          <div class="field">
+            <label>Website</label>
+            <input type="text" name="website" placeholder="yourbusiness.com">
+          </div>
+          <div class="field">
+            <label>Monthly Marketing Budget <span class="req">*</span></label>
+            <select name="budget" required>
+              <option value="" disabled selected>Select one</option>
+              <option value="under1k">Under $1,000</option>
+              <option value="1kto3k">$1,000 – $3,000</option>
+              <option value="3kto10k">$3,000 – $10,000</option>
+              <option value="over10k">$10,000+</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary submit-btn">See My Score &rarr;</button>
+          <p class="form-note">We respect your privacy. Your answers are never shared.</p>
+        </form>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="result-screen" class="result-screen">
+      <div class="score-hero">
+        <div class="tier-badge" id="tier-badge">Foundation Gap</div>
+        <div class="score-ring">
+          <svg width="180" height="180" viewBox="0 0 180 180">
+            <circle class="ring-bg" cx="90" cy="90" r="78"></circle>
+            <circle class="ring-fill" id="ring-fill" cx="90" cy="90" r="78" stroke-dasharray="490" stroke-dashoffset="490"></circle>
+          </svg>
+          <div class="ring-num"><span class="n" id="score-num">0</span><span class="of">OUT OF 100</span></div>
+        </div>
+        <h2 id="tier-headline">Your business isn't fully ready to scale with paid media yet.</h2>
+        <p id="tier-desc"></p>
+      </div>
+
+      <div class="gap-cards" id="gap-cards"></div>
+
+      <div class="cat-breakdown" id="cat-breakdown">
+        <h3 style="font-size:18px;margin-bottom:16px;">Full Breakdown</h3>
+      </div>
+
+      <div class="result-cta">
+        <h3>Want Help Fixing These Gaps?</h3>
+        <p>Book a free Growth Accelerator Strategy Session with thedamlek digital so we can review your score together and show you exactly what to fix first.</p>
+        <a href="index.html#contact" class="btn btn-primary">Book My Free Strategy Session</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img src="logo.png" alt="thedamlek digital" style="height:60px;width:auto;display:block;filter:brightness(0) invert(1);">
+    <span class="copy">&copy; 2026 thedamlek Digital. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+/* ────────────────────────────────────────────────
+   QUESTION DATA
+   Each option: { label, pts } — pts 0–3
+──────────────────────────────────────────────── */
+var QUESTIONS = [
+  // Offer Strength
+  {cat:'Offer Strength', q:"How would you describe your offer compared to competitors?", opts:[
+    {l:"It's basically the same as everyone else", p:0},
+    {l:"A little different, but hard to explain why", p:1},
+    {l:"Clearly different in 1–2 ways", p:2},
+    {l:"Clearly different and customers tell us so unprompted", p:3}]},
+  {cat:'Offer Strength', q:"Can you explain your offer in one sentence a stranger would understand?", opts:[
+    {l:"No, it takes a few minutes to explain", p:0},
+    {l:"Sort of, but it sounds like a list of services", p:1},
+    {l:"Yes, with a little practice", p:2},
+    {l:"Yes, instantly and clearly", p:3}]},
+  {cat:'Offer Strength', q:"Do you give people a reason to act now rather than \"someday\"?", opts:[
+    {l:"No urgency or incentive at all", p:0},
+    {l:"We mention urgency occasionally", p:1},
+    {l:"We have a consistent reason to act now", p:2},
+    {l:"Yes, it's a core part of the offer", p:3}]},
+  {cat:'Offer Strength', q:"How confident are you in your pricing relative to the value you deliver?", opts:[
+    {l:"Not confident — we guess or copy competitors", p:0},
+    {l:"Somewhat confident", p:1},
+    {l:"Confident, based on some testing", p:2},
+    {l:"Very confident, tested and validated", p:3}]},
+  {cat:'Offer Strength', q:"Have customers told you why they chose you over an alternative?", opts:[
+    {l:"Never asked", p:0},
+    {l:"Asked once or twice", p:1},
+    {l:"We ask sometimes", p:2},
+    {l:"We consistently track and use this feedback", p:3}]},
+
+  // Audience Clarity
+  {cat:'Audience Clarity', q:"Do you have a clearly defined ideal customer?", opts:[
+    {l:"Not really, we'll work with anyone", p:0},
+    {l:"General idea, nothing written down", p:1},
+    {l:"Defined, but a bit broad", p:2},
+    {l:"Specific and documented", p:3}]},
+  {cat:'Audience Clarity', q:"Do you know your ideal customer's #1 pain point right now?", opts:[
+    {l:"Not sure", p:0},
+    {l:"General sense of it", p:1},
+    {l:"Yes, fairly clear", p:2},
+    {l:"Yes, in their own words", p:3}]},
+  {cat:'Audience Clarity', q:"Do you know what makes a customer choose you over a competitor?", opts:[
+    {l:"No idea", p:0},
+    {l:"A guess", p:1},
+    {l:"Pretty good idea", p:2},
+    {l:"Documented and confirmed by customers", p:3}]},
+  {cat:'Audience Clarity', q:"Do you know where your ideal customers spend time online?", opts:[
+    {l:"No", p:0},
+    {l:"Vague idea", p:1},
+    {l:"Yes, 1–2 main channels", p:2},
+    {l:"Yes, clearly mapped", p:3}]},
+  {cat:'Audience Clarity', q:"Have you ever segmented customers by value or fit?", opts:[
+    {l:"Never", p:0},
+    {l:"Thought about it", p:1},
+    {l:"Done informally", p:2},
+    {l:"Done and used to guide targeting", p:3}]},
+
+  // Message Clarity
+  {cat:'Message Clarity', q:"Does your website explain what you do within 5 seconds of landing?", opts:[
+    {l:"No, people often ask \"what do you actually do?\"", p:0},
+    {l:"Somewhat, but takes scrolling", p:1},
+    {l:"Mostly clear", p:2},
+    {l:"Yes, instantly obvious", p:3}]},
+  {cat:'Message Clarity', q:"Is your messaging focused on the customer's problem or on your business?", opts:[
+    {l:"Mostly about us — our story, our process", p:0},
+    {l:"A mix", p:1},
+    {l:"Mostly about the customer", p:2},
+    {l:"Entirely framed around their problem and outcome", p:3}]},
+  {cat:'Message Clarity', q:"Do your headlines make the value obvious without reading further?", opts:[
+    {l:"No, mostly generic", p:0},
+    {l:"Somewhat", p:1},
+    {l:"Yes, on key pages", p:2},
+    {l:"Yes, everywhere", p:3}]},
+  {cat:'Message Clarity', q:"Is there one clear, consistent message across your site, ads, and social?", opts:[
+    {l:"No, it varies a lot", p:0},
+    {l:"Loosely consistent", p:1},
+    {l:"Mostly consistent", p:2},
+    {l:"Fully consistent", p:3}]},
+  {cat:'Message Clarity', q:"Do you address objections (price, trust, timing) anywhere in your messaging?", opts:[
+    {l:"Not at all", p:0},
+    {l:"Rarely", p:1},
+    {l:"On some pages", p:2},
+    {l:"Yes, proactively and clearly", p:3}]},
+
+  // Funnel Readiness
+  {cat:'Funnel Readiness', q:"Do you have a landing page built specifically to convert (not just a homepage)?", opts:[
+    {l:"No", p:0},
+    {l:"Working on one", p:1},
+    {l:"Yes, basic one", p:2},
+    {l:"Yes, tested and optimized", p:3}]},
+  {cat:'Funnel Readiness', q:"Is there one clear call-to-action, or several competing for attention?", opts:[
+    {l:"Several, it's cluttered", p:0},
+    {l:"Mostly one, some clutter", p:1},
+    {l:"One clear CTA", p:2},
+    {l:"One clear CTA, repeated strategically", p:3}]},
+  {cat:'Funnel Readiness', q:"What happens immediately after someone submits a form or inquiry?", opts:[
+    {l:"Nothing automated, we get to it eventually", p:0},
+    {l:"A generic auto-reply", p:1},
+    {l:"A relevant follow-up within a day", p:2},
+    {l:"An immediate, personalized follow-up sequence", p:3}]},
+  {cat:'Funnel Readiness', q:"Do you have a process for following up with leads who don't respond right away?", opts:[
+    {l:"No follow-up after the first touch", p:0},
+    {l:"One follow-up attempt", p:1},
+    {l:"A few follow-ups over time", p:2},
+    {l:"A structured multi-touch follow-up sequence", p:3}]},
+  {cat:'Funnel Readiness', q:"How many steps does it take for a ready buyer to become a customer?", opts:[
+    {l:"Many steps, confusing", p:0},
+    {l:"A few steps, could be simpler", p:1},
+    {l:"Fairly simple", p:2},
+    {l:"As few steps as possible, frictionless", p:3}]},
+
+  // Paid Media Readiness
+  {cat:'Paid Media Readiness', q:"Have you tested ad creatives or messaging before (even informally)?", opts:[
+    {l:"Never run ads", p:0},
+    {l:"Ran ads once without much testing", p:1},
+    {l:"Tested a few variations", p:2},
+    {l:"Ongoing structured testing", p:3}]},
+  {cat:'Paid Media Readiness', q:"Do you know your target cost per lead or cost per acquisition?", opts:[
+    {l:"No idea", p:0},
+    {l:"Rough guess", p:1},
+    {l:"Reasonable estimate based on margins", p:2},
+    {l:"Calculated and tracked", p:3}]},
+  {cat:'Paid Media Readiness', q:"Do you have a dedicated budget set aside for testing before scaling?", opts:[
+    {l:"No budget allocated", p:0},
+    {l:"Small, ad hoc budget", p:1},
+    {l:"Defined testing budget", p:2},
+    {l:"Defined testing + scaling budget plan", p:3}]},
+  {cat:'Paid Media Readiness', q:"How would you describe your past experience with paid ads, if any?", opts:[
+    {l:"Never tried, or tried and lost money with no insight", p:0},
+    {l:"Tried, mixed results, unclear why", p:1},
+    {l:"Worked reasonably, room to improve", p:2},
+    {l:"Worked well, looking to scale", p:3}]},
+  {cat:'Paid Media Readiness', q:"Do you have proof people will buy (organic sales, referrals, waitlist) before paid traffic?", opts:[
+    {l:"No sales yet", p:0},
+    {l:"A few sales, inconsistent", p:1},
+    {l:"Steady organic/referral sales", p:2},
+    {l:"Strong consistent demand already", p:3}]},
+
+  // Tracking & Measurement
+  {cat:'Tracking & Measurement', q:"Do you have conversion tracking set up (pixel, analytics, CRM)?", opts:[
+    {l:"No tracking at all", p:0},
+    {l:"Basic analytics only", p:1},
+    {l:"Tracking most key actions", p:2},
+    {l:"Full funnel tracking in place", p:3}]},
+  {cat:'Tracking & Measurement', q:"Do you know which channel your leads or sales actually come from?", opts:[
+    {l:"No idea", p:0},
+    {l:"Rough guess", p:1},
+    {l:"Mostly know", p:2},
+    {l:"Tracked precisely", p:3}]},
+  {cat:'Tracking & Measurement', q:"How often do you review marketing/campaign performance?", opts:[
+    {l:"Rarely or never", p:0},
+    {l:"Occasionally", p:1},
+    {l:"Monthly", p:2},
+    {l:"Weekly or more", p:3}]},
+  {cat:'Tracking & Measurement', q:"If a campaign underperforms, do you know why within a day or two?", opts:[
+    {l:"No, we can't tell", p:0},
+    {l:"Takes a while to figure out", p:1},
+    {l:"Usually within a few days", p:2},
+    {l:"Yes, almost immediately", p:3}]},
+  {cat:'Tracking & Measurement', q:"Do you track revenue/customer value back to the original marketing source?", opts:[
+    {l:"No", p:0},
+    {l:"Loosely", p:1},
+    {l:"For most customers", p:2},
+    {l:"For all customers, consistently", p:3}]}
+];
+
+var TIERS = [
+  {min:0,  max:39,  name:'Foundation Gap', headline:"Your business isn't fully ready to scale with paid media yet.",
+    desc:"The good news: these are fixable, foundational issues — and fixing them first will make every dollar you spend later work harder."},
+  {min:40, max:69,  name:'Growth System Gap', headline:"Your system has real pieces in place, but it isn't strong enough yet to scale consistently.",
+    desc:"A few targeted fixes could meaningfully change your results."},
+  {min:70, max:84,  name:'Scale Ready', headline:"You're close. Your foundation is solid.",
+    desc:"The next gains come from campaign structure, creative testing, and optimization."},
+  {min:85, max:100, name:'Performance Optimization', headline:"You already have a strong system.",
+    desc:"From here it's about deeper optimization to improve efficiency and scale further."}
+];
+
+var CATEGORIES = ['Offer Strength','Audience Clarity','Message Clarity','Funnel Readiness','Paid Media Readiness','Tracking & Measurement'];
+
+/* ────────────────────────────────────────────────
+   STATE & DOM
+──────────────────────────────────────────────── */
+var current = 0;
+var answers = new Array(QUESTIONS.length).fill(null);
+
+var introScreen   = document.getElementById('intro-screen');
+var quizScreen    = document.getElementById('quiz-screen');
+var leadScreen    = document.getElementById('lead-screen');
+var resultScreen  = document.getElementById('result-screen');
+var mount         = document.getElementById('questions-mount');
+var progressFill  = document.getElementById('progress-fill');
+var progressText  = document.getElementById('progress-text');
+var catLabel      = document.getElementById('cat-label');
+var backBtn       = document.getElementById('back-btn');
+
+document.getElementById('start-btn').addEventListener('click', function(){
+  introScreen.style.display = 'none';
+  quizScreen.style.display = 'block';
+  renderQuestion(0);
+});
+
+backBtn.addEventListener('click', function(){
+  if (current > 0) renderQuestion(current - 1);
+});
+
+function renderQuestion(idx){
+  current = idx;
+  var data = QUESTIONS[idx];
+  catLabel.textContent = data.cat;
+  progressText.textContent = 'Question ' + (idx + 1) + ' of ' + QUESTIONS.length;
+  progressFill.style.width = Math.round(((idx) / QUESTIONS.length) * 100) + '%';
+  backBtn.classList.toggle('hidden', idx === 0);
+
+  var optsHtml = data.opts.map(function(o, i){
+    var letters = ['A','B','C','D'];
+    var selected = answers[idx] === o.p ? ' selected' : '';
+    return '<button type="button" class="opt' + selected + '" data-pts="' + o.p + '">' +
+      '<span class="opt-letter">' + letters[i] + '</span><span>' + o.l + '</span></button>';
+  }).join('');
+
+  mount.innerHTML = '<div class="q-card active"><h2>' + data.q + '</h2><div class="opt-list">' + optsHtml + '</div></div>';
+
+  mount.querySelectorAll('.opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      answers[idx] = parseInt(btn.getAttribute('data-pts'), 10);
+      mount.querySelectorAll('.opt').forEach(function(b){ b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      setTimeout(function(){
+        if (idx < QUESTIONS.length - 1) {
+          renderQuestion(idx + 1);
+        } else {
+          progressFill.style.width = '100%';
+          showLeadScreen();
+        }
+      }, 280);
+    });
+  });
+}
+
+function showLeadScreen(){
+  quizScreen.style.display = 'none';
+  leadScreen.classList.add('active');
+}
+
+/* ────────────────────────────────────────────────
+   SCORING
+──────────────────────────────────────────────── */
+function computeScores(){
+  var catTotals = {};
+  CATEGORIES.forEach(function(c){ catTotals[c] = {raw:0, max:0}; });
+
+  var rawTotal = 0;
+  QUESTIONS.forEach(function(q, i){
+    var pts = answers[i] || 0;
+    rawTotal += pts;
+    catTotals[q.cat].raw += pts;
+    catTotals[q.cat].max += 3;
+  });
+
+  var overall = Math.round((rawTotal / (QUESTIONS.length * 3)) * 100);
+
+  var byCategory = CATEGORIES.map(function(c){
+    return { name: c, pct: Math.round((catTotals[c].raw / catTotals[c].max) * 100) };
+  });
+
+  return { overall: overall, byCategory: byCategory };
+}
+
+function getTier(score){
+  for (var i = 0; i < TIERS.length; i++) {
+    if (score >= TIERS[i].min && score <= TIERS[i].max) return TIERS[i];
+  }
+  return TIERS[0];
+}
+
+/* ────────────────────────────────────────────────
+   LEAD FORM SUBMIT
+──────────────────────────────────────────────── */
+var leadForm = document.getElementById('lead-form');
+leadForm.addEventListener('submit', function(e){
+  e.preventDefault();
+  var submitBtn = leadForm.querySelector('.submit-btn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Calculating…';
+
+  var fd = new FormData(leadForm);
+  var lead = {};
+  fd.forEach(function(val, key){ lead[key] = val; });
+
+  var scores = computeScores();
+  var tier = getTier(scores.overall);
+
+  var payload = Object.assign({}, lead, {
+    form_type: 'scorecard',
+    score: scores.overall,
+    tier: tier.name,
+    category_scores: scores.byCategory,
+    answers: QUESTIONS.map(function(q, i){ return { category: q.cat, question: q.q, points: answers[i] }; })
+  });
+
+  fetch('/api/scorecard', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: { 'Content-Type': 'application/json' }
+  })
+  .catch(function(err){ console.error('Scorecard submit error:', err); })
+  .finally(function(){
+    showResults(scores, tier);
+  });
+});
+
+/* ────────────────────────────────────────────────
+   RESULTS RENDER
+──────────────────────────────────────────────── */
+function showResults(scores, tier){
+  leadScreen.classList.remove('active');
+  resultScreen.classList.add('active');
+
+  document.getElementById('tier-badge').textContent = tier.name;
+  document.getElementById('tier-headline').textContent = tier.headline;
+  document.getElementById('tier-desc').textContent = tier.desc;
+
+  // Animate score ring
+  var circumference = 2 * Math.PI * 78;
+  var ringFill = document.getElementById('ring-fill');
+  ringFill.setAttribute('stroke-dasharray', circumference);
+  var offset = circumference - (scores.overall / 100) * circumference;
+  setTimeout(function(){ ringFill.style.strokeDashoffset = offset; }, 100);
+
+  // Animate number count-up
+  var numEl = document.getElementById('score-num');
+  var startTime = null;
+  var duration = 1000;
+  function tick(ts){
+    if (!startTime) startTime = ts;
+    var progress = Math.min((ts - startTime) / duration, 1);
+    numEl.textContent = Math.round(progress * scores.overall);
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  // Two lowest-scoring categories
+  var sorted = scores.byCategory.slice().sort(function(a, b){ return a.pct - b.pct; });
+  var weakest = sorted.slice(0, 2);
+  var gapHtml = weakest.map(function(c){
+    return '<div class="gap-card"><div class="gap-label">Biggest Gap</div><div class="gap-name">' + c.name + '</div>' +
+      '<div class="gap-bar-track"><div class="gap-bar-fill" style="width:' + c.pct + '%;"></div></div></div>';
+  }).join('');
+  document.getElementById('gap-cards').innerHTML = gapHtml;
+
+  // Full breakdown
+  var breakdownEl = document.getElementById('cat-breakdown');
+  var rowsHtml = scores.byCategory.map(function(c){
+    return '<div class="cat-row"><span class="cat-name">' + c.name + '</span>' +
+      '<div class="cat-track"><div class="cat-fill" style="width:0%;" data-pct="' + c.pct + '"></div></div>' +
+      '<span class="cat-pct">' + c.pct + '%</span></div>';
+  }).join('');
+  breakdownEl.innerHTML = '<h3 style="font-size:18px;margin-bottom:16px;">Full Breakdown</h3>' + rowsHtml;
+  setTimeout(function(){
+    breakdownEl.querySelectorAll('.cat-fill').forEach(function(el){
+      el.style.width = el.getAttribute('data-pct') + '%';
+    });
+  }, 100);
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
