@@ -12,6 +12,7 @@ CREATE TABLE scorecard_submissions (
   tier             TEXT,
   category_scores  JSONB,
   answers          JSONB,
+  notes            TEXT,
   created_at       TIMESTAMPTZ DEFAULT NOW()
 );
 

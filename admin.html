@@ -57,7 +57,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .dash-main { max-width: 1160px; margin: 0 auto; padding: 32px 24px; }
 
   /* Stats */
-  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+  .stats-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 28px; }
   .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; }
   .stat-card .sc-label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
   .stat-card .sc-num { font-size: 32px; font-weight: 800; color: var(--black); line-height: 1; }
@@ -91,6 +91,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .badge-contact { background: #F0FDF4; color: #166534; }
   .badge-highfit { background: var(--tint); color: var(--orange); }
   .badge-standard { background: #f5f4f1; color: #9a948a; }
+  .badge-scorecard { background: #EFF4EC; color: #3A6830; }
+
+  /* Scorecard detail */
+  .sc-score-row { display: flex; align-items: center; gap: 20px; padding: 16px 16px 12px; grid-column: 1 / -1; border-bottom: 1px solid var(--border); }
+  .sc-ring { position: relative; width: 72px; height: 72px; flex-shrink: 0; }
+  .sc-ring svg { transform: rotate(-90deg); }
+  .sc-ring .rnum { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; line-height: 1; }
+  .sc-ring .rof { font-size: 9px; font-weight: 700; color: var(--muted); letter-spacing: .04em; }
+  .sc-tier { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 99px; background: var(--black); color: #fff; }
+  .sc-cat-bars { grid-column: 1 / -1; padding: 12px 16px 16px; }
+  .sc-cat-bars .df-label { margin-bottom: 10px; }
+  .sc-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 13px; }
+  .sc-bar-row .scbr-name { flex: 0 0 160px; font-weight: 600; color: var(--text); }
+  .sc-bar-row .scbr-track { flex: 1; height: 7px; border-radius: 99px; background: #f0ede8; overflow: hidden; }
+  .sc-bar-row .scbr-fill { height: 100%; border-radius: 99px; background: #95AD7C; }
+  .sc-bar-row .scbr-pct { flex: 0 0 36px; text-align: right; font-size: 12px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
 
   /* Chevron */
   .chevron { display: inline-block; font-size: 11px; color: var(--muted); transition: transform .2s; }
@@ -124,8 +140,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--orange); border-radius: 50%; animation: spin .7s linear infinite; margin-right: 10px; vertical-align: middle; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
+  @media (max-width: 1080px) {
+    .stats-row { grid-template-columns: repeat(3, 1fr); }
+  }
   @media (max-width: 780px) {
     .stats-row { grid-template-columns: 1fr 1fr; }
+    .sc-bar-row .scbr-name { flex-basis: 110px; font-size: 12px; }
     .search-box input { width: 180px; }
     .detail-panel { grid-template-columns: 1fr; }
     .detail-field:last-of-type { border-bottom: 1px solid var(--border); }
@@ -189,6 +209,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="sc-label">High-Fit Leads</div>
         <div class="sc-num" id="stat-highfit">—</div>
       </div>
+      <div class="stat-card">
+        <div class="sc-label">Scorecards Taken</div>
+        <div class="sc-num" id="stat-scorecards">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-label">Avg Score</div>
+        <div class="sc-num" id="stat-avgscore">—</div>
+      </div>
     </div>
 
     <!-- Toolbar -->
@@ -197,6 +225,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button class="filter-tab active" data-filter="all">All</button>
         <button class="filter-tab" data-filter="audit">Audit Applications</button>
         <button class="filter-tab" data-filter="contact">Contact Messages</button>
+        <button class="filter-tab" data-filter="scorecard">Scorecards</button>
       </div>
       <div class="search-box">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
@@ -227,7 +256,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script>
-  var allData = [];
+  var allData = [];        // merged submissions + scorecards
   var activeFilter = 'all';
   var expandedId = null;
 
@@ -297,33 +326,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     document.getElementById('table-body').innerHTML =
       '<tr><td colspan="6" class="loading"><span class="spinner"></span>Loading…</td></tr>';
 
-    fetch('/api/submissions', { headers: { 'Authorization': 'Bearer ' + token } })
-      .then(function (res) {
-        if (res.status === 401) { clearToken(); showLogin(); throw new Error('unauth'); }
-        return res.json();
-      })
-      .then(function (data) {
-        allData = data;
-        renderStats();
-        renderTable();
-      })
-      .catch(function (err) {
-        if (err.message !== 'unauth') {
-          document.getElementById('table-body').innerHTML =
-            '<tr><td colspan="6" class="loading">Failed to load. <a href="#" onclick="document.getElementById(\'refresh-btn\').click()">Try again</a></td></tr>';
-        }
+    var headers = { 'Authorization': 'Bearer ' + token };
+
+    Promise.all([
+      fetch('/api/submissions',            { headers: headers }),
+      fetch('/api/scorecard-submissions',  { headers: headers }),
+    ])
+    .then(function (responses) {
+      if (responses[0].status === 401 || responses[1].status === 401) {
+        clearToken(); showLogin(); throw new Error('unauth');
+      }
+      return Promise.all(responses.map(function (r) { return r.json(); }));
+    })
+    .then(function (results) {
+      var submissions = results[0] || [];
+      var scorecards  = (results[1] || []).map(function (s) {
+        return Object.assign({}, s, { form_type: 'scorecard' });
       });
+      // merge and sort by date descending
+      allData = submissions.concat(scorecards).sort(function (a, b) {
+        return new Date(b.created_at) - new Date(a.created_at);
+      });
+      renderStats();
+      renderTable();
+    })
+    .catch(function (err) {
+      if (err.message !== 'unauth') {
+        document.getElementById('table-body').innerHTML =
+          '<tr><td colspan="6" class="loading">Failed to load. <a href="#" onclick="document.getElementById(\'refresh-btn\').click()">Try again</a></td></tr>';
+      }
+    });
   }
 
   // ── Stats ──────────────────────────────────────────────────────────────────
   function renderStats() {
-    var audits   = allData.filter(function (d) { return d.form_type === 'audit'; }).length;
-    var contacts = allData.filter(function (d) { return d.form_type === 'contact'; }).length;
-    var highFit  = allData.filter(function (d) { return d.lead_fit_tag === 'high_fit_ascension_ready'; }).length;
-    document.getElementById('stat-total').textContent    = allData.length;
-    document.getElementById('stat-audits').textContent   = audits;
-    document.getElementById('stat-contacts').textContent = contacts;
-    document.getElementById('stat-highfit').textContent  = highFit;
+    var audits      = allData.filter(function (d) { return d.form_type === 'audit'; }).length;
+    var contacts    = allData.filter(function (d) { return d.form_type === 'contact'; }).length;
+    var highFit     = allData.filter(function (d) { return d.lead_fit_tag === 'high_fit_ascension_ready'; }).length;
+    var scorecards  = allData.filter(function (d) { return d.form_type === 'scorecard'; });
+    var avgScore    = scorecards.length
+      ? Math.round(scorecards.reduce(function (sum, d) { return sum + (d.score || 0); }, 0) / scorecards.length)
+      : null;
+    document.getElementById('stat-total').textContent      = allData.length;
+    document.getElementById('stat-audits').textContent     = audits;
+    document.getElementById('stat-contacts').textContent   = contacts;
+    document.getElementById('stat-highfit').textContent    = highFit;
+    document.getElementById('stat-scorecards').textContent = scorecards.length;
+    document.getElementById('stat-avgscore').textContent   = avgScore !== null ? avgScore + '/100' : '—';
   }
 
   // ── Filter & search ────────────────────────────────────────────────────────
@@ -354,6 +403,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
   }
 
+  function scoreBadge(score) {
+    var color = score >= 70 ? '#3A6830' : score >= 40 ? '#92610A' : '#991B1B';
+    var bg    = score >= 70 ? '#EFF4EC'  : score >= 40 ? '#FFFBEB' : '#FEF2F2';
+    return '<span class="badge" style="background:' + bg + ';color:' + color + ';">' + score + '/100</span>';
+  }
+
   // ── Table ──────────────────────────────────────────────────────────────────
   function renderTable() {
     var rows = getFiltered();
@@ -373,16 +428,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       var isHighFit = r.lead_fit_tag === 'high_fit_ascension_ready';
       var open = expandedId === r.id;
 
-      var tagBadge = isHighFit
-        ? '<span class="badge badge-highfit">&#9889; High Fit</span>'
+      var isScorecard = r.form_type === 'scorecard';
+      var tagBadge = isScorecard
+        ? scoreBadge(r.score)
+        : isHighFit
+          ? '<span class="badge badge-highfit">&#9889; High Fit</span>'
+          : isAudit
+            ? '<span class="badge badge-standard">Standard</span>'
+            : '<span style="color:var(--muted);font-size:13px;">—</span>';
+
+      var typeBadge = isScorecard
+        ? '<span class="badge badge-scorecard">Scorecard</span>'
         : isAudit
-          ? '<span class="badge badge-standard">Standard</span>'
-          : '<span style="color:var(--muted);font-size:13px;">—</span>';
+          ? '<span class="badge badge-audit">Audit</span>'
+          : '<span class="badge badge-contact">Contact</span>';
 
       var row = '<tr class="data-row' + (open ? ' active' : '') + '" onclick="toggle(\'' + r.id + '\')">' +
         '<td><div style="font-weight:600;font-size:14px;">' + date + '</div>' +
             '<div style="font-size:12px;color:var(--muted);">' + time + '</div></td>' +
-        '<td><span class="badge ' + (isAudit ? 'badge-audit' : 'badge-contact') + '">' + (isAudit ? 'Audit' : 'Contact') + '</span></td>' +
+        '<td>' + typeBadge + '</td>' +
         '<td style="font-weight:600;">' + name + '</td>' +
         '<td style="color:var(--text);">' + esc(r.email || '—') + '</td>' +
         '<td>' + tagBadge + '</td>' +
@@ -394,6 +458,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
   function detailRow(r) {
+    if (r.form_type === 'scorecard') return scorecardDetailRow(r);
     var fields = [
       ['Business Name',    r.business_name],
       ['Email',            r.email],
@@ -434,6 +499,104 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       '<div class="detail-actions">' +
       (r.email ? '<a href="' + replyHref + '" class="action-btn primary">Reply via Email</a>' : '') +
       '</div></div></td></tr>';
+  }
+
+  function scorecardDetailRow(r) {
+    var cats = Array.isArray(r.category_scores) ? r.category_scores : [];
+    var circumference = 2 * Math.PI * 30;
+    var offset = circumference - ((r.score || 0) / 100) * circumference;
+
+    var ringHtml = '<div class="sc-score-row">' +
+      '<div class="sc-ring">' +
+        '<svg width="72" height="72" viewBox="0 0 72 72">' +
+          '<circle fill="none" stroke="#EAE4DD" stroke-width="7" cx="36" cy="36" r="30"></circle>' +
+          '<circle fill="none" stroke="#E16638" stroke-width="7" stroke-linecap="round"' +
+            ' cx="36" cy="36" r="30"' +
+            ' stroke-dasharray="' + circumference.toFixed(1) + '"' +
+            ' stroke-dashoffset="' + offset.toFixed(1) + '"></circle>' +
+        '</svg>' +
+        '<div class="rnum">' + (r.score || 0) + '<span class="rof">/100</span></div>' +
+      '</div>' +
+      '<div><div class="sc-tier">' + esc(r.tier || 'Unknown') + '</div></div>' +
+    '</div>';
+
+    var basicFields = [
+      ['Name',          r.name],
+      ['Email',         r.email],
+      ['Business Name', r.business_name],
+      ['Website',       r.website],
+      ['Budget',        r.budget],
+    ].filter(function (f) { return f[1]; });
+
+    var fieldCells = basicFields.map(function (f) {
+      return '<div class="detail-field"><div class="df-label">' + f[0] + '</div>' +
+             '<div class="df-value">' + esc(f[1]) + '</div></div>';
+    }).join('');
+
+    var barsHtml = '';
+    if (cats.length) {
+      barsHtml = '<div class="sc-cat-bars">' +
+        '<div class="df-label">Category Breakdown</div>' +
+        cats.map(function (c) {
+          return '<div class="sc-bar-row">' +
+            '<span class="scbr-name">' + esc(c.name) + '</span>' +
+            '<div class="scbr-track"><div class="scbr-fill" style="width:' + (c.pct || 0) + '%"></div></div>' +
+            '<span class="scbr-pct">' + (c.pct || 0) + '%</span>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+    }
+
+    var replyHref = r.email ? 'mailto:' + r.email +
+      '?subject=Your%20Growth%20Readiness%20Score%20%E2%80%94%20' + encodeURIComponent(r.tier || '') : '#';
+
+    var notesHtml = '<div class="notes-section">' +
+      '<div class="df-label">Team Notes</div>' +
+      '<textarea class="notes-textarea" id="notes-' + r.id + '" placeholder="Add a note about this prospect…">' + esc(r.notes || '') + '</textarea>' +
+      '<br><button class="notes-save-btn" onclick="saveScorecardNote(\'' + r.id + '\', event)">Save Note</button>' +
+      '<span class="notes-status" id="notes-status-' + r.id + '"></span>' +
+      '</div>';
+
+    return '<tr class="detail-tr"><td colspan="6">' +
+      '<div class="detail-panel">' +
+        ringHtml +
+        fieldCells +
+        barsHtml +
+        notesHtml +
+        '<div class="detail-actions">' +
+          (r.email ? '<a href="' + replyHref + '" class="action-btn primary">Reply via Email</a>' : '') +
+        '</div>' +
+      '</div></td></tr>';
+  }
+
+  function saveScorecardNote(id, e) {
+    e.stopPropagation();
+    var textarea = document.getElementById('notes-' + id);
+    var status   = document.getElementById('notes-status-' + id);
+    var btn      = e.target;
+    btn.disabled = true; btn.textContent = 'Saving…'; status.textContent = '';
+
+    fetch('/api/scorecard-note', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: id, note: textarea.value })
+    })
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      btn.disabled = false; btn.textContent = 'Save Note';
+      if (data.success) {
+        var row = allData.find(function (r) { return r.id === id; });
+        if (row) row.notes = textarea.value;
+        status.textContent = '✓ Saved'; status.style.color = '#166534';
+      } else {
+        status.textContent = 'Error saving'; status.style.color = '#991B1B';
+      }
+      setTimeout(function () { status.textContent = ''; }, 3000);
+    })
+    .catch(function () {
+      btn.disabled = false; btn.textContent = 'Save Note';
+      status.textContent = 'Error saving'; status.style.color = '#991B1B';
+    });
   }
 
   function saveNote(id, e) {
