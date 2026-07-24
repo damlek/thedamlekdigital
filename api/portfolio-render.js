@@ -1,5 +1,4 @@
 const { createClient } = require('@supabase/supabase-js');
-const { marked } = require('marked');
 
 function esc(str) {
   return String(str || '')
@@ -7,6 +6,10 @@ function esc(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function stripHtml(html) {
+  return String(html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 function notFoundPage() {
@@ -46,12 +49,12 @@ module.exports = async function handler(req, res) {
 
   const title = esc(item.title);
   const clientName = esc(item.client_name || '');
-  const description = esc(item.summary || String(item.content || '').slice(0, 160));
+  const description = esc(item.summary || stripHtml(item.content).slice(0, 160));
   const cover = item.cover_image_url || '';
   const services = Array.isArray(item.services) ? item.services : [];
   const gallery = Array.isArray(item.gallery_urls) ? item.gallery_urls : [];
   const results = Array.isArray(item.results) ? item.results : [];
-  const contentHtml = marked.parse(item.content || '');
+  const contentHtml = item.content || '';
 
   const resultsHtml = results.length ? `
     <div class="results-grid">

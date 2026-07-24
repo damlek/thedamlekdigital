@@ -1,5 +1,4 @@
 const { createClient } = require('@supabase/supabase-js');
-const { marked } = require('marked');
 
 function esc(str) {
   return String(str || '')
@@ -7,6 +6,10 @@ function esc(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function stripHtml(html) {
+  return String(html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 function notFoundPage() {
@@ -45,13 +48,13 @@ module.exports = async function handler(req, res) {
   }
 
   const title = esc(post.title);
-  const description = esc(post.excerpt || String(post.content || '').slice(0, 160));
+  const description = esc(post.excerpt || stripHtml(post.content).slice(0, 160));
   const cover = post.cover_image_url || '';
   const dateStr = new Date(post.published_at || post.created_at).toLocaleDateString('en-GB', {
     day: 'numeric', month: 'long', year: 'numeric',
   });
   const tags = Array.isArray(post.tags) ? post.tags : [];
-  const contentHtml = marked.parse(post.content || '');
+  const contentHtml = post.content || '';
 
   const html = `<!DOCTYPE html>
 <html lang="en">
