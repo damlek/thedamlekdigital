@@ -908,7 +908,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     document.getElementById('blog-table-body').innerHTML =
       '<tr><td colspan="4" class="loading"><span class="spinner"></span>Loading posts…</td></tr>';
 
-    fetch('/api/blog-posts', { headers: { 'Authorization': 'Bearer ' + getToken() } })
+    fetch('/api/blog', { headers: { 'Authorization': 'Bearer ' + getToken() } })
       .then(function (res) {
         if (res.status === 401) { clearToken(); showLogin(); throw new Error('unauth'); }
         return res.json();
@@ -1007,7 +1007,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var btn = this;
     btn.disabled = true; btn.textContent = 'Saving…';
 
-    fetch('/api/blog-save', {
+    fetch('/api/blog', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1041,8 +1041,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   function deleteBlogPost(id) {
     if (!confirm('Delete this post? This cannot be undone.')) return;
-    fetch('/api/blog-delete', {
-      method: 'POST',
+    fetch('/api/blog', {
+      method: 'DELETE',
       headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: id })
     })
@@ -1064,7 +1064,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     document.getElementById('portfolio-table-body').innerHTML =
       '<tr><td colspan="5" class="loading"><span class="spinner"></span>Loading items…</td></tr>';
 
-    fetch('/api/portfolio-items', { headers: { 'Authorization': 'Bearer ' + getToken() } })
+    fetch('/api/portfolio', { headers: { 'Authorization': 'Bearer ' + getToken() } })
       .then(function (res) {
         if (res.status === 401) { clearToken(); showLogin(); throw new Error('unauth'); }
         return res.json();
@@ -1200,7 +1200,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var btn = this;
     btn.disabled = true; btn.textContent = 'Saving…';
 
-    fetch('/api/portfolio-save', {
+    fetch('/api/portfolio', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1239,8 +1239,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   function deletePortfolioItem(id) {
     if (!confirm('Delete this portfolio item? This cannot be undone.')) return;
-    fetch('/api/portfolio-delete', {
-      method: 'POST',
+    fetch('/api/portfolio', {
+      method: 'DELETE',
       headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: id })
     })

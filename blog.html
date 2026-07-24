@@ -113,7 +113,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       .replace(/"/g, '&quot;');
   }
 
-  fetch('/api/blog-posts')
+  fetch('/api/blog')
     .then(function (res) { return res.json(); })
     .then(function (posts) {
       var grid = document.getElementById('post-grid');
