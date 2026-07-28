@@ -153,14 +153,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .apply-card .submit-btn{width:100%;margin-top:8px;padding:16px;font-size:16px;}
   .form-note{font-size:12.5px;color:#8c8578;text-align:center;margin-top:16px;}
 
-  .result-panel{display:none;text-align:center;padding:20px 0;}
-  .result-panel.show{display:block;}
-  .result-panel .ricon{font-size:40px;margin-bottom:14px;}
-  .result-panel h3{font-size:22px;margin-bottom:10px;}
-  .result-panel p{color:#3f3b35;font-size:15.5px;margin-bottom:10px;}
-  .result-panel .next-step{margin-top:18px;padding-top:18px;border-top:1px solid var(--border);}
-  .result-panel .next-step a{font-weight:700;color:var(--orange);border-bottom:2px solid var(--orange);}
-
   footer{background:var(--black);color:#cfcabf;padding:48px 0 28px;}
   footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
   footer .foot-logo .top{color:var(--white);}
@@ -518,15 +510,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <button type="submit" class="btn btn-primary submit-btn">Submit My Application</button>
           <p class="form-note">No pressure, no obligation — just a clear review of what may be affecting your growth.</p>
         </form>
-
-        <div id="result-panel" class="result-panel">
-          <div class="ricon">&#9989;</div>
-          <h3>Thank You For Applying.</h3>
-          <p>We'll review your submission and, if your business is a good fit, we'll send your audit within 48 hours.</p>
-          <div id="next-step" class="next-step" style="display:none;">
-            <p>Based on what you shared, you might also want a head start: many businesses that ask for implementation help end up using our <a href="7-day-ad-profit-leak-audit-landing-page.html">7-Day Ad Profit Leak Audit</a> or <a href="profitable-scale-sprint-landing-page.html">Profitable Scale Sprint</a> right after their audit lands.</p>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -542,8 +525,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script>
   var form = document.getElementById('audit-form');
-  var resultPanel = document.getElementById('result-panel');
-  var nextStep = document.getElementById('next-step');
   var submitBtn = form.querySelector('.submit-btn');
 
   form.addEventListener('submit', function(e){
@@ -577,9 +558,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     })
     .then(function(res){
       if (res.ok) {
-        form.style.display = 'none';
-        resultPanel.classList.add('show');
-        if (isHighFit) nextStep.style.display = 'block';
+        window.location.href = 'thank-you.html' + (isHighFit ? '?fit=1' : '');
       } else {
         return res.json().then(function(j){ throw new Error(j.error || 'Submission failed'); });
       }
