@@ -5,6 +5,7 @@ CREATE TABLE submissions (
   form_type      TEXT        NOT NULL,           -- 'contact' or 'audit'
   name           TEXT,
   email          TEXT,
+  phone          TEXT,
   business_name  TEXT,
   website        TEXT,
   what_you_sell  TEXT,

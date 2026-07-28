@@ -65,6 +65,7 @@ module.exports = async function handler(req, res) {
     form_type:      data.form_type,
     name:           data.name           || data.business_name || null,
     email:          data.email          || null,
+    phone:          data.phone          || null,
     business_name:  data.business_name  || null,
     website:        data.website        || null,
     what_you_sell:  data.what_you_sell  || null,
