@@ -182,6 +182,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .action-btn:hover { border-color: var(--black); background: var(--black); color: var(--white); }
   .action-btn.primary { background: var(--orange); border-color: var(--orange); color: var(--white); }
   .action-btn.primary:hover { opacity: .88; }
+  .action-btn.danger { color: #991B1B; border-color: var(--border); }
+  .action-btn.danger:hover { background: #991B1B; border-color: #991B1B; color: var(--white); }
 
   /* Notes */
   .notes-section { grid-column: 1 / -1; padding: 16px; border-top: 1px solid var(--border); }
@@ -818,6 +820,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       notesHtml +
       '<div class="detail-actions">' +
       (r.email ? '<a href="' + replyHref + '" class="action-btn primary">Reply via Email</a>' : '') +
+      '<button type="button" class="action-btn danger" onclick="deleteLead(\'' + r.id + '\', \'' + r.form_type + '\', event)">Delete Lead</button>' +
       '</div></div></td></tr>';
   }
 
@@ -885,6 +888,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         notesHtml +
         '<div class="detail-actions">' +
           (r.email ? '<a href="' + replyHref + '" class="action-btn primary">Reply via Email</a>' : '') +
+          '<button type="button" class="action-btn danger" onclick="deleteLead(\'' + r.id + '\', \'' + r.form_type + '\', event)">Delete Lead</button>' +
         '</div>' +
       '</div></td></tr>';
   }
@@ -964,6 +968,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function toggle(id) {
     expandedId = expandedId === id ? null : id;
     renderTable();
+  }
+
+  function deleteLead(id, formType, e) {
+    e.stopPropagation();
+    if (!confirm('Delete this lead? This cannot be undone.')) return;
+
+    var endpoint = formType === 'scorecard' ? '/api/scorecard-submissions' : '/api/submissions';
+
+    fetch(endpoint, {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: id })
+    })
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      if (data.success) {
+        allData = allData.filter(function (r) { return r.id !== id; });
+        expandedId = null;
+        renderStats();
+        renderTable();
+      } else {
+        alert(data.error || 'Failed to delete lead.');
+      }
+    })
+    .catch(function () { alert('Failed to delete lead.'); });
   }
 
   function esc(str) {

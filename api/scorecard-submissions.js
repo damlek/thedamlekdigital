@@ -2,11 +2,10 @@ const { createClient } = require('@supabase/supabase-js');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
   const auth = req.headers.authorization || '';
   const token = auth.replace('Bearer ', '');
@@ -20,12 +19,25 @@ module.exports = async function handler(req, res) {
     process.env.SUPABASE_SERVICE_KEY
   );
 
-  const { data, error } = await supabase
-    .from('scorecard_submissions')
-    .select('*')
-    .order('created_at', { ascending: false });
+  if (req.method === 'GET') {
+    const { data, error } = await supabase
+      .from('scorecard_submissions')
+      .select('*')
+      .order('created_at', { ascending: false });
 
-  if (error) return res.status(500).json({ error: error.message });
+    if (error) return res.status(500).json({ error: error.message });
 
-  return res.status(200).json(data);
+    return res.status(200).json(data);
+  }
+
+  if (req.method === 'DELETE') {
+    const { id } = req.body || {};
+    if (!id) return res.status(400).json({ error: 'Missing id' });
+
+    const { error } = await supabase.from('scorecard_submissions').delete().eq('id', id);
+    if (error) return res.status(500).json({ error: error.message });
+    return res.status(200).json({ success: true });
+  }
+
+  return res.status(405).json({ error: 'Method not allowed' });
 };
