@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MX5G8NK5');</script>
+<!-- End Google Tag Manager -->
+<title>ROAS Break-Even Calculator | thedamlek digital</title>
+<meta name="description" content="Free ROAS break-even calculator. Enter your CAC, AOV, and gross margin to instantly see if your ads are profitable — no signup required.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --orange:#E16638; --soft-orange:#FF9972; --sage:#95AD7C;
+    --black:#15130F; --white:#FFFFFF; --tint-orange:#FFF3EC; --tint-sage:#F3F6EF;
+    --border:#E7E2DC; --serif:'Playfair Display', serif; --sans:'DM Sans', sans-serif;
+    --green-text:#3A6830;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  body{font-family:var(--sans);color:var(--black);background:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  img{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+  h1,h2,h3{font-family:var(--serif);font-weight:800;line-height:1.15;letter-spacing:-0.01em;}
+  .eyebrow{font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);margin-bottom:14px;}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--sans);font-weight:700;font-size:14px;padding:11px 20px;border-radius:8px;border:2px solid var(--black);cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;white-space:nowrap;}
+  .btn-primary{background:var(--orange);border-color:var(--orange);color:var(--white);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 0 0 #00000022;}
+  .btn-outline{background:transparent;color:var(--black);}
+  .btn-outline:hover{background:var(--black);color:var(--white);}
+  .btn-lg{padding:16px 32px;font-size:16px;}
+  nav{display:flex;align-items:center;gap:20px;}
+  nav a{font-size:14px;font-weight:600;color:#3f3b35;}
+  nav a:hover{color:var(--orange);}
+
+  .page-hero{padding:56px 0 40px;text-align:center;background:linear-gradient(160deg,var(--white) 0%,var(--tint-orange) 100%);}
+  .page-hero h1{font-size:clamp(30px,4.6vw,46px);margin-bottom:14px;max-width:780px;margin-left:auto;margin-right:auto;}
+  .page-hero p{font-size:17px;color:#4a463f;max-width:580px;margin:0 auto;}
+
+  main{padding:48px 0 0;}
+  .calc-section{padding:0 0 72px;}
+  .calc-grid{display:grid;grid-template-columns:1fr;gap:20px;align-items:start;}
+
+  .calc-card,.result-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:28px 24px;}
+  .calc-card h2{font-size:20px;margin-bottom:20px;}
+
+  .field{margin-bottom:22px;}
+  .field:last-child{margin-bottom:0;}
+  .field label{display:block;font-size:14.5px;font-weight:700;margin-bottom:8px;}
+  .input-wrap{position:relative;}
+  .input-wrap .prefix,.input-wrap .suffix{position:absolute;top:0;bottom:0;display:flex;align-items:center;font-weight:700;color:#766f64;font-size:16px;pointer-events:none;}
+  .input-wrap .prefix{left:16px;}
+  .input-wrap .suffix{right:16px;}
+  .field input[type=number]{width:100%;font-family:var(--sans);font-size:16px;font-weight:700;color:var(--black);padding:13px 16px;border-radius:8px;border:1.5px solid var(--border);background:var(--white);transition:border-color .15s ease;}
+  .input-wrap .prefix ~ input{padding-left:30px;}
+  .input-wrap input.has-suffix{padding-right:38px;}
+  .field input:focus{outline:none;border-color:var(--orange);}
+  .field input.invalid{border-color:var(--orange);background:var(--tint-orange);}
+  .field-hint{font-size:13px;color:#766f64;margin-top:7px;line-height:1.5;}
+  .field-error{font-size:13px;font-weight:700;color:var(--orange);margin-top:6px;min-height:0;}
+
+  .ltv-toggle{display:inline-flex;align-items:center;gap:6px;background:none;border:none;font-family:var(--sans);font-weight:700;font-size:14px;color:var(--orange);cursor:pointer;padding:4px 0;margin-bottom:4px;}
+  .ltv-panel{margin-top:14px;padding-top:16px;border-top:1px solid var(--border);}
+
+  .result-card{min-height:100%;}
+  .result-empty{display:flex;align-items:center;justify-content:center;text-align:center;min-height:220px;color:#9a948a;font-size:15px;padding:20px;}
+  .verdict{border-radius:12px;padding:20px;margin-bottom:20px;}
+  .verdict.profit{background:var(--tint-sage);border:1.5px solid var(--sage);}
+  .verdict.loss{background:var(--tint-orange);border:1.5px solid var(--orange);}
+  .verdict h3{font-size:19px;margin-bottom:6px;}
+  .verdict.profit h3{color:var(--green-text);}
+  .verdict.loss h3{color:var(--orange);}
+  .verdict p{font-size:14px;color:#3f3b35;}
+
+  .result-stats{display:flex;flex-direction:column;gap:0;margin-bottom:20px;}
+  .stat{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);}
+  .stat:last-child{border-bottom:none;}
+  .stat-label{font-size:13.5px;font-weight:600;color:#5d584e;}
+  .stat-value{font-family:var(--serif);font-weight:800;font-size:22px;white-space:nowrap;}
+
+  .copy-link-btn{width:100%;font-size:14px;padding:12px 20px;}
+  .copy-link-btn.copied{background:var(--sage);border-color:var(--sage);color:var(--white);}
+
+  .cta-section{padding:0 0 88px;}
+  .cta-box{border-radius:20px;padding:40px 32px;text-align:center;max-width:760px;margin:0 auto;}
+  .cta-box.profit{background:var(--black);color:var(--white);}
+  .cta-box.loss{background:var(--orange);color:var(--white);}
+  .cta-box h2{font-size:clamp(24px,3.4vw,32px);margin-bottom:12px;color:var(--white);}
+  .cta-box p{font-size:16px;line-height:1.6;max-width:560px;margin:0 auto 26px;color:#f1ede6;}
+  .cta-box.profit .btn-primary{background:var(--orange);border-color:var(--orange);}
+  .cta-box.loss .btn-primary{background:var(--black);border-color:var(--black);}
+
+  .state-msg{text-align:center;padding:60px 20px;color:#9a948a;font-size:15px;}
+
+  footer{background:var(--black);color:#cfcabf;padding:40px 0 24px;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  footer .copy{font-size:13px;color:#8c8578;}
+
+  @media (min-width:860px){
+    .calc-grid{grid-template-columns:1.1fr 1fr;gap:28px;}
+    .result-card{position:sticky;top:96px;}
+  }
+  @media (max-width:600px){
+    nav{gap:12px;}
+    header .wrap{padding:12px 16px;}
+    .cta-box{padding:32px 22px;}
+  }
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MX5G8NK5"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<header>
+  <div class="wrap">
+    <a href="/"><img src="/logo.png" alt="thedamlek digital" style="height:52px;width:auto;"></a>
+    <nav>
+      <a href="/blog">Blog</a>
+      <a href="/growth-leak-audit" class="btn btn-primary">Free Growth Audit</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="wrap">
+    <div class="eyebrow" style="justify-content:center;display:flex;">// Free Tool</div>
+    <h1>Are Your Ads Actually Profitable?</h1>
+    <p>Enter three numbers and find your break-even ROAS in seconds — no email, no signup.</p>
+  </div>
+</div>
+
+<main>
+  <section class="calc-section">
+    <div class="wrap calc-grid">
+
+      <div class="calc-card">
+        <h2>Enter your numbers</h2>
+        <form id="roas-form" novalidate>
+
+          <div class="field">
+            <label for="cac">What you spend to win one customer</label>
+            <div class="input-wrap">
+              <span class="prefix">$</span>
+              <input type="number" id="cac" name="cac" inputmode="decimal" min="0" step="0.01" placeholder="45" aria-describedby="cac-hint cac-error">
+            </div>
+            <p class="field-hint" id="cac-hint">Your customer acquisition cost (CAC) — what you typically spend on ads/marketing, on average, to win one paying customer. Not sure? Take last month's ad spend and divide it by the number of new customers you got.</p>
+            <p class="field-error" id="cac-error" aria-live="polite"></p>
+          </div>
+
+          <div class="field">
+            <label for="aov">What a customer spends per order</label>
+            <div class="input-wrap">
+              <span class="prefix">$</span>
+              <input type="number" id="aov" name="aov" inputmode="decimal" min="0" step="0.01" placeholder="120" aria-describedby="aov-hint aov-error">
+            </div>
+            <p class="field-hint" id="aov-hint">Your average order value (AOV) — the average amount a customer spends in one purchase. Take total revenue for a period and divide by the number of orders.</p>
+            <p class="field-error" id="aov-error" aria-live="polite"></p>
+          </div>
+
+          <div class="field">
+            <label for="margin">What's left after direct costs</label>
+            <div class="input-wrap">
+              <input type="number" id="margin" name="margin" class="has-suffix" inputmode="decimal" min="0" max="100" step="0.1" placeholder="40" aria-describedby="margin-hint margin-error">
+              <span class="suffix">%</span>
+            </div>
+            <p class="field-hint" id="margin-hint">Your gross margin — what's left of each sale after the direct cost of delivering it (product cost, shipping, payment fees), but before marketing spend. Not your final profit margin.</p>
+            <p class="field-error" id="margin-error" aria-live="polite"></p>
+          </div>
+
+          <button type="button" class="ltv-toggle" id="ltv-toggle" aria-expanded="false" aria-controls="ltv-panel">+ Do customers buy from you more than once? (optional)</button>
+          <div class="ltv-panel" id="ltv-panel" hidden>
+            <div class="field">
+              <label for="purchases">Average purchases per customer</label>
+              <input type="number" id="purchases" name="purchases" inputmode="decimal" min="1" step="0.1" value="1" aria-describedby="purchases-hint purchases-error">
+              <p class="field-hint" id="purchases-hint">How many times a typical customer buys from you in total — not just their first order. Leave this at 1 if most customers only buy once. Factoring this in often changes the verdict, since repeat revenue can make a "losing" first sale profitable overall.</p>
+              <p class="field-error" id="purchases-error" aria-live="polite"></p>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="result-card">
+        <div class="result-empty" id="result-empty">
+          <p>Fill in the numbers on the left — your break-even ROAS will appear here instantly.</p>
+        </div>
+        <div id="result-body" hidden>
+          <div class="verdict" id="verdict">
+            <h3 id="verdict-headline"></h3>
+            <p id="verdict-body"></p>
+          </div>
+          <div class="result-stats">
+            <div class="stat">
+              <span class="stat-label">Break-even ROAS</span>
+              <span class="stat-value" id="stat-breakeven"></span>
+            </div>
+            <div class="stat">
+              <span class="stat-label" id="stat-current-label">Your current ROAS</span>
+              <span class="stat-value" id="stat-current"></span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Max you can spend per customer</span>
+              <span class="stat-value" id="stat-maxcac"></span>
+            </div>
+          </div>
+          <button type="button" class="btn btn-outline copy-link-btn" id="copy-link-btn">Copy shareable link</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="cta-section" id="cta-section" hidden>
+    <div class="wrap">
+      <div class="cta-box" id="cta-box">
+        <h2 id="cta-headline"></h2>
+        <p id="cta-body"></p>
+        <a href="/growth-leak-audit" class="btn btn-primary btn-lg" id="cta-btn"></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img src="/logo.png" alt="thedamlek digital" style="height:44px;width:auto;filter:brightness(0) invert(1);">
+    <span class="copy">&copy; 2026 thedamlek digital. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var cacEl = document.getElementById('cac');
+  var aovEl = document.getElementById('aov');
+  var marginEl = document.getElementById('margin');
+  var purchasesEl = document.getElementById('purchases');
+  var ltvToggle = document.getElementById('ltv-toggle');
+  var ltvPanel = document.getElementById('ltv-panel');
+  var ltvOn = false;
+
+  var resultEmpty = document.getElementById('result-empty');
+  var resultBody = document.getElementById('result-body');
+  var ctaSection = document.getElementById('cta-section');
+  var ctaBox = document.getElementById('cta-box');
+  var copyBtn = document.getElementById('copy-link-btn');
+
+  function setError(id, message){
+    var errEl = document.getElementById(id + '-error');
+    var inputEl = document.getElementById(id);
+    errEl.textContent = message || '';
+    if (message) {
+      inputEl.classList.add('invalid');
+      inputEl.setAttribute('aria-invalid', 'true');
+    } else {
+      inputEl.classList.remove('invalid');
+      inputEl.removeAttribute('aria-invalid');
+    }
+  }
+
+  function validatePositive(id, label, opts){
+    opts = opts || {};
+    var raw = document.getElementById(id).value;
+    if (raw === '' || raw === null) { setError(id, 'Enter ' + label + '.'); return null; }
+    var num = parseFloat(raw);
+    if (isNaN(num)) { setError(id, 'Enter a valid number.'); return null; }
+    if (num <= 0) { setError(id, label.charAt(0).toUpperCase() + label.slice(1) + ' must be greater than 0.'); return null; }
+    if (opts.max !== undefined && num > opts.max) { setError(id, label.charAt(0).toUpperCase() + label.slice(1) + ' must be ' + opts.max + ' or less.'); return null; }
+    setError(id, null);
+    return num;
+  }
+
+  function fmtMoney(n){
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function fmtROAS(n){
+    return n.toFixed(2) + 'x';
+  }
+
+  function calculate(){
+    var cac = validatePositive('cac', 'customer acquisition cost');
+    var aov = validatePositive('aov', 'average order value');
+    var margin = validatePositive('margin', 'gross margin', { max: 100 });
+    var purchases = 1;
+
+    if (ltvOn) {
+      purchases = validatePositive('purchases', 'average purchases per customer');
+      if (purchases === null) { showEmpty(); return; }
+    } else {
+      setError('purchases', null);
+    }
+
+    if (cac === null || aov === null || margin === null) { showEmpty(); return; }
+
+    var marginDecimal = margin / 100;
+    var effectiveAOV = aov * purchases;
+    var breakEvenROAS = 1 / marginDecimal;
+    var currentROAS = effectiveAOV / cac;
+    var maxCAC = effectiveAOV * marginDecimal;
+    var isProfitable = currentROAS >= breakEvenROAS;
+
+    document.getElementById('stat-breakeven').textContent = fmtROAS(breakEvenROAS);
+    document.getElementById('stat-current').textContent = fmtROAS(currentROAS);
+    document.getElementById('stat-current-label').textContent = purchases > 1 ? 'Your ROAS (repeat purchases factored in)' : 'Your current ROAS';
+    document.getElementById('stat-maxcac').textContent = fmtMoney(maxCAC);
+
+    var verdictEl = document.getElementById('verdict');
+    var headlineEl = document.getElementById('verdict-headline');
+    var bodyEl = document.getElementById('verdict-body');
+
+    if (isProfitable) {
+      var bufferPct = Math.round(((currentROAS - breakEvenROAS) / breakEvenROAS) * 100);
+      var buffer = maxCAC - cac;
+      verdictEl.className = 'verdict profit';
+      headlineEl.textContent = 'You’re profitable — ' + bufferPct + '% above break-even';
+      bodyEl.textContent = 'Every ad dollar you spend returns more than it costs. You have roughly ' + fmtMoney(buffer) + ' of buffer per customer before you’d start losing money.';
+
+      ctaBox.className = 'cta-box profit';
+      document.getElementById('cta-headline').textContent = 'You’re profitable. Let’s push it further.';
+      document.getElementById('cta-body').textContent = 'A Free Growth Leak Audit finds the specific places — offer, landing page, tracking, follow-up — where you’re leaving efficiency on the table, so the same ad spend returns even more.';
+      document.getElementById('cta-btn').textContent = 'Get My Free Growth Leak Audit';
+    } else {
+      var gapPct = Math.round(((breakEvenROAS - currentROAS) / breakEvenROAS) * 100);
+      var gap = cac - maxCAC;
+      verdictEl.className = 'verdict loss';
+      headlineEl.textContent = 'You’re losing money — ' + gapPct + '% below break-even';
+      bodyEl.textContent = 'Right now you need to close a ' + fmtMoney(gap) + ' gap per customer — by lowering CAC, raising AOV or margin, or improving conversion so CAC drops naturally.';
+
+      ctaBox.className = 'cta-box loss';
+      document.getElementById('cta-headline').textContent = 'Let’s close that gap before you spend another dollar.';
+      document.getElementById('cta-body').textContent = 'A Free Growth Leak Audit (48 hours, no cost) pinpoints exactly why your CAC is too high or your conversion is too low — and gives you 3–5 fixes to get back above break-even.';
+      document.getElementById('cta-btn').textContent = 'Claim My Free Growth Leak Audit';
+    }
+
+    resultEmpty.hidden = true;
+    resultBody.hidden = false;
+    ctaSection.hidden = false;
+  }
+
+  function showEmpty(){
+    resultEmpty.hidden = false;
+    resultBody.hidden = true;
+    ctaSection.hidden = true;
+  }
+
+  ltvToggle.addEventListener('click', function(){
+    ltvOn = ltvPanel.hidden;
+    ltvPanel.hidden = !ltvOn;
+    ltvToggle.setAttribute('aria-expanded', String(ltvOn));
+    ltvToggle.textContent = ltvOn ? '− Factoring in repeat purchases' : '+ Do customers buy from you more than once? (optional)';
+    calculate();
+  });
+
+  [cacEl, aovEl, marginEl, purchasesEl].forEach(function(el){
+    el.addEventListener('input', calculate);
+  });
+
+  document.getElementById('roas-form').addEventListener('submit', function(e){ e.preventDefault(); });
+
+  copyBtn.addEventListener('click', function(){
+    var params = new URLSearchParams();
+    if (cacEl.value) params.set('cac', cacEl.value);
+    if (aovEl.value) params.set('aov', aovEl.value);
+    if (marginEl.value) params.set('margin', marginEl.value);
+    if (ltvOn && purchasesEl.value) params.set('purchases', purchasesEl.value);
+    var url = location.origin + location.pathname + '?' + params.toString();
+
+    function markCopied(){
+      var original = 'Copy shareable link';
+      copyBtn.textContent = 'Copied!';
+      copyBtn.classList.add('copied');
+      setTimeout(function(){ copyBtn.textContent = original; copyBtn.classList.remove('copied'); }, 2000);
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(markCopied).catch(function(){ window.prompt('Copy this link:', url); });
+    } else {
+      window.prompt('Copy this link:', url);
+    }
+  });
+
+  // Prefill from shareable link
+  var qp = new URLSearchParams(location.search);
+  if (qp.has('cac')) cacEl.value = qp.get('cac');
+  if (qp.has('aov')) aovEl.value = qp.get('aov');
+  if (qp.has('margin')) marginEl.value = qp.get('margin');
+  if (qp.has('purchases')) {
+    purchasesEl.value = qp.get('purchases');
+    ltvOn = true;
+    ltvPanel.hidden = false;
+    ltvToggle.setAttribute('aria-expanded', 'true');
+    ltvToggle.textContent = '− Factoring in repeat purchases';
+  }
+  if (qp.has('cac') || qp.has('aov') || qp.has('margin')) calculate();
+})();
+</script>
+</body>
+</html>
