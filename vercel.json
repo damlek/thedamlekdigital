@@ -8,6 +8,7 @@
     { "source": "/blog",             "destination": "/blog.html" },
     { "source": "/blog/:slug",       "destination": "/api/blog-render?slug=:slug" },
     { "source": "/portfolio",        "destination": "/portfolio.html" },
-    { "source": "/portfolio/:slug",  "destination": "/api/portfolio-render?slug=:slug" }
+    { "source": "/portfolio/:slug",  "destination": "/api/portfolio-render?slug=:slug" },
+    { "source": "/sitemap.xml",      "destination": "/api/sitemap" }
   ]
 }
