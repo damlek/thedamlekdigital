@@ -95,11 +95,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .verdict.loss h3{color:var(--orange);}
   .verdict p{font-size:14px;color:#3f3b35;}
 
-  .result-stats{display:flex;flex-direction:column;gap:0;margin-bottom:20px;}
-  .stat{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);}
-  .stat:last-child{border-bottom:none;}
-  .stat-label{font-size:13.5px;font-weight:600;color:#5d584e;}
-  .stat-value{font-family:var(--serif);font-weight:800;font-size:22px;white-space:nowrap;}
+  .result-stats{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;margin-bottom:20px;padding-top:16px;border-top:1px solid var(--border);}
+  .stat{display:flex;flex-direction:column;gap:4px;padding-bottom:16px;}
+  .stat:nth-child(-n+2){border-bottom:1px solid var(--border);}
+  .stat-label{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;color:#8c8578;}
+  .stat-value{font-family:var(--serif);font-weight:800;font-size:23px;white-space:nowrap;}
 
   .result-actions{display:flex;gap:10px;}
   .result-actions .btn{flex:1;font-size:14px;padding:12px 16px;}
@@ -224,12 +224,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <span class="stat-value" id="stat-breakeven"></span>
             </div>
             <div class="stat">
-              <span class="stat-label" id="stat-current-label">Your current ROAS</span>
+              <span class="stat-label" id="stat-current-label">Your ROAS</span>
               <span class="stat-value" id="stat-current"></span>
             </div>
             <div class="stat">
-              <span class="stat-label">Max you can spend per customer</span>
+              <span class="stat-label">Max CAC you can afford</span>
               <span class="stat-value" id="stat-maxcac"></span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Break-even AOV</span>
+              <span class="stat-value" id="stat-breakeven-aov"></span>
             </div>
           </div>
           <div class="result-actions">
@@ -307,6 +311,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function fmtMoney(n){
     return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
+  function fmtMoneyRound(n){
+    return '$' + Math.round(n).toLocaleString('en-US');
+  }
   function fmtROAS(n){
     return n.toFixed(2) + 'x';
   }
@@ -331,12 +338,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var breakEvenROAS = 1 / marginDecimal;
     var currentROAS = effectiveAOV / cac;
     var maxCAC = effectiveAOV * marginDecimal;
+    var breakEvenAOV = cac / (marginDecimal * purchases);
     var isProfitable = currentROAS >= breakEvenROAS;
 
     document.getElementById('stat-breakeven').textContent = fmtROAS(breakEvenROAS);
     document.getElementById('stat-current').textContent = fmtROAS(currentROAS);
-    document.getElementById('stat-current-label').textContent = purchases > 1 ? 'Your ROAS (repeat purchases factored in)' : 'Your current ROAS';
+    document.getElementById('stat-current-label').textContent = purchases > 1 ? 'Your ROAS (LTV)' : 'Your ROAS';
     document.getElementById('stat-maxcac').textContent = fmtMoney(maxCAC);
+    document.getElementById('stat-breakeven-aov').textContent = fmtMoney(breakEvenAOV);
 
     var verdictEl = document.getElementById('verdict');
     var headlineEl = document.getElementById('verdict-headline');
@@ -347,27 +356,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       var buffer = maxCAC - cac;
       verdictEl.className = 'verdict profit';
       headlineEl.textContent = 'You’re profitable — ' + bufferPct + '% above break-even';
-      bodyEl.textContent = 'Every ad dollar you spend returns more than it costs. You have roughly ' + fmtMoney(buffer) + ' of buffer per customer before you’d start losing money.';
+      bodyEl.textContent = 'Every ad dollar you spend returns more than it costs. You’ve got room to raise CAC up to ' + fmtMoney(maxCAC) + ', or let AOV drop to ' + fmtMoney(breakEvenAOV) + ', before you’d start losing money.';
 
       ctaBox.className = 'cta-box profit';
-      document.getElementById('cta-headline').textContent = 'You’re profitable. Let’s push it further.';
-      document.getElementById('cta-body').textContent = 'A Free Growth Leak Audit finds the specific places — offer, landing page, tracking, follow-up — where you’re leaving efficiency on the table, so the same ad spend returns even more.';
+      document.getElementById('cta-headline').textContent = 'You’re ' + fmtMoneyRound(buffer) + ' ahead per customer. Let’s push it further.';
+      document.getElementById('cta-body').textContent = 'A Free Growth Leak Audit finds the specific places — offer, landing page, tracking, follow-up — where you can stretch that ' + fmtMoneyRound(buffer) + ' buffer even further, so the same ad spend returns even more.';
       document.getElementById('cta-btn').textContent = 'Get My Free Growth Leak Audit';
 
-      lastResult = { isProfitable: true, breakEvenROAS: breakEvenROAS, currentROAS: currentROAS, maxCAC: maxCAC, purchases: purchases, pct: bufferPct };
+      lastResult = { isProfitable: true, breakEvenROAS: breakEvenROAS, currentROAS: currentROAS, maxCAC: maxCAC, breakEvenAOV: breakEvenAOV, purchases: purchases, pct: bufferPct };
     } else {
       var gapPct = Math.round(((breakEvenROAS - currentROAS) / breakEvenROAS) * 100);
       var gap = cac - maxCAC;
       verdictEl.className = 'verdict loss';
       headlineEl.textContent = 'You’re losing money — ' + gapPct + '% below break-even';
-      bodyEl.textContent = 'Right now you need to close a ' + fmtMoney(gap) + ' gap per customer — by lowering CAC, raising AOV or margin, or improving conversion so CAC drops naturally.';
+      bodyEl.textContent = 'Right now you need to close a ' + fmtMoney(gap) + ' gap per customer. Get there by lowering CAC to ' + fmtMoney(maxCAC) + ', or raising AOV to at least ' + fmtMoney(breakEvenAOV) + ' — holding margin steady either way.';
 
       ctaBox.className = 'cta-box loss';
-      document.getElementById('cta-headline').textContent = 'Let’s close that gap before you spend another dollar.';
-      document.getElementById('cta-body').textContent = 'A Free Growth Leak Audit (48 hours, no cost) pinpoints exactly why your CAC is too high or your conversion is too low — and gives you 3–5 fixes to get back above break-even.';
+      document.getElementById('cta-headline').textContent = 'You’re ' + fmtMoneyRound(gap) + ' short per customer — let’s close that gap.';
+      document.getElementById('cta-body').textContent = 'A Free Growth Leak Audit (48 hours, no cost) shows you exactly how to close this ' + fmtMoneyRound(gap) + ' gap — by lowering CAC toward ' + fmtMoney(maxCAC) + ', raising AOV toward ' + fmtMoney(breakEvenAOV) + ', or both.';
       document.getElementById('cta-btn').textContent = 'Claim My Free Growth Leak Audit';
 
-      lastResult = { isProfitable: false, breakEvenROAS: breakEvenROAS, currentROAS: currentROAS, maxCAC: maxCAC, purchases: purchases, pct: gapPct };
+      lastResult = { isProfitable: false, breakEvenROAS: breakEvenROAS, currentROAS: currentROAS, maxCAC: maxCAC, breakEvenAOV: breakEvenAOV, purchases: purchases, pct: gapPct };
     }
 
     resultEmpty.hidden = true;
@@ -497,29 +506,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       var subline = result.pct + '% ' + (result.isProfitable ? 'above' : 'below') + ' break-even';
       ctx.fillText(subline, 80, headlineY + 66);
 
-      var statsY = headlineY + 210;
-      var cols = [
+      var gridTop = headlineY + 170;
+      var rowH = 140;
+      var cells = [
         { label: 'BREAK-EVEN ROAS', value: result.breakEvenROAS.toFixed(2) + 'x' },
         { label: result.purchases > 1 ? 'YOUR ROAS (LTV)' : 'YOUR ROAS', value: result.currentROAS.toFixed(2) + 'x' },
-        { label: 'MAX CAC', value: '$' + result.maxCAC.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }
+        { label: 'MAX CAC YOU CAN AFFORD', value: '$' + result.maxCAC.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) },
+        { label: 'BREAK-EVEN AOV', value: '$' + result.breakEvenAOV.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }
       ];
-      var colW = 920 / 3;
-      cols.forEach(function(col, i){
-        var x = 80 + colW * i;
-        if (i > 0) {
-          ctx.strokeStyle = '#2a2822';
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(x - 30, statsY - 44);
-          ctx.lineTo(x - 30, statsY + 20);
-          ctx.stroke();
-        }
+      ctx.strokeStyle = '#2a2822';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(80, gridTop + rowH - 20);
+      ctx.lineTo(1000, gridTop + rowH - 20);
+      ctx.moveTo(510, gridTop - 10);
+      ctx.lineTo(510, gridTop + rowH * 2 - 30);
+      ctx.stroke();
+      cells.forEach(function(cell, i){
+        var col = i % 2;
+        var row = Math.floor(i / 2);
+        var x = 80 + col * 460;
+        var y = gridTop + row * rowH;
         ctx.font = '700 20px "DM Sans"';
         ctx.fillStyle = '#8c8578';
-        ctx.fillText(col.label, x, statsY - 44);
+        ctx.fillText(cell.label, x, y);
         ctx.font = '800 50px "Playfair Display"';
         ctx.fillStyle = '#fff';
-        ctx.fillText(col.value, x, statsY + 16);
+        ctx.fillText(cell.value, x, y + 60);
       });
 
       var ctaH = 136;
