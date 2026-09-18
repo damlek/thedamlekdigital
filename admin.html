@@ -248,6 +248,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button class="nav-tab active" data-section="leads">Leads</button>
         <button class="nav-tab" data-section="blog">Blog</button>
         <button class="nav-tab" data-section="portfolio">Portfolio</button>
+        <button class="nav-tab" data-section="tools">Tools</button>
       </nav>
     </div>
     <div class="header-right">
@@ -366,6 +367,61 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </thead>
           <tbody id="portfolio-table-body">
             <tr><td colspan="5" class="loading"><span class="spinner"></span>Loading items…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ TOOLS SECTION ═══ -->
+    <div class="dash-section" id="section-tools">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="sc-label">Calculations</div>
+          <div class="sc-num" id="roas-total">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-label">Profitable</div>
+          <div class="sc-num" id="roas-profitable">—</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="sc-label">Losing Money</div>
+          <div class="sc-num" id="roas-losing">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-label">Median Break-Even</div>
+          <div class="sc-num" id="roas-median-be">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-label">Median Actual ROAS</div>
+          <div class="sc-num" id="roas-median-actual">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-label">Last 7 Days</div>
+          <div class="sc-num" id="roas-week">—</div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div style="font-weight:800;font-size:18px;">ROAS Calculator — Benchmarks by Business Type</div>
+        <button class="action-btn" id="roas-export-btn">Export CSV</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Business Type</th>
+              <th>Calcs</th>
+              <th>Median CAC</th>
+              <th>Median AOV</th>
+              <th>Median Margin</th>
+              <th>Median Break-Even ROAS</th>
+              <th>Median Actual ROAS</th>
+              <th>% Profitable</th>
+            </tr>
+          </thead>
+          <tbody id="roas-table-body">
+            <tr><td colspan="8" class="loading"><span class="spinner"></span>Loading benchmarks…</td></tr>
           </tbody>
         </table>
       </div>
@@ -544,7 +600,129 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       document.getElementById('section-' + activeSection).classList.add('active');
       if (activeSection === 'blog' && !blogLoaded) loadBlogPosts();
       if (activeSection === 'portfolio' && !portfolioLoaded) loadPortfolioItems();
+      if (activeSection === 'tools' && !roasLoaded) loadRoasBenchmarks();
     });
+  });
+
+  // ── ROAS calculator benchmarks ─────────────────────────────────────────────
+  var roasLoaded = false;
+  var roasData = [];
+
+  var ROAS_TYPE_LABELS = {
+    ecommerce: 'E-commerce',
+    local:     'Local business',
+    services:  'Services / Agency',
+    coaching:  'Coaching / Consulting',
+    other:     'Other'
+  };
+
+  function median(values) {
+    if (!values.length) return null;
+    var sorted = values.slice().sort(function (a, b) { return a - b; });
+    var mid = Math.floor(sorted.length / 2);
+    return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+  }
+
+  function medianOf(rows, key) {
+    return median(rows.map(function (r) { return Number(r[key]); })
+                      .filter(function (n) { return isFinite(n); }));
+  }
+
+  function money(n) {
+    return n === null ? '—' : '$' + n.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  }
+  function roas(n) {
+    return n === null ? '—' : n.toFixed(2) + 'x';
+  }
+  function pct(n) {
+    return n === null ? '—' : Math.round(n) + '%';
+  }
+
+  function loadRoasBenchmarks() {
+    var token = getToken();
+    if (!token) return;
+
+    document.getElementById('roas-table-body').innerHTML =
+      '<tr><td colspan="8" class="loading"><span class="spinner"></span>Loading benchmarks…</td></tr>';
+
+    fetch('/api/roas-benchmarks', { headers: { 'Authorization': 'Bearer ' + token } })
+      .then(function (res) {
+        if (!res.ok) throw new Error('bad');
+        return res.json();
+      })
+      .then(function (data) {
+        roasData = Array.isArray(data) ? data : [];
+        roasLoaded = true;
+        renderRoasBenchmarks();
+      })
+      .catch(function () {
+        document.getElementById('roas-table-body').innerHTML =
+          '<tr><td colspan="8" class="loading">Could not load benchmarks.</td></tr>';
+      });
+  }
+
+  function renderRoasBenchmarks() {
+    var total = roasData.length;
+    var profitable = roasData.filter(function (r) { return r.is_profitable; }).length;
+    var weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+
+    document.getElementById('roas-total').textContent = total;
+    document.getElementById('roas-profitable').textContent =
+      total ? profitable + ' (' + Math.round((profitable / total) * 100) + '%)' : '—';
+    document.getElementById('roas-losing').textContent =
+      total ? (total - profitable) + ' (' + Math.round(((total - profitable) / total) * 100) + '%)' : '—';
+    document.getElementById('roas-median-be').textContent = roas(medianOf(roasData, 'break_even_roas'));
+    document.getElementById('roas-median-actual').textContent = roas(medianOf(roasData, 'current_roas'));
+    document.getElementById('roas-week').textContent = roasData.filter(function (r) {
+      return new Date(r.created_at).getTime() >= weekAgo;
+    }).length;
+
+    var body = document.getElementById('roas-table-body');
+    if (!total) {
+      body.innerHTML = '<tr><td colspan="8" class="loading">No calculations logged yet.</td></tr>';
+      return;
+    }
+
+    var types = Object.keys(ROAS_TYPE_LABELS).filter(function (type) {
+      return roasData.some(function (r) { return r.business_type === type; });
+    });
+
+    body.innerHTML = types.map(function (type) {
+      var rows = roasData.filter(function (r) { return r.business_type === type; });
+      var typeProfitable = rows.filter(function (r) { return r.is_profitable; }).length;
+      return '<tr>' +
+        '<td><strong>' + ROAS_TYPE_LABELS[type] + '</strong></td>' +
+        '<td>' + rows.length + '</td>' +
+        '<td>' + money(medianOf(rows, 'cac')) + '</td>' +
+        '<td>' + money(medianOf(rows, 'aov')) + '</td>' +
+        '<td>' + pct(medianOf(rows, 'margin')) + '</td>' +
+        '<td>' + roas(medianOf(rows, 'break_even_roas')) + '</td>' +
+        '<td>' + roas(medianOf(rows, 'current_roas')) + '</td>' +
+        '<td>' + Math.round((typeProfitable / rows.length) * 100) + '%</td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  document.getElementById('roas-export-btn').addEventListener('click', function () {
+    if (!roasData.length) return;
+    var cols = ['created_at', 'business_type', 'cac', 'aov', 'margin', 'purchases',
+                'break_even_roas', 'current_roas', 'max_cac', 'break_even_aov',
+                'is_profitable', 'utm_source', 'referrer'];
+    var lines = [cols.join(',')].concat(roasData.map(function (row) {
+      return cols.map(function (col) {
+        var val = row[col] === null || row[col] === undefined ? '' : String(row[col]);
+        return /[",\n]/.test(val) ? '"' + val.replace(/"/g, '""') + '"' : val;
+      }).join(',');
+    }));
+    var blob = new Blob([lines.join('\n')], { type: 'text/csv' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'roas-calculations.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
   });
 
   function slugify(s) {
@@ -641,6 +819,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (activeSection === 'leads') { expandedId = null; loadSubmissions(t); }
     else if (activeSection === 'blog') { loadBlogPosts(); }
     else if (activeSection === 'portfolio') { loadPortfolioItems(); }
+    else if (activeSection === 'tools') { loadRoasBenchmarks(); }
   });
 
   // ── Load submissions ───────────────────────────────────────────────────────
