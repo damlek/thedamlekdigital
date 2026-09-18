@@ -14,14 +14,7 @@ function text(value, maxLength) {
   return typeof value === 'string' && value ? value.slice(0, maxLength) : null;
 }
 
-module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-
+async function handlePost(req, res, supabase) {
   const body = req.body || {};
 
   const businessType = BUSINESS_TYPES.indexOf(body.business_type) !== -1 ? body.business_type : null;
@@ -42,11 +35,6 @@ module.exports = async function handler(req, res) {
   const currentROAS   = effectiveAOV / cac;
   const maxCAC        = effectiveAOV * marginDecimal;
   const breakEvenAOV  = cac / (marginDecimal * purchases);
-
-  const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_KEY
-  );
 
   const { error } = await supabase.from('roas_calculations').insert([{
     business_type:   businessType,
@@ -69,4 +57,41 @@ module.exports = async function handler(req, res) {
   }
 
   return res.status(200).json({ success: true });
+}
+
+async function handleGet(req, res, supabase) {
+  const auth = req.headers.authorization || '';
+  const token = auth.replace('Bearer ', '');
+
+  if (!token || token !== process.env.ADMIN_PASSWORD) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const { data, error } = await supabase
+    .from('roas_calculations')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(5000);
+
+  if (error) return res.status(500).json({ error: error.message });
+
+  return res.status(200).json(data);
+}
+
+module.exports = async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+
+  if (req.method === 'OPTIONS') return res.status(200).end();
+
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_KEY
+  );
+
+  if (req.method === 'POST') return handlePost(req, res, supabase);
+  if (req.method === 'GET') return handleGet(req, res, supabase);
+
+  return res.status(405).json({ error: 'Method not allowed' });
 };

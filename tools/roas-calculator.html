@@ -354,7 +354,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     saveTimer = setTimeout(function(){
       if (suppressSave || alreadyLogged()) return;
       try { sessionStorage.setItem('tdm_roas_logged', '1'); } catch (e) { return; }
-      fetch('/api/roas-calc', {
+      fetch('/api/roas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

@@ -645,7 +645,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     document.getElementById('roas-table-body').innerHTML =
       '<tr><td colspan="8" class="loading"><span class="spinner"></span>Loading benchmarks…</td></tr>';
 
-    fetch('/api/roas-benchmarks', { headers: { 'Authorization': 'Bearer ' + token } })
+    fetch('/api/roas', { headers: { 'Authorization': 'Bearer ' + token } })
       .then(function (res) {
         if (!res.ok) throw new Error('bad');
         return res.json();
@@ -1079,10 +1079,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var btn      = e.target;
     btn.disabled = true; btn.textContent = 'Saving…'; status.textContent = '';
 
-    fetch('/api/scorecard-note', {
+    fetch('/api/notes', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: id, note: textarea.value })
+      body: JSON.stringify({ id: id, note: textarea.value, type: 'scorecard' })
     })
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -1113,13 +1113,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     btn.textContent = 'Saving…';
     status.textContent = '';
 
-    fetch('/api/update-note', {
+    fetch('/api/notes', {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + getToken(),
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ id: id, note: note })
+      body: JSON.stringify({ id: id, note: note, type: 'submission' })
     })
     .then(function (res) { return res.json(); })
     .then(function (data) {

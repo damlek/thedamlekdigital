@@ -1,5 +1,10 @@
 const { createClient } = require('@supabase/supabase-js');
 
+const TABLES = {
+  scorecard:   'scorecard_submissions',
+  submission:  'submissions',
+};
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -14,8 +19,9 @@ module.exports = async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const { id, note } = req.body || {};
-  if (!id) return res.status(400).json({ error: 'Missing id' });
+  const { id, note, type } = req.body || {};
+  const table = TABLES[type];
+  if (!id || !table) return res.status(400).json({ error: 'Missing id or invalid type' });
 
   const supabase = createClient(
     process.env.SUPABASE_URL,
@@ -23,7 +29,7 @@ module.exports = async function handler(req, res) {
   );
 
   const { error } = await supabase
-    .from('scorecard_submissions')
+    .from(table)
     .update({ notes: note || null })
     .eq('id', id);
 
