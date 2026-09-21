@@ -65,7 +65,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .calc-grid{display:grid;grid-template-columns:1fr;gap:20px;align-items:start;}
 
   .calc-card,.result-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:28px 24px;}
-  .calc-card h2{font-size:20px;margin-bottom:20px;}
+  .card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+  .calc-card h2{font-size:20px;margin-bottom:0;}
+  .currency-switch{display:inline-flex;background:var(--tint-orange);border:1.5px solid var(--border);border-radius:100px;padding:3px;gap:2px;}
+  .currency-opt{font-family:var(--sans);font-size:12.5px;font-weight:700;color:#766f64;background:transparent;border:none;border-radius:100px;padding:6px 13px;cursor:pointer;transition:background .15s ease,color .15s ease;}
+  .currency-opt:not(.active):hover{color:var(--black);}
+  .currency-opt.active{background:var(--orange);color:var(--white);}
 
   .field{margin-bottom:22px;}
   .field:last-child{margin-bottom:0;}
@@ -172,7 +177,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="wrap calc-grid">
 
       <div class="calc-card">
-        <h2>Enter your numbers</h2>
+        <div class="card-head">
+          <h2>Enter your numbers</h2>
+          <div class="currency-switch" role="group" aria-label="Currency">
+            <button type="button" class="currency-opt" data-currency="USD" aria-pressed="true">$ USD</button>
+            <button type="button" class="currency-opt" data-currency="NGN" aria-pressed="false">&#8358; NGN</button>
+          </div>
+        </div>
         <form id="roas-form" novalidate>
 
           <div class="field">
@@ -191,7 +202,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="field">
             <label for="cac">What you spend to win one customer</label>
             <div class="input-wrap">
-              <span class="prefix">$</span>
+              <span class="prefix" id="cac-prefix">$</span>
               <input type="number" id="cac" name="cac" inputmode="decimal" min="0" step="0.01" placeholder="45" aria-describedby="cac-hint cac-error">
             </div>
             <p class="field-hint" id="cac-hint">Your customer acquisition cost (CAC) — what you typically spend on ads/marketing, on average, to win one paying customer. Not sure? Take last month's ad spend and divide it by the number of new customers you got.</p>
@@ -201,7 +212,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="field">
             <label for="aov">What a customer spends per order</label>
             <div class="input-wrap">
-              <span class="prefix">$</span>
+              <span class="prefix" id="aov-prefix">$</span>
               <input type="number" id="aov" name="aov" inputmode="decimal" min="0" step="0.01" placeholder="120" aria-describedby="aov-hint aov-error">
             </div>
             <p class="field-hint" id="aov-hint">Your average order value (AOV) — the average amount a customer spends in one purchase. Take total revenue for a period and divide by the number of orders.</p>
@@ -371,11 +382,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     document.getElementById('business-type-error').textContent = message || '';
   }
 
+  // Labels only — the maths never touches currency. Break-even ROAS is a ratio,
+  // and every money figure is derived from whatever the visitor typed, so the
+  // same numbers are correct in either currency. Kobo is dropped for naira.
+  var CURRENCIES = {
+    USD: { symbol: '$',      unit: 'dollar', decimals: 2, cac: '45',    aov: '120'    },
+    NGN: { symbol: '₦', unit: 'naira',  decimals: 0, cac: '50000', aov: '150000' }
+  };
+  var currency = 'USD';
+
   function fmtMoney(n){
-    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    var c = CURRENCIES[currency];
+    return c.symbol + n.toLocaleString('en-US', {
+      minimumFractionDigits: c.decimals,
+      maximumFractionDigits: c.decimals
+    });
   }
   function fmtMoneyRound(n){
-    return '$' + Math.round(n).toLocaleString('en-US');
+    return CURRENCIES[currency].symbol + Math.round(n).toLocaleString('en-US');
+  }
+
+  function applyCurrencyLabels(){
+    var c = CURRENCIES[currency];
+    document.getElementById('cac-prefix').textContent = c.symbol;
+    document.getElementById('aov-prefix').textContent = c.symbol;
+    cacEl.placeholder = c.cac;
+    aovEl.placeholder = c.aov;
+    Array.prototype.forEach.call(document.querySelectorAll('.currency-opt'), function(btn){
+      var on = btn.getAttribute('data-currency') === currency;
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-pressed', String(on));
+    });
   }
   function fmtROAS(n){
     return n.toFixed(2) + 'x';
@@ -422,14 +459,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       var buffer = maxCAC - cac;
       verdictEl.className = 'verdict profit';
       headlineEl.textContent = 'You’re profitable — ' + bufferPct + '% above break-even';
-      bodyEl.textContent = 'Every ad dollar you spend returns more than it costs. You’ve got room to raise CAC up to ' + fmtMoney(maxCAC) + ', or let AOV drop to ' + fmtMoney(breakEvenAOV) + ', before you’d start losing money.';
+      bodyEl.textContent = 'Every ' + CURRENCIES[currency].unit + ' you put into ads returns more than it costs. You’ve got room to raise CAC up to ' + fmtMoney(maxCAC) + ', or let AOV drop to ' + fmtMoney(breakEvenAOV) + ', before you’d start losing money.';
 
       ctaBox.className = 'cta-box profit';
       document.getElementById('cta-headline').textContent = 'You’re ' + fmtMoneyRound(buffer) + ' ahead per customer. Let’s push it further.';
       document.getElementById('cta-body').textContent = 'A Free Growth Leak Audit finds the specific places — offer, landing page, tracking, follow-up — where you can stretch that ' + fmtMoneyRound(buffer) + ' buffer even further, so the same ad spend returns even more.';
       document.getElementById('cta-btn').textContent = 'Get My Free Growth Leak Audit';
 
-      lastResult = { isProfitable: true, breakEvenROAS: breakEvenROAS, currentROAS: currentROAS, maxCAC: maxCAC, breakEvenAOV: breakEvenAOV, purchases: purchases, pct: bufferPct };
+      lastResult = { isProfitable: true, breakEvenROAS: breakEvenROAS, currentROAS: currentROAS, maxCAC: maxCAC, breakEvenAOV: breakEvenAOV, purchases: purchases, pct: bufferPct, currency: currency };
     } else {
       var gapPct = Math.round(((breakEvenROAS - currentROAS) / breakEvenROAS) * 100);
       var gap = cac - maxCAC;
@@ -442,7 +479,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       document.getElementById('cta-body').textContent = 'A Free Growth Leak Audit (48 hours, no cost) shows you exactly how to close this ' + fmtMoneyRound(gap) + ' gap — by lowering CAC toward ' + fmtMoney(maxCAC) + ', raising AOV toward ' + fmtMoney(breakEvenAOV) + ', or both.';
       document.getElementById('cta-btn').textContent = 'Claim My Free Growth Leak Audit';
 
-      lastResult = { isProfitable: false, breakEvenROAS: breakEvenROAS, currentROAS: currentROAS, maxCAC: maxCAC, breakEvenAOV: breakEvenAOV, purchases: purchases, pct: gapPct };
+      lastResult = { isProfitable: false, breakEvenROAS: breakEvenROAS, currentROAS: currentROAS, maxCAC: maxCAC, breakEvenAOV: breakEvenAOV, purchases: purchases, pct: gapPct, currency: currency };
     }
 
     resultEmpty.hidden = true;
@@ -455,6 +492,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       aov: aov,
       margin: margin,
       purchases: purchases,
+      currency: currency,
       utm_source: utmSource,
       referrer: referrerHost
     });
@@ -483,11 +521,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     el.addEventListener('change', function(){ suppressSave = false; calculate(); });
   });
 
+  Array.prototype.forEach.call(document.querySelectorAll('.currency-opt'), function(btn){
+    btn.addEventListener('click', function(){
+      var next = btn.getAttribute('data-currency');
+      if (!CURRENCIES[next] || next === currency) return;
+      currency = next;
+      applyCurrencyLabels();
+      try { localStorage.setItem('tdm_currency', currency); } catch (e) {}
+      if (lastResult) calculate();
+    });
+  });
+
   document.getElementById('roas-form').addEventListener('submit', function(e){ e.preventDefault(); });
 
   copyBtn.addEventListener('click', function(){
     var params = new URLSearchParams();
     var businessType = getBusinessType();
+    params.set('cur', currency);
     if (businessType) params.set('type', businessType);
     if (cacEl.value) params.set('cac', cacEl.value);
     if (aovEl.value) params.set('aov', aovEl.value);
@@ -590,11 +640,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       var gridTop = headlineY + 170;
       var rowH = 140;
+      var cardSymbol = (CURRENCIES[result.currency] || CURRENCIES.USD).symbol;
       var cells = [
         { label: 'BREAK-EVEN ROAS', value: result.breakEvenROAS.toFixed(2) + 'x' },
         { label: result.purchases > 1 ? 'YOUR ROAS (LTV)' : 'YOUR ROAS', value: result.currentROAS.toFixed(2) + 'x' },
-        { label: 'MAX CAC YOU CAN AFFORD', value: '$' + result.maxCAC.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) },
-        { label: 'BREAK-EVEN AOV', value: '$' + result.breakEvenAOV.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }
+        { label: 'MAX CAC YOU CAN AFFORD', value: cardSymbol + result.maxCAC.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) },
+        { label: 'BREAK-EVEN AOV', value: cardSymbol + result.breakEvenAOV.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }
       ];
       ctx.strokeStyle = '#2a2822';
       ctx.lineWidth = 1;
@@ -662,6 +713,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       downloadBtn.textContent = originalText;
     });
   });
+
+  // Currency: an explicit choice in the link wins, then a remembered choice,
+  // then a Nigerian visitor gets naira without having to ask for it.
+  (function(){
+    var fromLink = pageParams.get('cur');
+    if (fromLink && CURRENCIES[fromLink]) { currency = fromLink; }
+    else {
+      var saved = null;
+      try { saved = localStorage.getItem('tdm_currency'); } catch (e) {}
+      if (saved && CURRENCIES[saved]) { currency = saved; }
+      else {
+        try {
+          if (Intl.DateTimeFormat().resolvedOptions().timeZone === 'Africa/Lagos') currency = 'NGN';
+        } catch (e) {}
+      }
+    }
+    applyCurrencyLabels();
+  })();
 
   // Prefill from shareable link
   if (pageParams.has('type')) {

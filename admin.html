@@ -628,8 +628,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                       .filter(function (n) { return isFinite(n); }));
   }
 
-  function money(n) {
-    return n === null ? '—' : '$' + n.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  var CURRENCY_SYMBOLS = { USD: '$', NGN: '₦' };
+
+  function money(n, cur) {
+    if (n === null) return '—';
+    return (CURRENCY_SYMBOLS[cur] || '$') + n.toLocaleString('en-US', { maximumFractionDigits: 0 });
   }
   function roas(n) {
     return n === null ? '—' : n.toFixed(2) + 'x';
@@ -683,29 +686,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       return;
     }
 
-    var types = Object.keys(ROAS_TYPE_LABELS).filter(function (type) {
-      return roasData.some(function (r) { return r.business_type === type; });
+    // Grouped by currency as well as business type — averaging naira figures
+    // against dollar figures would produce a meaningless median.
+    var groups = [];
+    Object.keys(ROAS_TYPE_LABELS).forEach(function (type) {
+      Object.keys(CURRENCY_SYMBOLS).forEach(function (cur) {
+        var rows = roasData.filter(function (r) {
+          return r.business_type === type && (r.currency || 'USD') === cur;
+        });
+        if (rows.length) groups.push({ type: type, currency: cur, rows: rows });
+      });
     });
 
-    body.innerHTML = types.map(function (type) {
-      var rows = roasData.filter(function (r) { return r.business_type === type; });
-      var typeProfitable = rows.filter(function (r) { return r.is_profitable; }).length;
+    body.innerHTML = groups.map(function (g) {
+      var rows = g.rows;
+      var groupProfitable = rows.filter(function (r) { return r.is_profitable; }).length;
       return '<tr>' +
-        '<td><strong>' + ROAS_TYPE_LABELS[type] + '</strong></td>' +
+        '<td><strong>' + ROAS_TYPE_LABELS[g.type] + '</strong> <span style="color:#9a948a;">· ' + g.currency + '</span></td>' +
         '<td>' + rows.length + '</td>' +
-        '<td>' + money(medianOf(rows, 'cac')) + '</td>' +
-        '<td>' + money(medianOf(rows, 'aov')) + '</td>' +
+        '<td>' + money(medianOf(rows, 'cac'), g.currency) + '</td>' +
+        '<td>' + money(medianOf(rows, 'aov'), g.currency) + '</td>' +
         '<td>' + pct(medianOf(rows, 'margin')) + '</td>' +
         '<td>' + roas(medianOf(rows, 'break_even_roas')) + '</td>' +
         '<td>' + roas(medianOf(rows, 'current_roas')) + '</td>' +
-        '<td>' + Math.round((typeProfitable / rows.length) * 100) + '%</td>' +
+        '<td>' + Math.round((groupProfitable / rows.length) * 100) + '%</td>' +
         '</tr>';
     }).join('');
   }
 
   document.getElementById('roas-export-btn').addEventListener('click', function () {
     if (!roasData.length) return;
-    var cols = ['created_at', 'business_type', 'cac', 'aov', 'margin', 'purchases',
+    var cols = ['created_at', 'business_type', 'currency', 'cac', 'aov', 'margin', 'purchases',
                 'break_even_roas', 'current_roas', 'max_cac', 'break_even_aov',
                 'is_profitable', 'utm_source', 'referrer'];
     var lines = [cols.join(',')].concat(roasData.map(function (row) {

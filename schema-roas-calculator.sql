@@ -7,6 +7,7 @@
 CREATE TABLE roas_calculations (
   id               UUID        DEFAULT gen_random_uuid() PRIMARY KEY,
   business_type    TEXT        NOT NULL,
+  currency         TEXT        NOT NULL DEFAULT 'USD',
   cac              NUMERIC     NOT NULL,
   aov              NUMERIC     NOT NULL,
   margin           NUMERIC     NOT NULL,
@@ -23,3 +24,9 @@ CREATE TABLE roas_calculations (
 
 CREATE INDEX idx_roas_created_at    ON roas_calculations (created_at DESC);
 CREATE INDEX idx_roas_business_type ON roas_calculations (business_type);
+
+-- ── Already created the table before the currency switcher? ──────────────────
+-- Run this one statement instead of the CREATE TABLE above. Existing rows were
+-- all entered in dollars, so the default backfills them correctly.
+--
+--   ALTER TABLE roas_calculations ADD COLUMN currency TEXT NOT NULL DEFAULT 'USD';

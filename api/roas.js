@@ -1,6 +1,7 @@
 const { createClient } = require('@supabase/supabase-js');
 
 const BUSINESS_TYPES = ['ecommerce', 'local', 'services', 'coaching', 'other'];
+const CURRENCIES = ['USD', 'NGN'];
 
 // Bounds keep obvious junk and spam out of the benchmark data. Real-but-odd
 // values still get through — filter those at query time, not on write.
@@ -22,6 +23,9 @@ async function handlePost(req, res, supabase) {
   const aov       = num(body.aov, 0.01, 1000000);
   const margin    = num(body.margin, 0.01, 100);
   const purchases = num(body.purchases === undefined ? 1 : body.purchases, 1, 1000);
+  // Currency is a unit label, not a conversion — it tells us which unit the
+  // stored figures are in so benchmarks never average naira against dollars.
+  const currency = CURRENCIES.indexOf(body.currency) !== -1 ? body.currency : 'USD';
 
   if (!businessType || cac === null || aov === null || margin === null || purchases === null) {
     return res.status(400).json({ error: 'Invalid calculation' });
@@ -38,6 +42,7 @@ async function handlePost(req, res, supabase) {
 
   const { error } = await supabase.from('roas_calculations').insert([{
     business_type:   businessType,
+    currency:        currency,
     cac:             cac,
     aov:             aov,
     margin:          margin,
