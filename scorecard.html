@@ -12,6 +12,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <title>Growth Readiness Scorecard | thedamlek digital</title>
 <meta name="description" content="Find out what is stopping your business from getting consistent leads and customers online. Take the free 5-minute Growth Readiness Scorecard from thedamlek digital.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="thedamlek digital">
+<meta property="og:title" content="Growth Readiness Scorecard — Are You Ready To Scale With Paid Ads?">
+<meta property="og:description" content="Answer 30 quick questions and get an instant score out of 100, your two biggest growth gaps, and a next step for every area of your marketing. Free, 5 minutes.">
+<meta property="og:url" content="https://thedamlekdigital.com/scorecard">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -62,17 +67,90 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .progress-track{height:8px;border-radius:99px;background:var(--tint-sage);overflow:hidden;}
   .progress-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--soft-orange));border-radius:99px;width:0%;transition:width .4s ease;}
 
-  /* Intro screen */
-  .intro-screen{text-align:center;padding:24px 0;}
-  .intro-screen h1{font-size:clamp(28px,4.5vw,42px);margin-bottom:18px;}
-  .intro-screen h1 em{font-style:normal;color:var(--orange);}
-  .intro-screen p{font-size:17px;color:#4a463f;max-width:560px;margin:0 auto 14px;}
-  .intro-stats{display:flex;justify-content:center;gap:28px;margin:28px 0;flex-wrap:wrap;}
-  .intro-stat{text-align:center;}
-  .intro-stat .num{font-family:var(--serif);font-weight:800;font-size:24px;color:var(--orange);}
-  .intro-stat .lab{font-size:12.5px;color:#766f64;font-weight:700;}
-  .intro-screen .btn{margin-top:10px;padding:17px 36px;font-size:16px;}
-  .intro-screen .microcopy{font-size:13px;color:#8c8578;margin-top:14px;}
+  /* ── Landing page ── */
+  .btn-lg{padding:18px 34px;font-size:16.5px;}
+  .header-cta{padding:11px 20px;font-size:14px;}
+  .landing{margin-top:-48px;}
+  .lp-hero{padding:72px 0 80px;background:linear-gradient(160deg,var(--white) 0%,var(--tint-orange) 100%);}
+  .lp-hero-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:center;}
+  .lp-hero h1{font-size:clamp(30px,4.4vw,48px);margin-bottom:20px;}
+  .lp-hero h1 em{font-style:normal;color:var(--orange);}
+  .lp-sub{font-size:18px;color:#3f3b35;margin-bottom:28px;max-width:540px;}
+  .lp-meta{list-style:none;display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:20px;font-size:14px;font-weight:700;color:#5d584e;}
+  .lp-meta li{display:flex;align-items:center;gap:7px;}
+
+  .lp-preview{position:relative;background:var(--white);border:1.5px solid var(--border);border-radius:18px;padding:26px;box-shadow:0 24px 48px -24px #15130F33;transform:rotate(1.2deg);}
+  .lpp-tag{position:absolute;top:-12px;left:22px;background:var(--black);color:var(--white);font-size:11px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;padding:5px 12px;border-radius:99px;}
+  .lpp-top{display:flex;align-items:center;gap:18px;margin-bottom:20px;}
+  .lpp-ring{position:relative;width:96px;height:96px;flex-shrink:0;}
+  .lpp-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:800;font-size:28px;}
+  .lpp-num span{font-family:var(--sans);font-size:11px;color:#766f64;margin-left:2px;margin-top:10px;}
+  .lpp-tier{display:inline-block;background:var(--black);color:var(--white);font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;padding:6px 12px;border-radius:99px;margin-bottom:8px;}
+  .lpp-gap{font-size:14px;color:#3f3b35;}
+  .lpp-bars{display:flex;flex-direction:column;gap:9px;margin-bottom:18px;}
+  .lpp-row{display:flex;align-items:center;gap:12px;font-size:12.5px;font-weight:700;}
+  .lpp-row span{flex:0 0 118px;}
+  .lpp-track{flex:1;height:7px;border-radius:99px;background:var(--tint-sage);overflow:hidden;}
+  .lpp-track div{height:100%;border-radius:99px;}
+  .lpp-next{font-size:13px;background:#f8f7f5;border-radius:8px;padding:10px 12px;color:#3f3b35;}
+  .lpp-next span{color:var(--orange);font-weight:800;}
+
+  .lp-section{padding:84px 0;}
+  .lp-tint{background:var(--tint-sage);}
+  .lp-dark{background:var(--black);color:#dedad1;}
+  .lp-dark h2,.lp-dark h3{color:var(--white);}
+  .lp-narrow{max-width:760px;}
+  .lp-intro{text-align:center;max-width:680px;margin:0 auto 44px;}
+  .lp-intro h2{font-size:clamp(26px,3.6vw,36px);margin-bottom:12px;}
+  .lp-intro p{font-size:17px;color:#4a463f;}
+  .lp-center{text-align:center;margin-top:44px;}
+
+  .lp-checks{list-style:none;display:flex;flex-direction:column;gap:12px;}
+  .lp-checks li{position:relative;background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:16px 18px 16px 52px;font-size:16px;font-weight:600;}
+  .lp-checks li::before{content:'';position:absolute;left:18px;top:50%;width:22px;height:22px;margin-top:-11px;border-radius:50%;background:var(--orange) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12l4 4 8-8' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat;}
+
+  .lp-cats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .lp-cat{border:1.5px solid var(--border);border-radius:14px;padding:24px;}
+  .lp-cat-num{font-family:var(--serif);font-weight:800;font-size:22px;color:var(--orange);margin-bottom:8px;}
+  .lp-cat h3{font-size:19px;margin-bottom:8px;}
+  .lp-cat p{font-size:15px;color:#4a463f;}
+
+  .lp-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .lp-step{background:#211e19;border:1.5px solid #2e2a24;border-radius:14px;padding:26px;}
+  .lp-step-num{width:40px;height:40px;border-radius:50%;background:var(--orange);color:var(--white);font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+  .lp-step h3{font-size:19px;margin-bottom:8px;}
+  .lp-step p{font-size:15px;color:#b5afa4;}
+
+  .lp-faq details{border-bottom:1.5px solid var(--border);padding:18px 0;}
+  .lp-faq summary{cursor:pointer;font-weight:800;font-size:16.5px;list-style:none;display:flex;justify-content:space-between;gap:16px;}
+  .lp-faq summary::-webkit-details-marker{display:none;}
+  .lp-faq summary::after{content:'+';color:var(--orange);font-size:22px;line-height:1;}
+  .lp-faq details[open] summary::after{content:'\2013';}
+  .lp-faq details p{margin-top:10px;color:#4a463f;font-size:15.5px;}
+
+  .lp-final{padding:80px 0;text-align:center;background:var(--tint-orange);}
+  .lp-final h2{font-size:clamp(26px,3.6vw,36px);margin-bottom:12px;}
+  .lp-final p{font-size:17px;color:#4a463f;margin-bottom:26px;}
+  .lp-final .lp-final-note{font-size:13.5px;font-weight:700;color:#766f64;margin:16px 0 0;}
+
+  .lp-sticky{display:none;}
+
+  @media (max-width:900px){
+    .lp-hero-grid{grid-template-columns:1fr;gap:44px;}
+    .lp-preview{transform:none;max-width:460px;}
+    .lp-cats,.lp-steps{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:600px){
+    .lp-hero{padding:44px 0 56px;}
+    .lp-sub{font-size:16.5px;}
+    .lp-hero .btn-lg{width:100%;white-space:normal;}
+    .lp-section{padding:60px 0;}
+    .lp-cats,.lp-steps{grid-template-columns:1fr;}
+    .header-cta{display:none;}
+    .lp-sticky{display:block;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(255,255,255,0.96);border-top:1px solid var(--border);transform:translateY(110%);transition:transform .25s ease;}
+    .lp-sticky.show{transform:translateY(0);}
+    .lp-sticky .btn{width:100%;}
+  }
 
   /* Question card */
   .q-card{display:none;}
@@ -200,26 +278,146 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a href="index.html">
       <img src="logo.png" alt="thedamlek digital" style="height:64px;width:auto;display:block;">
     </a>
-    <a href="index.html" class="btn btn-outline" style="padding:11px 20px;font-size:14px;">Back to Site</a>
+    <button type="button" class="btn btn-primary js-start header-cta" id="header-cta" data-loc="header">Take The Scorecard</button>
   </div>
 </header>
 
 <main>
-  <div class="quiz-shell">
+  <!-- ═══════════ LANDING ═══════════ -->
+  <div id="intro-screen" class="landing">
 
-    <!-- INTRO -->
-    <div id="intro-screen" class="intro-screen">
-      <div class="eyebrow" style="justify-content:center;">// FREE GROWTH READINESS SCORECARD</div>
-      <h1>Find Out What's Stopping Your Business From Getting <em>Consistent Leads</em> And Customers Online.</h1>
-      <p>Answer 30 quick questions about your offer, message, funnel, ads, and tracking. Get an instant score out of 100, see exactly where your growth system is leaking, and get specific next steps for every area.</p>
-      <div class="intro-stats">
-        <div class="intro-stat"><div class="num">5 min</div><div class="lab">To Complete</div></div>
-        <div class="intro-stat"><div class="num">6</div><div class="lab">Areas Reviewed</div></div>
-        <div class="intro-stat"><div class="num">100%</div><div class="lab">Free</div></div>
+    <!-- HERO -->
+    <section class="lp-hero">
+      <div class="wrap lp-hero-grid">
+        <div class="lp-hero-copy">
+          <div class="eyebrow">// Free Growth Readiness Scorecard</div>
+          <h1>Are You Ready To Scale With Paid Ads &mdash; Or Would More Spend Just <em>Amplify The Leaks?</em></h1>
+          <p class="lp-sub">Answer 30 quick questions and get an instant score out of 100, your two biggest growth gaps, and a specific next step for every area of your marketing.</p>
+          <button type="button" class="btn btn-primary btn-lg js-start" data-loc="hero">Start My Free Scorecard &rarr;</button>
+          <ul class="lp-meta">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#95AD7C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Takes about 5 minutes</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#95AD7C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>100% free, no card</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#95AD7C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Instant, personalised results</li>
+          </ul>
+        </div>
+
+        <!-- Sample result preview -->
+        <div class="lp-preview" aria-hidden="true">
+          <div class="lpp-tag">Sample result</div>
+          <div class="lpp-top">
+            <div class="lpp-ring">
+              <svg width="96" height="96" viewBox="0 0 96 96">
+                <circle cx="48" cy="48" r="40" fill="none" stroke="#F3F6EF" stroke-width="9"></circle>
+                <circle cx="48" cy="48" r="40" fill="none" stroke="#E16638" stroke-width="9" stroke-linecap="round" stroke-dasharray="251.3" stroke-dashoffset="125.7" transform="rotate(-90 48 48)"></circle>
+              </svg>
+              <div class="lpp-num">50<span>/100</span></div>
+            </div>
+            <div>
+              <div class="lpp-tier">Growth System Gap</div>
+              <div class="lpp-gap">Biggest gaps: <strong>Tracking</strong> &amp; <strong>Funnel</strong></div>
+            </div>
+          </div>
+          <div class="lpp-bars">
+            <div class="lpp-row"><span>Offer Strength</span><div class="lpp-track"><div style="width:67%;background:#95AD7C;"></div></div></div>
+            <div class="lpp-row"><span>Audience Clarity</span><div class="lpp-track"><div style="width:60%;background:#E0A526;"></div></div></div>
+            <div class="lpp-row"><span>Message Clarity</span><div class="lpp-track"><div style="width:53%;background:#E0A526;"></div></div></div>
+            <div class="lpp-row"><span>Funnel Readiness</span><div class="lpp-track"><div style="width:33%;background:#E16638;"></div></div></div>
+            <div class="lpp-row"><span>Paid Media</span><div class="lpp-track"><div style="width:47%;background:#E0A526;"></div></div></div>
+            <div class="lpp-row"><span>Tracking</span><div class="lpp-track"><div style="width:20%;background:#E16638;"></div></div></div>
+          </div>
+          <div class="lpp-next"><span>Do this next:</span> Install your Meta pixel and GA4 conversion events on the thank-you page&hellip;</div>
+        </div>
       </div>
-      <button class="btn btn-primary" id="start-btn">Start My Scorecard &rarr;</button>
-      <p class="microcopy">No credit card. No obligation. Instant results.</p>
+    </section>
+
+    <!-- WHO IT'S FOR -->
+    <section class="lp-section lp-tint">
+      <div class="wrap lp-narrow">
+        <div class="lp-intro">
+          <div class="eyebrow" style="justify-content:center;">Is This For You?</div>
+          <h2>Take The Scorecard If Any Of These Sound Familiar</h2>
+        </div>
+        <ul class="lp-checks">
+          <li>You're getting traffic or enquiries, but not enough of them turn into customers.</li>
+          <li>You've run ads before and couldn't tell what worked &mdash; or why it stopped.</li>
+          <li>Most of your sales come from referrals, and you want growth you can predict.</li>
+          <li>You're about to spend on ads and want to know you're ready first.</li>
+          <li>You know something is off in your marketing, but not which part to fix first.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- WHAT IT MEASURES -->
+    <section class="lp-section">
+      <div class="wrap">
+        <div class="lp-intro">
+          <div class="eyebrow" style="justify-content:center;">What We Measure</div>
+          <h2>The 6 Areas That Decide Whether Marketing Pays Off</h2>
+          <p>Most businesses don't have a traffic problem &mdash; they have a leak somewhere between the first click and the sale. The scorecard checks every stage.</p>
+        </div>
+        <div class="lp-cats">
+          <div class="lp-cat"><div class="lp-cat-num">01</div><h3>Offer Strength</h3><p>Is your offer clearly different, priced with confidence, and giving people a reason to act now?</p></div>
+          <div class="lp-cat"><div class="lp-cat-num">02</div><h3>Audience Clarity</h3><p>Do you know exactly who your best customers are, what they need, and where to find them?</p></div>
+          <div class="lp-cat"><div class="lp-cat-num">03</div><h3>Message Clarity</h3><p>Can a visitor tell what you do in 5 seconds &mdash; and why it matters to them?</p></div>
+          <div class="lp-cat"><div class="lp-cat-num">04</div><h3>Funnel Readiness</h3><p>Do leads land on a page built to convert, and get followed up fast enough to buy?</p></div>
+          <div class="lp-cat"><div class="lp-cat-num">05</div><h3>Paid Media Readiness</h3><p>Do you have the demand, targets, and testing budget that make ads profitable?</p></div>
+          <div class="lp-cat"><div class="lp-cat-num">06</div><h3>Tracking &amp; Measurement</h3><p>Can you see which channels bring leads and revenue &mdash; and spot problems quickly?</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT YOU GET + HOW IT WORKS -->
+    <section class="lp-section lp-dark">
+      <div class="wrap">
+        <div class="lp-intro">
+          <div class="eyebrow" style="justify-content:center;color:var(--soft-orange);">How It Works</div>
+          <h2>Three Steps. Five Minutes. A Clear Plan.</h2>
+        </div>
+        <div class="lp-steps">
+          <div class="lp-step"><div class="lp-step-num">1</div><h3>Answer 30 quick questions</h3><p>Multiple choice, no prep needed. Answer honestly &mdash; that's what makes the results useful.</p></div>
+          <div class="lp-step"><div class="lp-step-num">2</div><h3>Tell us your goals</h3><p>Five short questions about where you are and where you want to be in 90 days.</p></div>
+          <div class="lp-step"><div class="lp-step-num">3</div><h3>Get your score and plan</h3><p>Your score out of 100, your biggest gaps, and one specific next step for each of the 6 areas.</p></div>
+        </div>
+        <div class="lp-center">
+          <button type="button" class="btn btn-primary btn-lg js-start" data-loc="how-it-works">Get My Score &rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="lp-section">
+      <div class="wrap lp-narrow">
+        <div class="lp-intro">
+          <div class="eyebrow" style="justify-content:center;">Questions</div>
+          <h2>Before You Start</h2>
+        </div>
+        <div class="lp-faq">
+          <details><summary>Is it really free?</summary><p>Yes. No card, no trial, no catch. You get your full results on screen as soon as you finish.</p></details>
+          <details><summary>How long does it take?</summary><p>About 5 minutes: 30 multiple-choice questions, then 5 short questions about your goals.</p></details>
+          <details><summary>Do I need to be running ads already?</summary><p>No. The scorecard is just as useful before you spend on ads &mdash; it shows whether your offer, message, and funnel are ready for paid traffic.</p></details>
+          <details><summary>What do you do with my details?</summary><p>We use them to send your results and relevant follow-up from thedamlek digital. We never sell or share your information, and you can unsubscribe at any time.</p></details>
+          <details><summary>What happens after I get my score?</summary><p>You'll see your full breakdown and next steps straight away. If you'd like help putting them into action, you can book a free strategy session from your results page &mdash; there's no obligation.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="lp-final">
+      <div class="wrap lp-narrow">
+        <h2>Find Out Where Your Growth System Is Leaking</h2>
+        <p>Five minutes now could save you months of guessing &mdash; and a lot of wasted ad spend.</p>
+        <button type="button" class="btn btn-primary btn-lg js-start" data-loc="final">Start My Free Scorecard &rarr;</button>
+        <p class="lp-final-note">Free &middot; 5 minutes &middot; Instant results</p>
+      </div>
+    </section>
+
+    <!-- Sticky mobile CTA -->
+    <div class="lp-sticky" id="lp-sticky">
+      <button type="button" class="btn btn-primary js-start" data-loc="sticky">Start My Free Scorecard &rarr;</button>
     </div>
+  </div>
+
+  <div class="quiz-shell">
 
     <!-- QUESTIONS -->
     <div id="quiz-screen" style="display:none;">
@@ -678,11 +876,41 @@ var progressText  = document.getElementById('progress-text');
 var catLabel      = document.getElementById('cat-label');
 var backBtn       = document.getElementById('back-btn');
 
-document.getElementById('start-btn').addEventListener('click', function(){
+var quizStarted = false;
+function startQuiz(loc){
+  if (quizStarted) return;
+  quizStarted = true;
+  track('scorecard_start', { start_location: loc || 'unknown' });
   introScreen.style.display = 'none';
+  document.getElementById('header-cta').style.display = 'none';
   quizScreen.style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'instant' });
   renderQuestion(0);
+}
+
+document.querySelectorAll('.js-start').forEach(function(btn){
+  btn.addEventListener('click', function(){ startQuiz(btn.getAttribute('data-loc')); });
 });
+
+// Mobile: show the sticky CTA once the hero button has scrolled out of view.
+(function(){
+  var sticky = document.getElementById('lp-sticky');
+  var heroBtn = document.querySelector('.lp-hero .js-start');
+  var finalSec = document.querySelector('.lp-final');
+  if (!sticky || !heroBtn || !('IntersectionObserver' in window)) return;
+  var heroVisible = true, finalVisible = false;
+  function update(){ sticky.classList.toggle('show', !heroVisible && !finalVisible); }
+  new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.target === heroBtn) heroVisible = en.isIntersecting;
+      if (en.target === finalSec) finalVisible = en.isIntersecting;
+    });
+    update();
+  }).observe(heroBtn);
+  new IntersectionObserver(function(entries){
+    finalVisible = entries[0].isIntersecting; update();
+  }).observe(finalSec);
+})();
 
 backBtn.addEventListener('click', function(){
   if (current > 0) renderQuestion(current - 1);
@@ -824,6 +1052,7 @@ leadForm.addEventListener('submit', function(e){
 
   var scores = computeScores();
   var tier = getTier(scores.overall);
+  track('scorecard_lead', { scorecard_tier: tier.name, scorecard_score: scores.overall, budget: lead.budget || '' });
 
   var payload = Object.assign({}, lead, {
     form_type: 'scorecard',
