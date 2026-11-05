@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,800;0,900;1,800&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1080px; height: 1350px; overflow: hidden; background: #15130F; font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+  .ad { position: relative; width: 1080px; height: 1350px; padding: 80px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+  .glow { position: absolute; right: -260px; top: 300px; width: 760px; height: 760px; border-radius: 50%; background: radial-gradient(circle, rgba(225,102,56,0.28) 0%, rgba(225,102,56,0) 65%); }
+  .top { position: relative; display: flex; justify-content: space-between; align-items: center; }
+  .logo img { height: auto; width: 300px; filter: brightness(0) invert(1); }
+  .free { color: #FF9972; font-weight: 800; font-size: 20px; letter-spacing: 0.14em; text-transform: uppercase; border: 2px solid rgba(255,153,114,0.5); padding: 10px 20px; border-radius: 100px; }
+  .mid { position: relative; }
+  .kicker { color: #95AD7C; font-weight: 800; font-size: 24px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 30px; }
+  h1 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 96px; color: #fff; line-height: 1.04; letter-spacing: -0.02em; margin-bottom: 40px; }
+  h1 em { font-style: italic; color: #E16638; }
+  .body { font-size: 32px; color: #A8A19A; line-height: 1.5; max-width: 860px; }
+  .body b { color: #fff; font-weight: 700; }
+  .stats { position: relative; display: flex; gap: 0; border-top: 1px solid rgba(255,255,255,0.12); border-bottom: 1px solid rgba(255,255,255,0.12); margin-bottom: 56px; }
+  .stat { flex: 1; padding: 30px 0; }
+  .stat + .stat { padding-left: 36px; border-left: 1px solid rgba(255,255,255,0.12); }
+  .stat .n { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 64px; color: #fff; line-height: 1; }
+  .stat .n span { color: #E16638; }
+  .stat .l { font-size: 22px; color: #8a837c; margin-top: 10px; font-weight: 500; }
+  .bottom { position: relative; }
+  .cta { display: inline-block; background: #E16638; color: #fff; font-weight: 800; font-size: 32px; padding: 28px 52px; border-radius: 12px; }
+  .url { margin-top: 24px; font-size: 24px; color: #8a837c; font-weight: 500; }
+  .url b { color: #fff; }
+</style>
+</head>
+<body>
+<div class="ad">
+  <div class="glow"></div>
+  <div class="top">
+    <div class="logo"><img src="../../logo.png" alt="thedamlek digital"></div>
+    <div class="free">Free Scorecard</div>
+  </div>
+  <div class="mid">
+    <div class="kicker">Before you boost another post…</div>
+    <h1>More ad spend won't fix a <em>leaky</em> funnel. It just leaks faster.</h1>
+    <p class="body">Find out if your business is actually <b>ready to scale with paid ads</b> — before you spend another naira or dollar finding out the hard way.</p>
+  </div>
+  <div class="bottom">
+    <div class="stats">
+      <div class="stat"><div class="n">5<span>min</span></div><div class="l">to complete</div></div>
+      <div class="stat"><div class="n">6</div><div class="l">growth areas checked</div></div>
+      <div class="stat"><div class="n">/100</div><div class="l">instant score</div></div>
+    </div>
+    <div class="cta">Take the Growth Readiness Scorecard &rarr;</div>
+    <div class="url">Free at <b>thedamlekdigital.com/scorecard</b></div>
+  </div>
+</div>
+</body>
+</html>

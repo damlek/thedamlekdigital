@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,800;0,900;1,800&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1080px; height: 1350px; overflow: hidden; background: #FFF3EC; font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; color: #15130F; }
+  .ad { width: 1080px; height: 1350px; padding: 76px 80px; display: flex; flex-direction: column; justify-content: space-between; }
+  .logo img { height: auto; width: 270px; margin: -40px 0 -50px -30px; display: block; }
+  h1 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 80px; line-height: 1.04; letter-spacing: -0.02em; }
+  h1 em { font-style: italic; color: #E16638; }
+  .sub { font-size: 30px; color: #5d5750; line-height: 1.45; margin-top: 24px; max-width: 860px; }
+  .card { background: #fff; border: 1px solid #E7E2DC; border-radius: 28px; padding: 38px 48px; display: flex; gap: 48px; align-items: center; box-shadow: 0 24px 60px rgba(21,19,15,0.08); }
+  .gauge { position: relative; width: 260px; height: 260px; flex-shrink: 0; }
+  .gauge svg { width: 260px; height: 260px; transform: rotate(-90deg); }
+  .gauge .c { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .gauge .q { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 108px; line-height: 1; color: #E16638; }
+  .gauge .of { font-size: 26px; font-weight: 700; color: #8a837c; margin-top: 2px; }
+  .bars { flex: 1; display: flex; flex-direction: column; gap: 17px; }
+  .bar .lbl { display: flex; justify-content: space-between; font-size: 21px; font-weight: 700; margin-bottom: 7px; }
+  .bar .lbl span { color: #b5aea7; font-weight: 800; }
+  .track { height: 12px; border-radius: 6px; background: #F1ECE6; overflow: hidden; }
+  .fill { height: 100%; border-radius: 6px; }
+  .tiers { display: flex; gap: 12px; }
+  .tier { flex: 1; border-radius: 14px; padding: 18px 16px; background: #fff; border: 1px solid #E7E2DC; }
+  .tier .r { font-size: 18px; font-weight: 800; color: #8a837c; letter-spacing: 0.04em; }
+  .tier .t { font-size: 21px; font-weight: 800; margin-top: 4px; line-height: 1.2; }
+  .tier i { display: block; width: 28px; height: 6px; border-radius: 3px; margin-bottom: 12px; }
+  .foot { display: flex; align-items: center; justify-content: space-between; }
+  .cta { display: inline-block; background: #15130F; color: #fff; font-weight: 800; font-size: 30px; padding: 28px 48px; border-radius: 12px; }
+  .cta b { color: #FF9972; }
+  .meta { text-align: right; font-size: 22px; color: #5d5750; line-height: 1.5; font-weight: 500; }
+  .meta b { color: #15130F; }
+</style>
+</head>
+<body>
+<div class="ad">
+  <div class="logo"><img src="../../logo.png" alt="thedamlek digital"></div>
+  <div>
+    <h1>What's your <em>Growth Readiness</em> score?</h1>
+    <p class="sub">30 quick questions. One honest number that tells you whether your marketing is ready to scale — and exactly where it's leaking.</p>
+  </div>
+  <div class="card">
+    <div class="gauge">
+      <svg viewBox="0 0 120 120">
+        <circle cx="60" cy="60" r="52" fill="none" stroke="#F1ECE6" stroke-width="12"/>
+        <circle cx="60" cy="60" r="52" fill="none" stroke="#E16638" stroke-width="12" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="130" />
+      </svg>
+      <div class="c"><div class="q">?</div><div class="of">out of 100</div></div>
+    </div>
+    <div class="bars">
+      <div class="bar"><div class="lbl">Offer Strength<span>?</span></div><div class="track"><div class="fill" style="width:72%;background:#95AD7C"></div></div></div>
+      <div class="bar"><div class="lbl">Audience Clarity<span>?</span></div><div class="track"><div class="fill" style="width:58%;background:#FF9972"></div></div></div>
+      <div class="bar"><div class="lbl">Message Clarity<span>?</span></div><div class="track"><div class="fill" style="width:44%;background:#FF9972"></div></div></div>
+      <div class="bar"><div class="lbl">Funnel Readiness<span>?</span></div><div class="track"><div class="fill" style="width:26%;background:#E16638"></div></div></div>
+      <div class="bar"><div class="lbl">Paid Media Readiness<span>?</span></div><div class="track"><div class="fill" style="width:50%;background:#FF9972"></div></div></div>
+      <div class="bar"><div class="lbl">Tracking &amp; Measurement<span>?</span></div><div class="track"><div class="fill" style="width:18%;background:#E16638"></div></div></div>
+    </div>
+  </div>
+  <div class="tiers">
+    <div class="tier"><i style="background:#E16638"></i><div class="r">0–39</div><div class="t">Foundation Gap</div></div>
+    <div class="tier"><i style="background:#FF9972"></i><div class="r">40–69</div><div class="t">Growth System Gap</div></div>
+    <div class="tier"><i style="background:#95AD7C"></i><div class="r">70–84</div><div class="t">Scale Ready</div></div>
+    <div class="tier"><i style="background:#15130F"></i><div class="r">85–100</div><div class="t">Performance Optimization</div></div>
+  </div>
+  <div class="foot">
+    <div class="cta">Get my score <b>free</b> &rarr;</div>
+    <div class="meta">5 minutes · Instant results<br><b>thedamlekdigital.com/scorecard</b></div>
+  </div>
+</div>
+</body>
+</html>
