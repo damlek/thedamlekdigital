@@ -100,7 +100,7 @@ module.exports = async function handler(req, res) {
 
     await transporter.sendMail({
       from: `"thedamlek digital" <${process.env.GMAIL_USER}>`,
-      to: 'thedamlekdigital@gmail.com',
+      to: process.env.GMAIL_USER,
       subject,
       html: buildEmailHtml(data),
     });

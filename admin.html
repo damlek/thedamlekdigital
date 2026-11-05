@@ -1060,6 +1060,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       '</div>';
     }
 
+    var qual = (r.qualifiers && typeof r.qualifiers === 'object') ? r.qualifiers : {};
+    var qualLabels = {
+      current_situation: 'Current Situation',
+      goal_90_days:      '90-Day Goal',
+      main_obstacle:     'Main Obstacle',
+      help_preference:   'Help Preference',
+      anything_else:     'Anything Else'
+    };
+    fieldCells += Object.keys(qualLabels).filter(function (k) {
+      return qual[k] && qual[k].label;
+    }).map(function (k) {
+      return '<div class="detail-field"><div class="df-label">' + qualLabels[k] + '</div>' +
+             '<div class="df-value">' + esc(qual[k].label) + '</div></div>';
+    }).join('');
+
     var replyHref = r.email ? 'mailto:' + r.email +
       '?subject=Your%20Growth%20Readiness%20Score%20%E2%80%94%20' + encodeURIComponent(r.tier || '') : '#';
 

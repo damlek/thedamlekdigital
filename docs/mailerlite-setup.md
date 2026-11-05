@@ -121,3 +121,4 @@ Each automation should send **one email immediately** with their personalized ac
 
 - Replace `[book link]` in each email with your actual booking/contact link once you have one (currently the on-page CTA points to `index.html#contact`)
 - If `MAILERLITE_API_KEY` isn't set, the scorecard still works — it just skips the MailerLite sync (submission is still saved to Supabase and emailed to you internally)
+- Internal notification emails go to whatever `GMAIL_USER` is set to (currently `thedamlekdigital@gmail.com`; swap to a custom-domain address later without touching code)

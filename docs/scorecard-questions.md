@@ -238,3 +238,41 @@ Tier copy:
 
 **85–100 — Performance Optimization**
 "You already have a strong system. From here it's about deeper optimization to improve efficiency and scale further."
+
+---
+
+## "About You" qualifier questions (after Q30, before the lead form)
+
+Not scored. Saved to `scorecard_submissions.qualifiers` (JSONB, keyed by question) and shown in the admin panel and the internal notification email. They follow Daniel Priestley's "Big Five" pattern: current situation, desired outcome, obstacle, preferred solution, open question.
+
+| Key | Question | Options (value) |
+|---|---|---|
+| `current_situation` | Which best describes where your business is right now? | starting / referrals / stalled / growing |
+| `goal_90_days` | What's the #1 result you want in the next 90 days? | consistent_leads / double / profitable_ads / scale |
+| `main_obstacle` | What's the main thing stopping you from getting there? | clarity / time / trust / skills |
+| `help_preference` | Which kind of help would suit you best? | diy / dwy (done with you) / dfy (done for you) |
+| `anything_else` | Anything else we should know? | Free text, optional, max 1000 chars |
+
+**Hot lead flag:** the internal email subject starts with `🔥 HOT LEAD` when `help_preference` is dwy/dfy, budget is $3k+, and score is under 85.
+
+## Category insights
+
+Every category on the results page gets an insight card, weakest first, picked by the category's score band:
+- **Needs Work** — under 40%
+- **Getting There** — 40–69%
+- **Strength** — 70%+
+
+Each card shows a diagnosis, why it matters, the person's own weakest answer in that category, and one "Do this next" action. Copy lives in the `INSIGHTS` object in `scorecard.html`.
+
+## Results CTA logic
+
+| Tier | Default primary CTA | Override |
+|---|---|---|
+| Foundation Gap | Free Growth Leak Audit (secondary: book a call) | Wants dwy/dfy help + $3k+ budget → book a call |
+| Growth System Gap | Book a call, naming their 2 biggest gaps (secondary: audit) | Chose diy → audit first |
+| Scale Ready | Book a call about scaling (secondary: ROAS calculator) | — |
+| Performance Optimization | Book a call: "find your next 20%" (secondary: ROAS calculator) | — |
+
+Their 90-day goal is echoed above the button. "Book" buttons open the Calendly event in `BOOKING_URL` (top of the scorecard script) as an inline embed on the results page, with name, email and UTMs (`utm_source=scorecard`, `utm_content=<tier>`) pre-filled. If the Calendly script is blocked, the booking page opens in a new tab instead.
+
+**GTM dataLayer events:** `scorecard_cta_click` (`cta_type`: book / audit / roas, `cta_position`: primary / secondary), `call_time_selected`, `call_booked`. All carry `scorecard_tier` and `scorecard_score`. In GTM, create a Custom Event trigger on `call_booked` and fire your Meta pixel `Schedule` event and GA4 conversion from it.

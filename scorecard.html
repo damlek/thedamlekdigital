@@ -11,7 +11,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-MX5G8NK5');</script>
 <!-- End Google Tag Manager -->
 <title>Growth Readiness Scorecard | thedamlek digital</title>
-<meta name="description" content="Find out what is stopping your business from getting consistent leads and customers online. Take the free 2-minute Growth Readiness Scorecard from thedamlek digital.">
+<meta name="description" content="Find out what is stopping your business from getting consistent leads and customers online. Take the free 5-minute Growth Readiness Scorecard from thedamlek digital.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -138,12 +138,52 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .result-cta h3{color:var(--white);font-size:22px;margin-bottom:10px;}
   .result-cta p{color:#cfcabf;font-size:15px;margin-bottom:22px;max-width:480px;margin-left:auto;margin-right:auto;}
   .result-cta .btn-primary{padding:17px 32px;font-size:16px;}
+  .result-cta .cta-goal{display:inline-block;background:#2a2620;color:#f1ece4;font-size:13.5px;font-weight:600;border-radius:8px;padding:8px 14px;margin:0 auto 20px;}
+  .result-cta .cta-goal strong{color:var(--soft-orange);}
+  .result-cta .cta-secondary{display:block;margin-top:16px;font-size:14px;font-weight:700;color:#cfcabf;text-decoration:underline;text-underline-offset:3px;}
+  .result-cta .cta-secondary:hover{color:var(--white);}
+  .calendly-wrap{margin-top:26px;text-align:left;}
+  .calendly-inline{background:var(--white);border-radius:12px;overflow:hidden;min-width:280px;height:700px;}
+  .calendly-loading{display:flex;align-items:center;justify-content:center;height:100%;color:#766f64;font-weight:700;font-size:14px;}
+  .calendly-booked{background:var(--sage);color:var(--white);font-weight:800;font-size:15px;border-radius:10px;padding:12px 16px;margin-bottom:12px;text-align:center;}
+  .calendly-fallback{text-align:center;font-size:13px;color:#9a948a !important;margin:12px 0 0 !important;}
+  .calendly-fallback a{color:#cfcabf;text-decoration:underline;}
+
+  /* Qualifier (About You) questions */
+  .q-sub{font-size:15px;color:#5d584e;margin:-12px 0 20px;}
+  .q-text{width:100%;min-height:120px;padding:14px;border:1.5px solid var(--border);border-radius:12px;font-family:var(--sans);font-size:15px;resize:vertical;color:var(--black);}
+  .q-text:focus{outline:none;border-color:var(--orange);}
+  .q-text-actions{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:12px;}
+  .q-skip{font-size:14px;font-weight:700;color:#766f64;cursor:pointer;background:none;border:none;font-family:var(--sans);}
+  .q-skip:hover{color:var(--black);}
+
+  /* Category insight cards */
+  .insight-list{display:flex;flex-direction:column;gap:14px;}
+  .insight-card{border:1.5px solid var(--border);border-radius:14px;padding:20px 22px;background:var(--white);}
+  .insight-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;}
+  .insight-head .cat-name{font-weight:800;font-size:16px;}
+  .band-chip{flex-shrink:0;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;padding:5px 10px;border-radius:99px;}
+  .band-low{background:var(--tint-orange);color:#b9481f;}
+  .band-mid{background:#FFF8E6;color:#8a6410;}
+  .band-high{background:var(--tint-sage);color:#3A6830;}
+  .insight-bar{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+  .insight-bar .cat-track{flex:1;height:8px;border-radius:99px;background:var(--tint-sage);overflow:hidden;}
+  .insight-bar .cat-fill{height:100%;border-radius:99px;transition:width 1s ease;}
+  .insight-bar .cat-pct{flex:0 0 42px;text-align:right;font-size:13px;font-weight:700;color:#5d584e;}
+  .insight-card h4{font-family:var(--sans);font-size:15.5px;font-weight:800;margin-bottom:6px;}
+  .insight-card p{font-size:14.5px;color:#3f3b35;margin-bottom:10px;}
+  .insight-weak{font-size:13.5px;color:#5d584e;background:#f8f7f5;border-radius:8px;padding:10px 12px;margin-bottom:10px;}
+  .insight-weak strong{color:var(--black);}
+  .insight-next{font-size:14px;font-weight:600;color:var(--black);}
+  .insight-next span{color:var(--orange);font-weight:800;}
 
   @media (max-width:600px){
     .gap-cards{grid-template-columns:1fr;}
     .cat-row .cat-name{flex-basis:120px;font-size:13px;}
     .lead-card{padding:24px;}
     .result-cta{padding:28px 22px;}
+    .result-cta .btn-primary{white-space:normal;}
+    .calendly-inline{height:960px;}
   }
 
   @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
@@ -171,9 +211,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="intro-screen" class="intro-screen">
       <div class="eyebrow" style="justify-content:center;">// FREE GROWTH READINESS SCORECARD</div>
       <h1>Find Out What's Stopping Your Business From Getting <em>Consistent Leads</em> And Customers Online.</h1>
-      <p>Answer 30 quick questions about your offer, message, funnel, ads, and tracking. Get an instant score out of 100 and see exactly where your growth system is leaking.</p>
+      <p>Answer 30 quick questions about your offer, message, funnel, ads, and tracking. Get an instant score out of 100, see exactly where your growth system is leaking, and get specific next steps for every area.</p>
       <div class="intro-stats">
-        <div class="intro-stat"><div class="num">2 min</div><div class="lab">To Complete</div></div>
+        <div class="intro-stat"><div class="num">5 min</div><div class="lab">To Complete</div></div>
         <div class="intro-stat"><div class="num">6</div><div class="lab">Areas Reviewed</div></div>
         <div class="intro-stat"><div class="num">100%</div><div class="lab">Free</div></div>
       </div>
@@ -254,13 +294,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="gap-cards" id="gap-cards"></div>
 
       <div class="cat-breakdown" id="cat-breakdown">
-        <h3 style="font-size:18px;margin-bottom:16px;">Full Breakdown</h3>
+        <h3 style="font-size:18px;margin-bottom:16px;">Your Breakdown &amp; What To Do Next</h3>
       </div>
 
-      <div class="result-cta">
-        <h3>Want Help Fixing These Gaps?</h3>
-        <p>Book a free Growth Accelerator Strategy Session with thedamlek digital so we can review your score together and show you exactly what to fix first.</p>
-        <a href="index.html#contact" class="btn btn-primary">Book My Free Strategy Session</a>
+      <div class="result-cta" id="result-cta">
+        <h3 id="cta-title">Want Help Fixing These Gaps?</h3>
+        <p id="cta-desc">Book a free Growth Accelerator Strategy Session with thedamlek digital so we can review your score together and show you exactly what to fix first.</p>
+        <div class="cta-goal" id="cta-goal" style="display:none;"></div>
+        <div><a href="index.html#contact" class="btn btn-primary" id="cta-primary">Book My Free Strategy Session</a></div>
+        <a href="#" class="cta-secondary" id="cta-secondary" style="display:none;"></a>
+
+        <div class="calendly-wrap" id="calendly-wrap" style="display:none;">
+          <div class="calendly-booked" id="calendly-booked" style="display:none;">You're booked! Check your inbox for the calendar invite.</div>
+          <div class="calendly-inline" id="calendly-inline"><div class="calendly-loading">Loading calendar…</div></div>
+          <p class="calendly-fallback">Calendar not loading? <a href="https://calendly.com/thedamlekdigital/free-strategy-session" id="calendly-fallback-link" target="_blank" rel="noopener">Open it in a new tab</a></p>
+        </div>
       </div>
     </div>
 
@@ -457,10 +505,168 @@ var TIERS = [
 var CATEGORIES = ['Offer Strength','Audience Clarity','Message Clarity','Funnel Readiness','Paid Media Readiness','Tracking & Measurement'];
 
 /* ────────────────────────────────────────────────
+   CTA LINKS
+   BOOKING_URL: Calendly event link. "Book" buttons open it as an inline
+   embed on the results page (name + email pre-filled). If it's emptied,
+   they fall back to the contact form.
+──────────────────────────────────────────────── */
+var BOOKING_URL   = 'https://calendly.com/thedamlekdigital/free-strategy-session';
+var CONTACT_URL   = 'index.html#contact';
+var AUDIT_URL     = 'growth-leak-audit.html';
+var ROAS_CALC_URL = 'tools/roas-calculator.html';
+var CALENDLY_JS   = 'https://assets.calendly.com/assets/external/widget.js';
+
+var resultCtx = { score: null, tier: '', lead: {} };   // set when results render
+
+function tierSlug(){ return String(resultCtx.tier || '').toLowerCase().replace(/[^a-z0-9]+/g, '-'); }
+
+// Booking link with the lead's details + UTMs, for new-tab / no-JS use.
+function bookingUrl(){
+  if (!BOOKING_URL) return CONTACT_URL;
+  var params = {
+    name: resultCtx.lead.name || '',
+    email: resultCtx.lead.email || '',
+    utm_source: 'scorecard',
+    utm_medium: 'website',
+    utm_campaign: 'growth-readiness',
+    utm_content: tierSlug()
+  };
+  var qs = Object.keys(params).filter(function(k){ return params[k]; }).map(function(k){
+    return k + '=' + encodeURIComponent(params[k]);
+  }).join('&');
+  return BOOKING_URL + (qs ? '?' + qs : '');
+}
+
+function track(event, extra){
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push(Object.assign({
+    event: event,
+    scorecard_tier: resultCtx.tier,
+    scorecard_score: resultCtx.score
+  }, extra || {}));
+}
+
+/* ────────────────────────────────────────────────
+   QUALIFIER QUESTIONS ("About You") — not scored.
+   Asked after Q30, before the lead form. Used to
+   personalise the CTA and to prep sales calls.
+──────────────────────────────────────────────── */
+var QUALIFIERS = [
+  {key:'current_situation', q:"Which best describes where your business is right now?", opts:[
+    {l:"Just starting — few or no customers yet", v:'starting'},
+    {l:"Getting customers, but mostly from referrals and word of mouth", v:'referrals'},
+    {l:"Steady sales, but growth has stalled", v:'stalled'},
+    {l:"Growing fast and need a system that keeps up", v:'growing'}]},
+  {key:'goal_90_days', q:"What's the #1 result you want in the next 90 days?", opts:[
+    {l:"Get a consistent, predictable flow of leads", v:'consistent_leads'},
+    {l:"Double my monthly leads or sales", v:'double'},
+    {l:"Make my ads profitable or cut my cost per customer", v:'profitable_ads'},
+    {l:"Scale what's already working", v:'scale'}]},
+  {key:'main_obstacle', q:"What's the main thing stopping you from getting there?", opts:[
+    {l:"I don't know what to fix first", v:'clarity'},
+    {l:"I don't have the time to do it myself", v:'time'},
+    {l:"I've been burned by ads or agencies before", v:'trust'},
+    {l:"I don't have the right skills or team in-house", v:'skills'}]},
+  {key:'help_preference', q:"Which kind of help would suit you best?", opts:[
+    {l:"Show me what to do and I'll do it myself", v:'diy'},
+    {l:"Work alongside me and my team to fix it", v:'dwy'},
+    {l:"Do it for me — I want experts to handle it", v:'dfy'}]},
+  {key:'anything_else', type:'text', optional:true,
+    q:"Anything else we should know before we look at your results?",
+    sub:"Optional — a challenge, a deadline, something you've already tried."}
+];
+
+/* ────────────────────────────────────────────────
+   CATEGORY INSIGHTS
+   One per category per band: low (<40%), mid (40–69%), high (70%+).
+   title = diagnosis, body = why it matters, next = the one thing to do.
+──────────────────────────────────────────────── */
+var INSIGHTS = {
+  'Offer Strength': {
+    low:  {title:"Your offer is blending in with the competition.",
+           body:"When buyers can't see why you're different, they compare on price — and ads get expensive because nothing makes people stop scrolling.",
+           next:"Write down the one outcome you deliver better than anyone else, then ask 3 recent customers why they picked you. Use their exact words in your headline."},
+    mid:  {title:"Your offer has an edge, but it isn't sharp enough yet.",
+           body:"You're different in ways that matter, but prospects have to work to see it. A clearer promise and a real reason to act now usually lift conversion without any extra traffic.",
+           next:"Add one time-bound reason to act (a bonus, limited slots, or a launch price) and test it against your current offer."},
+    high: {title:"Your offer is a genuine strength.",
+           body:"You have a clear, differentiated offer that customers can describe. That's the hardest part of marketing — protect it and build everything else around it.",
+           next:"Turn your customers' reasons for choosing you into ad angles and test them head to head."}
+  },
+  'Audience Clarity': {
+    low:  {title:"You're marketing to everyone, so you're reaching no one.",
+           body:"Without a clearly defined ideal customer, your targeting, messaging, and ad spend get spread too thin to work.",
+           next:"Pick your 5 best customers ever. Write down what they have in common — industry, size, problem, trigger to buy. That's your first ideal customer profile."},
+    mid:  {title:"You know your audience, but not deeply enough yet.",
+           body:"You have a good general picture, but the strongest marketing uses customers' own words for their pain and their reasons to buy.",
+           next:"Run 3 short customer calls this month and note the exact phrases they use to describe the problem you solve."},
+    high: {title:"You know exactly who you serve.",
+           body:"A documented ideal customer and real insight into their pain points gives you sharper targeting and copy than most competitors.",
+           next:"Build lookalike or interest audiences from your best-fit customer list, not your whole list."}
+  },
+  'Message Clarity': {
+    low:  {title:"Visitors can't tell what you do quickly enough.",
+           body:"If your site needs scrolling or explaining before it makes sense, most visitors (and most ad clicks) leave before they understand the value.",
+           next:"Rewrite your homepage headline as: [Outcome] for [who] without [main frustration]. Test it on someone who doesn't know your business."},
+    mid:  {title:"Your message is mostly clear, but not consistent.",
+           body:"Key pages work, but the story shifts between your site, ads, and social — and objections like price, trust, and timing aren't handled up front.",
+           next:"List the top 3 objections you hear on sales calls and answer each one on your main landing page."},
+    high: {title:"Your messaging is clear and customer-focused.",
+           body:"People understand what you do and why it matters to them, across every channel. That makes every other part of your marketing cheaper.",
+           next:"A/B test headline variations in your ads — at this level, small wording changes can move cost per lead noticeably."}
+  },
+  'Funnel Readiness': {
+    low:  {title:"Leads are leaking out of your funnel.",
+           body:"Without a dedicated landing page and fast follow-up, you're paying to generate interest and then losing it. Most leads go cold within hours, not days.",
+           next:"Set up an instant, personal auto-reply for every enquiry, plus 3 follow-ups over 7 days. That alone often recovers lost sales."},
+    mid:  {title:"Your funnel works, but it isn't built to convert at scale.",
+           body:"The basics are there, but extra steps, competing calls-to-action, or patchy follow-up are costing you conversions you've already paid for.",
+           next:"Map every step from ad click to paying customer and remove one step or one distraction this week."},
+    high: {title:"Your funnel is in good shape.",
+           body:"You have a focused landing page, one clear call-to-action, and structured follow-up. That's what lets paid traffic turn into revenue.",
+           next:"Test one change at a time — form length, offer framing, or follow-up timing — and track the conversion rate at each step."}
+  },
+  'Paid Media Readiness': {
+    low:  {title:"Paid ads would likely burn money right now.",
+           body:"Without proven demand, a target cost per customer, and a testing budget, ads usually lose money with no clear lesson about why.",
+           next:"Work out what a customer is worth to you and the most you can pay to get one. Our free ROAS calculator does the maths for you."},
+    mid:  {title:"You're ready to test ads properly, but not to scale yet.",
+           body:"You have some proof and some budget, but without structured creative testing and clear targets, results will feel random.",
+           next:"Set a fixed testing budget and run 3–5 creative angles against one audience before increasing spend."},
+    high: {title:"You're ready for paid media.",
+           body:"You have demand, clear targets, and a testing habit. The opportunity now is campaign structure and scaling without cost per customer creeping up.",
+           next:"Scale winning ad sets in steps of 20–30% and keep a constant stream of new creative going into testing."}
+  },
+  'Tracking & Measurement': {
+    low:  {title:"You're making marketing decisions blind.",
+           body:"If you can't see which channel brings leads and sales, you can't tell what's working — and ad platforms can't optimise for you either.",
+           next:"Install your Meta pixel and Google Analytics conversion events on the thank-you page, then ask every new lead where they heard about you."},
+    mid:  {title:"You're tracking the basics, but gaps hide the real story.",
+           body:"Key actions are tracked, but without connecting revenue back to the source, you can't tell which campaigns actually make money.",
+           next:"Add UTM tags to every link you share and record lead source in your CRM or spreadsheet for every sale."},
+    high: {title:"Your tracking is a real advantage.",
+           body:"Full-funnel tracking and regular reviews mean you can spot problems in days, not months — and scale with confidence.",
+           next:"Review performance weekly against cost per customer and customer value, not just cost per click or cost per lead."}
+  }
+};
+
+function bandFor(pct){ return pct < 40 ? 'low' : (pct < 70 ? 'mid' : 'high'); }
+var BAND_LABEL = { low:'Needs Work', mid:'Getting There', high:'Strength' };
+var BAND_COLOR = { low:'var(--orange)', mid:'#E0A526', high:'var(--sage)' };
+
+function esc(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+
+/* ────────────────────────────────────────────────
    STATE & DOM
 ──────────────────────────────────────────────── */
 var current = 0;
 var answers = new Array(QUESTIONS.length).fill(null);
+var qualAnswers = {};   // key -> option value (or free text)
+var TOTAL_STEPS = QUESTIONS.length + QUALIFIERS.length;
 
 var introScreen   = document.getElementById('intro-screen');
 var quizScreen    = document.getElementById('quiz-screen');
@@ -482,13 +688,70 @@ backBtn.addEventListener('click', function(){
   if (current > 0) renderQuestion(current - 1);
 });
 
+function nextStep(idx){
+  setTimeout(function(){
+    if (idx < TOTAL_STEPS - 1) {
+      renderQuestion(idx + 1);
+    } else {
+      progressFill.style.width = '100%';
+      showLeadScreen();
+    }
+  }, 280);
+}
+
+function renderQualifier(idx){
+  var data = QUALIFIERS[idx - QUESTIONS.length];
+  catLabel.textContent = 'About You';
+
+  if (data.type === 'text') {
+    mount.innerHTML = '<div class="q-card active"><h2>' + esc(data.q) + '</h2>' +
+      (data.sub ? '<p class="q-sub">' + esc(data.sub) + '</p>' : '') +
+      '<textarea class="q-text" id="q-text" maxlength="1000" placeholder="Type here…">' + esc(qualAnswers[data.key] || '') + '</textarea>' +
+      '<div class="q-text-actions">' +
+        (data.optional ? '<button type="button" class="q-skip" id="q-skip">Skip</button>' : '<span></span>') +
+        '<button type="button" class="btn btn-primary" id="q-continue">Continue &rarr;</button>' +
+      '</div></div>';
+    var ta = document.getElementById('q-text');
+    document.getElementById('q-continue').addEventListener('click', function(){
+      qualAnswers[data.key] = ta.value.trim();
+      nextStep(idx);
+    });
+    var skip = document.getElementById('q-skip');
+    if (skip) skip.addEventListener('click', function(){
+      qualAnswers[data.key] = '';
+      nextStep(idx);
+    });
+    return;
+  }
+
+  var letters = ['A','B','C','D'];
+  var optsHtml = data.opts.map(function(o, i){
+    var selected = qualAnswers[data.key] === o.v ? ' selected' : '';
+    return '<button type="button" class="opt' + selected + '" data-v="' + o.v + '">' +
+      '<span class="opt-letter">' + letters[i] + '</span><span>' + esc(o.l) + '</span></button>';
+  }).join('');
+  mount.innerHTML = '<div class="q-card active"><h2>' + esc(data.q) + '</h2><div class="opt-list">' + optsHtml + '</div></div>';
+
+  mount.querySelectorAll('.opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      qualAnswers[data.key] = btn.getAttribute('data-v');
+      mount.querySelectorAll('.opt').forEach(function(b){ b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      nextStep(idx);
+    });
+  });
+}
+
 function renderQuestion(idx){
   current = idx;
+  progressText.textContent = 'Question ' + (idx + 1) + ' of ' + TOTAL_STEPS;
+  progressFill.style.width = Math.round((idx / TOTAL_STEPS) * 100) + '%';
+  backBtn.classList.toggle('hidden', idx === 0);
+
+  if (idx >= QUESTIONS.length) return renderQualifier(idx);
+
   var data = QUESTIONS[idx];
   catLabel.textContent = data.cat;
-  progressText.textContent = 'Question ' + (idx + 1) + ' of ' + QUESTIONS.length;
-  progressFill.style.width = Math.round(((idx) / QUESTIONS.length) * 100) + '%';
-  backBtn.classList.toggle('hidden', idx === 0);
 
   var optsHtml = data.opts.map(function(o, i){
     var letters = ['A','B','C','D'];
@@ -504,14 +767,7 @@ function renderQuestion(idx){
       answers[idx] = parseInt(btn.getAttribute('data-pts'), 10);
       mount.querySelectorAll('.opt').forEach(function(b){ b.classList.remove('selected'); });
       btn.classList.add('selected');
-      setTimeout(function(){
-        if (idx < QUESTIONS.length - 1) {
-          renderQuestion(idx + 1);
-        } else {
-          progressFill.style.width = '100%';
-          showLeadScreen();
-        }
-      }, 280);
+      nextStep(idx);
     });
   });
 }
@@ -574,7 +830,8 @@ leadForm.addEventListener('submit', function(e){
     score: scores.overall,
     tier: tier.name,
     category_scores: scores.byCategory,
-    answers: QUESTIONS.map(function(q, i){ return { category: q.cat, question: q.q, points: answers[i] }; })
+    answers: QUESTIONS.map(function(q, i){ return { category: q.cat, question: q.q, points: answers[i] }; }),
+    qualifiers: buildQualifierPayload()
   });
 
   fetch('/api/scorecard', {
@@ -584,14 +841,212 @@ leadForm.addEventListener('submit', function(e){
   })
   .catch(function(err){ console.error('Scorecard submit error:', err); })
   .finally(function(){
-    showResults(scores, tier);
+    showResults(scores, tier, lead);
   });
 });
+
+function qualifierLabel(key){
+  var q = QUALIFIERS.filter(function(x){ return x.key === key; })[0];
+  var v = qualAnswers[key];
+  if (!q || !v) return '';
+  if (q.type === 'text') return v;
+  var o = q.opts.filter(function(x){ return x.v === v; })[0];
+  return o ? o.l : '';
+}
+
+function buildQualifierPayload(){
+  var out = {};
+  QUALIFIERS.forEach(function(q){
+    var v = qualAnswers[q.key];
+    if (!v) return;
+    out[q.key] = { question: q.q, value: v, label: qualifierLabel(q.key) };
+  });
+  return out;
+}
+
+/* ────────────────────────────────────────────────
+   CTA — picked by tier, then adjusted by the
+   lead's help preference and budget.
+──────────────────────────────────────────────── */
+function getCta(score, tier, weakest, lead){
+  var help = qualAnswers.help_preference;
+  var bigBudget = lead.budget === '3kto10k' || lead.budget === 'over10k';
+  var wantsHelp = help === 'dfy' || help === 'dwy';
+  var gapNames = weakest.map(function(c){ return c.name; }).join(' and ');
+
+  var book = { label:'Book My Free Strategy Session', kind:'book' };
+  var audit = { label:'Get My Free Growth Leak Audit', href: AUDIT_URL, kind:'audit' };
+
+  var cta;
+  if (tier.name === 'Foundation Gap') {
+    cta = {
+      title: 'Fix The Foundations First',
+      desc: 'With a score of ' + score + ', putting more money into ads right now would mostly amplify the leaks. Start with a free Growth Leak Audit — we review your offer, message, and funnel and send you the fixes to make first.',
+      primary: audit,
+      secondary: { label:'Prefer to talk it through? Book a free strategy session', kind:'book' }
+    };
+    if (wantsHelp && bigBudget) {
+      cta.title = "Let's Build Your Foundations Properly";
+      cta.desc = "You've told us you'd like expert help, and you have the budget to move quickly. On a free strategy session we'll go through your answers and map out how to fix " + gapNames + ' before a dollar goes into ads.';
+      cta.primary = book;
+      cta.secondary = { label:'Not ready to talk? Get a free Growth Leak Audit instead', href: AUDIT_URL, kind:'audit' };
+    }
+  } else if (tier.name === 'Growth System Gap') {
+    cta = {
+      title: "Let's Close Your Two Biggest Gaps",
+      desc: 'Your biggest gaps are ' + gapNames + '. On a free Growth Accelerator Strategy Session we\'ll walk through your answers together and map out exactly what to fix first, in order.',
+      primary: book,
+      secondary: { label:'Not ready to talk? Get a free Growth Leak Audit instead', href: AUDIT_URL, kind:'audit' }
+    };
+    if (help === 'diy') {
+      cta.title = 'Get Your Step-By-Step Fix List';
+      cta.desc = "You'd rather do it yourself — good. Get a free Growth Leak Audit and we'll send you a prioritised list of fixes for " + gapNames + ' that you can work through on your own.';
+      cta.primary = audit;
+      cta.secondary = { label:'Want a second pair of eyes? Book a free strategy session', kind:'book' };
+    }
+  } else if (tier.name === 'Scale Ready') {
+    cta = {
+      title: "You're Ready To Scale — Let's Plan It",
+      desc: 'Your foundation is solid. On a free strategy session we\'ll map out the campaign structure and creative testing plan to scale without your cost per customer creeping up.',
+      primary: book,
+      secondary: { label:'Running ads already? Check if they are profitable with the free ROAS calculator', href: ROAS_CALC_URL, kind:'roas' }
+    };
+  } else {
+    cta = {
+      title: "Let's Find Your Next 20%",
+      desc: "You already have a strong system. On a free strategy session we'll look for the efficiency gains and scaling opportunities that are hardest to see from the inside.",
+      primary: book,
+      secondary: { label:'Check your break-even ROAS with the free calculator', href: ROAS_CALC_URL, kind:'roas' }
+    };
+  }
+
+  var goal = qualifierLabel('goal_90_days');
+  cta.goal = goal ? goal : '';
+  return cta;
+}
+
+function renderCta(cta){
+  document.getElementById('cta-title').textContent = cta.title;
+  document.getElementById('cta-desc').textContent = cta.desc;
+
+  var goalEl = document.getElementById('cta-goal');
+  if (cta.goal) {
+    goalEl.innerHTML = 'Your 90-day goal: <strong>' + esc(cta.goal) + '</strong>';
+    goalEl.style.display = 'inline-block';
+  } else {
+    goalEl.style.display = 'none';
+  }
+
+  wireCtaLink(document.getElementById('cta-primary'), cta.primary, 'primary');
+
+  var s = document.getElementById('cta-secondary');
+  if (cta.secondary) {
+    wireCtaLink(s, cta.secondary, 'secondary');
+    s.style.display = 'block';
+  } else {
+    s.style.display = 'none';
+  }
+
+  document.getElementById('calendly-fallback-link').href = bookingUrl();
+}
+
+function wireCtaLink(el, item, position){
+  el.textContent = item.label;
+  if (item.kind === 'book') {
+    el.href = bookingUrl();
+    el.target = BOOKING_URL ? '_blank' : '';
+    el.rel = 'noopener';
+  } else {
+    el.href = item.href;
+    el.removeAttribute('target');
+  }
+  el.onclick = function(e){
+    track('scorecard_cta_click', { cta_type: item.kind, cta_position: position });
+    if (item.kind === 'book' && BOOKING_URL) {
+      e.preventDefault();
+      openCalendlyEmbed();
+    }
+  };
+}
+
+/* ────────────────────────────────────────────────
+   CALENDLY INLINE EMBED
+   Loaded only when someone clicks "Book". If the script can't load
+   (ad blocker, offline), the booking page opens in a new tab instead.
+──────────────────────────────────────────────── */
+var calendlyState = 'idle';   // idle | loading | ready | failed
+
+function loadCalendly(cb){
+  if (window.Calendly) return cb(true);
+  var s = document.createElement('script');
+  s.src = CALENDLY_JS;
+  s.async = true;
+  var done = false;
+  function finish(ok){ if (done) return; done = true; cb(ok && !!window.Calendly); }
+  s.onload = function(){ finish(true); };
+  s.onerror = function(){ finish(false); };
+  setTimeout(function(){ finish(!!window.Calendly); }, 8000);
+  document.head.appendChild(s);
+}
+
+function openCalendlyEmbed(){
+  var wrap = document.getElementById('calendly-wrap');
+  wrap.style.display = 'block';
+  wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (calendlyState === 'loading' || calendlyState === 'ready') return;
+
+  calendlyState = 'loading';
+  loadCalendly(function(ok){
+    if (!ok) {
+      calendlyState = 'failed';
+      wrap.style.display = 'none';
+      window.open(bookingUrl(), '_blank', 'noopener');
+      return;
+    }
+    calendlyState = 'ready';
+    var mountEl = document.getElementById('calendly-inline');
+    mountEl.innerHTML = '';
+    // Name, email and UTMs ride on the URL (bookingUrl) — Calendly reads them as prefill.
+    var url = bookingUrl();
+    window.Calendly.initInlineWidget({
+      url: url + (url.indexOf('?') === -1 ? '?' : '&') + 'hide_gdpr_banner=1',
+      parentElement: mountEl
+    });
+  });
+}
+
+// Calendly posts messages to the parent page from its iframe.
+window.addEventListener('message', function(e){
+  if (e.origin !== 'https://calendly.com' || !e.data || typeof e.data.event !== 'string') return;
+  if (e.data.event === 'calendly.date_and_time_selected') {
+    track('call_time_selected');
+  }
+  if (e.data.event === 'calendly.event_scheduled') {
+    track('call_booked');
+    var t = document.getElementById('calendly-booked');
+    if (t) t.style.display = 'block';
+  }
+});
+
+/* Lowest-scoring answer inside a category (if it isn't already a top answer). */
+function weakestAnswerIn(cat){
+  var worst = null;
+  QUESTIONS.forEach(function(q, i){
+    if (q.cat !== cat) return;
+    var pts = answers[i] || 0;
+    if (pts >= 3) return;
+    if (!worst || pts < worst.pts) {
+      var opt = q.opts.filter(function(o){ return o.p === pts; })[0];
+      worst = { q: q.q, a: opt ? opt.l : '', pts: pts };
+    }
+  });
+  return worst;
+}
 
 /* ────────────────────────────────────────────────
    RESULTS RENDER
 ──────────────────────────────────────────────── */
-function showResults(scores, tier){
+function showResults(scores, tier, lead){
   leadScreen.classList.remove('active');
   resultScreen.classList.add('active');
 
@@ -627,14 +1082,28 @@ function showResults(scores, tier){
   }).join('');
   document.getElementById('gap-cards').innerHTML = gapHtml;
 
-  // Full breakdown
+  // Full breakdown — one insight card per category, weakest first
   var breakdownEl = document.getElementById('cat-breakdown');
-  var rowsHtml = scores.byCategory.map(function(c){
-    return '<div class="cat-row"><span class="cat-name">' + c.name + '</span>' +
-      '<div class="cat-track"><div class="cat-fill" style="width:0%;" data-pct="' + c.pct + '"></div></div>' +
-      '<span class="cat-pct">' + c.pct + '%</span></div>';
+  var cardsHtml = sorted.map(function(c){
+    var band = bandFor(c.pct);
+    var ins = INSIGHTS[c.name][band];
+    var weak = band !== 'high' ? weakestAnswerIn(c.name) : null;
+    return '<div class="insight-card">' +
+      '<div class="insight-head"><span class="cat-name">' + esc(c.name) + '</span>' +
+        '<span class="band-chip band-' + band + '">' + BAND_LABEL[band] + '</span></div>' +
+      '<div class="insight-bar"><div class="cat-track"><div class="cat-fill" style="width:0%;background:' + BAND_COLOR[band] + ';" data-pct="' + c.pct + '"></div></div>' +
+        '<span class="cat-pct">' + c.pct + '%</span></div>' +
+      '<h4>' + esc(ins.title) + '</h4>' +
+      '<p>' + esc(ins.body) + '</p>' +
+      (weak ? '<div class="insight-weak">You answered <strong>&ldquo;' + esc(weak.a) + '&rdquo;</strong> to &ldquo;' + esc(weak.q) + '&rdquo;</div>' : '') +
+      '<div class="insight-next"><span>Do this next:</span> ' + esc(ins.next) + '</div>' +
+    '</div>';
   }).join('');
-  breakdownEl.innerHTML = '<h3 style="font-size:18px;margin-bottom:16px;">Full Breakdown</h3>' + rowsHtml;
+  breakdownEl.innerHTML = '<h3 style="font-size:18px;margin-bottom:16px;">Your Breakdown &amp; What To Do Next</h3>' +
+    '<div class="insight-list">' + cardsHtml + '</div>';
+
+  resultCtx = { score: scores.overall, tier: tier.name, lead: lead || {} };
+  renderCta(getCta(scores.overall, tier, weakest, resultCtx.lead));
   setTimeout(function(){
     breakdownEl.querySelectorAll('.cat-fill').forEach(function(el){
       el.style.width = el.getAttribute('data-pct') + '%';

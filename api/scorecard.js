@@ -62,6 +62,39 @@ async function pushToMailerLite(data) {
   }
 }
 
+const QUALIFIER_KEYS = ['current_situation', 'goal_90_days', 'main_obstacle', 'help_preference', 'anything_else'];
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+  ));
+}
+
+// Keep only known qualifier keys, with bounded string lengths.
+function cleanQualifiers(q) {
+  if (!q || typeof q !== 'object') return null;
+  const out = {};
+  for (const key of QUALIFIER_KEYS) {
+    const item = q[key];
+    if (!item || typeof item !== 'object') continue;
+    const max = key === 'anything_else' ? 1000 : 200;
+    out[key] = {
+      question: String(item.question || '').slice(0, 200),
+      value:    String(item.value    || '').slice(0, max),
+      label:    String(item.label    || '').slice(0, max),
+    };
+  }
+  return Object.keys(out).length ? out : null;
+}
+
+// Hot lead = wants hands-on help, has $3k+/month, and isn't already at the top tier.
+function isHotLead(data) {
+  const help = data.qualifiers && data.qualifiers.help_preference && data.qualifiers.help_preference.value;
+  const wantsHelp = help === 'dfy' || help === 'dwy';
+  const bigBudget = data.budget === '3kto10k' || data.budget === 'over10k';
+  return wantsHelp && bigBudget && data.score < 85;
+}
+
 function buildEmailHtml(data) {
   const weakest = (data.category_scores || [])
     .slice()
@@ -79,11 +112,15 @@ function buildEmailHtml(data) {
     ['Score', `${data.score} / 100`],
     ['Tier', data.tier],
     ['Weakest Areas', weakest],
+    ...QUALIFIER_KEYS.map(k => {
+      const item = data.qualifiers && data.qualifiers[k];
+      return [item ? item.question : k, item ? item.label : ''];
+    }),
   ].filter(([, v]) => v)
    .map(([k, v]) => `
       <tr>
-        <td style="padding:10px 14px;background:#f8f7f5;font-weight:700;font-size:13px;color:#5d584e;white-space:nowrap;border-bottom:1px solid #e7e2dc;width:36%;">${k}</td>
-        <td style="padding:10px 14px;font-size:14px;color:#15130F;border-bottom:1px solid #e7e2dc;">${String(v)}</td>
+        <td style="padding:10px 14px;background:#f8f7f5;font-weight:700;font-size:13px;color:#5d584e;white-space:nowrap;border-bottom:1px solid #e7e2dc;width:36%;">${esc(k)}</td>
+        <td style="padding:10px 14px;font-size:14px;color:#15130F;border-bottom:1px solid #e7e2dc;">${esc(v)}</td>
       </tr>
     `).join('');
 
@@ -92,7 +129,7 @@ function buildEmailHtml(data) {
       <div style="background:#15130F;padding:28px 32px;border-radius:10px 10px 0 0;">
         <p style="color:#E16638;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">thedamlek digital</p>
         <h1 style="color:#fff;font-size:22px;margin:0 0 6px;">New Growth Readiness Scorecard Submission</h1>
-        <p style="color:#9a948a;font-size:13px;margin:0;">From: <strong style="color:#fff;">${data.name || data.business_name || 'Unknown'}</strong> &nbsp;·&nbsp; ${new Date().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })}</p>
+        <p style="color:#9a948a;font-size:13px;margin:0;">From: <strong style="color:#fff;">${esc(data.name || data.business_name || 'Unknown')}</strong> &nbsp;·&nbsp; ${new Date().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })}</p>
       </div>
       <table style="width:100%;border-collapse:collapse;border:1px solid #e7e2dc;border-top:none;">
         ${rows}
@@ -117,8 +154,10 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid submission' });
   }
 
+  data.qualifiers = cleanQualifiers(data.qualifiers);
+
   // 1 — Save to Supabase
-  const { error: dbError } = await supabase.from('scorecard_submissions').insert([{
+  const row = {
     name:             data.name           || null,
     email:            data.email,
     business_name:    data.business_name  || null,
@@ -128,7 +167,17 @@ module.exports = async function handler(req, res) {
     tier:             data.tier           || null,
     category_scores:  data.category_scores || null,
     answers:          data.answers        || null,
-  }]);
+    qualifiers:       data.qualifiers,
+  };
+  let { error: dbError } = await supabase.from('scorecard_submissions').insert([row]);
+
+  // If the qualifiers column hasn't been added yet (see schema-scorecard.sql),
+  // save everything else rather than losing the lead.
+  if (dbError && /qualifiers/i.test(dbError.message || '')) {
+    console.warn('qualifiers column missing — run the migration in schema-scorecard.sql');
+    delete row.qualifiers;
+    ({ error: dbError } = await supabase.from('scorecard_submissions').insert([row]));
+  }
 
   if (dbError) console.error('Supabase insert error:', dbError.message);
 
@@ -151,8 +200,8 @@ module.exports = async function handler(req, res) {
 
     await transporter.sendMail({
       from: `"thedamlek digital" <${process.env.GMAIL_USER}>`,
-      to: 'thedamlekdigital@gmail.com',
-      subject: `New Scorecard Submission — ${data.name || data.business_name || 'Someone'} (${data.score}/100)`,
+      to: process.env.GMAIL_USER,
+      subject: `${isHotLead(data) ? '🔥 HOT LEAD — ' : ''}New Scorecard Submission — ${data.name || data.business_name || 'Someone'} (${data.score}/100)`,
       html: buildEmailHtml(data),
     });
   } catch (emailErr) {
