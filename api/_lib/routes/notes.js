@@ -1,4 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
+const { isAdmin, handleCors } = require('../security');
 
 const TABLES = {
   scorecard:   'scorecard_submissions',
@@ -6,20 +7,15 @@ const TABLES = {
 };
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (handleCors(req, res)) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const auth = req.headers.authorization || '';
-  const token = auth.replace('Bearer ', '');
-  if (!token || token !== process.env.ADMIN_PASSWORD) {
+  if (!isAdmin(req)) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const { id, note, type } = req.body || {};
+  const { id, type } = req.body || {};
+  const note = typeof (req.body || {}).note === 'string' ? req.body.note.slice(0, 10000) : null;
   const table = TABLES[type];
   if (!id || !table) return res.status(400).json({ error: 'Missing id or invalid type' });
 
@@ -33,7 +29,7 @@ module.exports = async function handler(req, res) {
     .update({ notes: note || null })
     .eq('id', id);
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) { console.error(error.message); return res.status(500).json({ error: 'Database error' }); }
 
   return res.status(200).json({ success: true });
 };

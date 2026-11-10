@@ -1,15 +1,10 @@
 const { createClient } = require('@supabase/supabase-js');
+const { isAdmin: checkAdmin, handleCors } = require('../security');
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+  if (handleCors(req, res, { publicRead: true })) return;
 
-  if (req.method === 'OPTIONS') return res.status(200).end();
-
-  const auth = req.headers.authorization || '';
-  const token = auth.replace('Bearer ', '');
-  const isAdmin = !!token && token === process.env.ADMIN_PASSWORD;
+  const isAdmin = checkAdmin(req);
 
   const supabase = createClient(
     process.env.SUPABASE_URL,
@@ -33,7 +28,7 @@ module.exports = async function handler(req, res) {
     query = query.order('created_at', { ascending: false });
 
     const { data, error } = await query;
-    if (error) return res.status(500).json({ error: error.message });
+    if (error) { console.error(error.message); return res.status(500).json({ error: 'Database error' }); }
     return res.status(200).json(data);
   }
 
@@ -69,7 +64,7 @@ module.exports = async function handler(req, res) {
         : null;
 
       const { error } = await supabase.from('blog_posts').update(fields).eq('id', id);
-      if (error) return res.status(500).json({ error: error.message });
+      if (error) { console.error(error.message); return res.status(500).json({ error: 'Database error' }); }
       return res.status(200).json({ success: true, id });
     }
 
@@ -81,7 +76,7 @@ module.exports = async function handler(req, res) {
       .select('id')
       .single();
 
-    if (error) return res.status(500).json({ error: error.message });
+    if (error) { console.error(error.message); return res.status(500).json({ error: 'Database error' }); }
     return res.status(200).json({ success: true, id: data.id });
   }
 
@@ -91,7 +86,7 @@ module.exports = async function handler(req, res) {
     if (!id) return res.status(400).json({ error: 'Missing id' });
 
     const { error } = await supabase.from('blog_posts').delete().eq('id', id);
-    if (error) return res.status(500).json({ error: error.message });
+    if (error) { console.error(error.message); return res.status(500).json({ error: 'Database error' }); }
     return res.status(200).json({ success: true });
   }
 

@@ -1,4 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
+const { isAdmin, clientIp, rateLimited, handleCors } = require('./_lib/security');
 
 const BUSINESS_TYPES = ['ecommerce', 'local', 'services', 'coaching', 'other'];
 const CURRENCIES = ['USD', 'NGN'];
@@ -17,6 +18,10 @@ function text(value, maxLength) {
 
 async function handlePost(req, res, supabase) {
   const body = req.body || {};
+
+  if (rateLimited('roas:' + clientIp(req), 5, 10 * 60 * 1000)) {
+    return res.status(429).json({ error: 'Too many requests' });
+  }
 
   const businessType = BUSINESS_TYPES.indexOf(body.business_type) !== -1 ? body.business_type : null;
   const cac       = num(body.cac, 0.01, 1000000);
@@ -65,10 +70,7 @@ async function handlePost(req, res, supabase) {
 }
 
 async function handleGet(req, res, supabase) {
-  const auth = req.headers.authorization || '';
-  const token = auth.replace('Bearer ', '');
-
-  if (!token || token !== process.env.ADMIN_PASSWORD) {
+  if (!isAdmin(req)) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
@@ -78,17 +80,16 @@ async function handleGet(req, res, supabase) {
     .order('created_at', { ascending: false })
     .limit(5000);
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) {
+    console.error('ROAS list error:', error.message);
+    return res.status(500).json({ error: 'Could not load calculations' });
+  }
 
   return res.status(200).json(data);
 }
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (handleCors(req, res)) return;
 
   const supabase = createClient(
     process.env.SUPABASE_URL,

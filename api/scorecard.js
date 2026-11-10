@@ -1,5 +1,8 @@
 const { createClient } = require('@supabase/supabase-js');
 const nodemailer = require('nodemailer');
+const {
+  clientIp, rateLimited, handleCors, cleanEmail, cleanText, isBot,
+} = require('./_lib/security');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -63,6 +66,33 @@ async function pushToMailerLite(data) {
 }
 
 const QUALIFIER_KEYS = ['current_situation', 'goal_90_days', 'main_obstacle', 'help_preference', 'anything_else'];
+
+// Category scores and answers are drawn on the admin dashboard, so only the
+// expected shape is kept: short strings and bounded numbers.
+function clampNum(v, min, max) {
+  const n = typeof v === 'number' ? v : parseFloat(v);
+  return isFinite(n) ? Math.min(max, Math.max(min, Math.round(n))) : null;
+}
+
+function cleanCategoryScores(list) {
+  if (!Array.isArray(list)) return null;
+  const out = list.slice(0, 20)
+    .filter((c) => c && typeof c === 'object')
+    .map((c) => ({ name: cleanText(c.name, 100) || '', pct: clampNum(c.pct, 0, 100) || 0 }));
+  return out.length ? out : null;
+}
+
+function cleanAnswers(list) {
+  if (!Array.isArray(list)) return null;
+  const out = list.slice(0, 60)
+    .filter((a) => a && typeof a === 'object')
+    .map((a) => ({
+      category: cleanText(a.category, 100) || '',
+      question: cleanText(a.question, 300) || '',
+      points:   clampNum(a.points, -100, 100),
+    }));
+  return out.length ? out : null;
+}
 
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, c => (
@@ -135,26 +165,55 @@ function buildEmailHtml(data) {
         ${rows}
       </table>
       <p style="font-size:12px;color:#9a948a;margin-top:20px;text-align:center;">
-        View all submissions in your <a href="https://supabase.com/dashboard" style="color:#E16638;">Supabase dashboard</a>
+        View all submissions in your <a href="https://www.thedamlekdigital.com/admin" style="color:#E16638;">admin dashboard</a>
       </p>
     </div>
   `;
 }
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (handleCors(req, res)) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const data = req.body;
-  if (!data || !data.email || typeof data.score !== 'number') {
+  const body = req.body;
+  if (!body || typeof body !== 'object' || typeof body.score !== 'number') {
     return res.status(400).json({ error: 'Invalid submission' });
   }
 
-  data.qualifiers = cleanQualifiers(data.qualifiers);
+  if (isBot(body)) return res.status(200).json({ success: true });
+
+  if (rateLimited('scorecard:' + clientIp(req), 5, 10 * 60 * 1000)) {
+    return res.status(429).json({ error: 'Too many submissions. Please try again in a few minutes.' });
+  }
+
+  const email = cleanEmail(body.email);
+  if (!email) return res.status(400).json({ error: 'Please enter a valid email address.' });
+
+  // Rebuilt from known fields only — nothing else from the request is kept.
+  const data = {
+    name:            cleanText(body.name, 200),
+    email:           email,
+    business_name:   cleanText(body.business_name, 200),
+    website:         cleanText(body.website, 300),
+    budget:          cleanText(body.budget, 50),
+    score:           clampNum(body.score, 0, 100),
+    tier:            Object.prototype.hasOwnProperty.call(TIER_GROUP_ENV, body.tier) ? body.tier : null,
+    category_scores: cleanCategoryScores(body.category_scores),
+    answers:         cleanAnswers(body.answers),
+    qualifiers:      cleanQualifiers(body.qualifiers),
+  };
+
+  // Same address resubmitting over and over → stop before it hits the
+  // database, the inbox and MailerLite.
+  const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+  const { count } = await supabase
+    .from('scorecard_submissions')
+    .select('id', { count: 'exact', head: true })
+    .eq('email', email)
+    .gte('created_at', since);
+  if (count >= 3) {
+    return res.status(429).json({ error: 'You have already taken the scorecard recently.' });
+  }
 
   // 1 — Save to Supabase
   const row = {
@@ -201,7 +260,8 @@ module.exports = async function handler(req, res) {
     await transporter.sendMail({
       from: `"thedamlek digital" <${process.env.GMAIL_USER}>`,
       to: process.env.GMAIL_USER,
-      subject: `${isHotLead(data) ? '🔥 HOT LEAD — ' : ''}New Scorecard Submission — ${data.name || data.business_name || 'Someone'} (${data.score}/100)`,
+      replyTo: email,
+      subject: `${isHotLead(data) ? '🔥 HOT LEAD — ' : ''}New Scorecard Submission — ${String(data.name || data.business_name || 'Someone').replace(/[\r\n]+/g, ' ').slice(0, 80)} (${data.score}/100)`,
       html: buildEmailHtml(data),
     });
   } catch (emailErr) {

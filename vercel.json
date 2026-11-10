@@ -1,14 +1,130 @@
 {
   "rewrites": [
-    { "source": "/admin",            "destination": "/admin.html" },
-    { "source": "/scorecard",        "destination": "/scorecard.html" },
-    { "source": "/growth-leak-audit","destination": "/growth-leak-audit.html" },
-    { "source": "/tools/roas-calculator","destination": "/tools/roas-calculator.html" },
-    { "source": "/thank-you",        "destination": "/thank-you.html" },
-    { "source": "/blog",             "destination": "/blog.html" },
-    { "source": "/blog/:slug",       "destination": "/api/blog-render?slug=:slug" },
-    { "source": "/portfolio",        "destination": "/portfolio.html" },
-    { "source": "/portfolio/:slug",  "destination": "/api/portfolio-render?slug=:slug" },
-    { "source": "/sitemap.xml",      "destination": "/api/sitemap" }
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/scorecard",
+      "destination": "/scorecard.html"
+    },
+    {
+      "source": "/growth-leak-audit",
+      "destination": "/growth-leak-audit.html"
+    },
+    {
+      "source": "/tools/roas-calculator",
+      "destination": "/tools/roas-calculator.html"
+    },
+    {
+      "source": "/thank-you",
+      "destination": "/thank-you.html"
+    },
+    {
+      "source": "/blog",
+      "destination": "/blog.html"
+    },
+    {
+      "source": "/blog/:slug",
+      "destination": "/api/render?type=blog&slug=:slug"
+    },
+    {
+      "source": "/portfolio",
+      "destination": "/portfolio.html"
+    },
+    {
+      "source": "/portfolio/:slug",
+      "destination": "/api/render?type=portfolio&slug=:slug"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/api/blog",
+      "destination": "/api/content?type=blog"
+    },
+    {
+      "source": "/api/portfolio",
+      "destination": "/api/content?type=portfolio"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=()"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/admin",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/admin.html",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    }
   ]
 }

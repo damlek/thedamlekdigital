@@ -1,0 +1,9 @@
+# Keep internal files off the public site. These are needed locally only.
+.env*
+.claude
+.git
+docs
+ads
+schema*.sql
+*.md
+capture.js

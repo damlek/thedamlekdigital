@@ -3,13 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-MX5G8NK5');</script>
-<!-- End Google Tag Manager -->
+<meta name="robots" content="noindex, nofollow">
 <title>Admin — thedamlek digital</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -219,10 +213,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </style>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MX5G8NK5"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 
 <!-- LOGIN -->
 <div id="login-screen">
@@ -583,6 +573,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script>
+  // Any API call that comes back 401 means the session expired: back to login.
+  (function () {
+    var realFetch = window.fetch.bind(window);
+    window.fetch = function (url, opts) {
+      return realFetch(url, opts).then(function (res) {
+        if (res.status === 401 && String(url).indexOf('/api/') === 0 && String(url) !== '/api/login') {
+          try { sessionStorage.removeItem('tdm_admin'); } catch (e) {}
+          document.getElementById('login-screen').style.display = 'flex';
+          document.getElementById('dashboard').style.display = 'none';
+        }
+        return res;
+      });
+    };
+  })();
+
+  // Values below come from public form submissions, so anything placed inside
+  // an onclick or href is restricted to a known-safe shape first.
+  function safeId(id) { return /^[0-9a-f-]{1,64}$/i.test(String(id)) ? String(id) : ''; }
+  function safeType(t) { return t === 'scorecard' || t === 'audit' ? t : 'contact'; }
+  function safeNum(n) { n = Number(n); return isFinite(n) ? Math.round(n) : 0; }
+  function mailtoHref(email, subject) {
+    var e = String(email || '');
+    if (!/^[^\s@<>"'()\\,;:]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(e)) return '';
+    return esc('mailto:' + e + '?subject=' + encodeURIComponent(subject));
+  }
+
   var allData = [];        // merged submissions + scorecards
   var activeFilter = 'all';
   var expandedId = null;
@@ -798,19 +814,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     btn.textContent = 'Logging in…';
     err.style.display = 'none';
 
-    fetch('/api/submissions', { headers: { 'Authorization': 'Bearer ' + pw } })
+    fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw })
+    })
       .then(function (res) {
-        if (!res.ok) throw new Error('bad');
-        return res.json();
+        return res.json().catch(function () { return {}; }).then(function (j) {
+          if (!res.ok || !j.token) throw new Error(j.error || 'Incorrect password. Please try again.');
+          return j;
+        });
       })
       .then(function (data) {
-        saveToken(pw);
-        allData = data;
-        showDashboard(pw);
-      })
-      .catch(function () {
+        document.getElementById('password').value = '';
         btn.disabled = false;
         btn.textContent = 'Log In';
+        saveToken(data.token);
+        showDashboard(data.token);
+      })
+      .catch(function (e) {
+        btn.disabled = false;
+        btn.textContent = 'Log In';
+        err.textContent = (e && e.message && e.message !== 'Failed to fetch') ? e.message : 'Incorrect password. Please try again.';
         err.style.display = 'block';
         document.getElementById('password').value = '';
         document.getElementById('password').focus();
@@ -841,8 +866,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var headers = { 'Authorization': 'Bearer ' + token };
 
     Promise.all([
-      fetch('/api/submissions',            { headers: headers }),
-      fetch('/api/scorecard-submissions',  { headers: headers }),
+      fetch('/api/leads?type=submission',  { headers: headers }),
+      fetch('/api/leads?type=scorecard',   { headers: headers }),
     ])
     .then(function (responses) {
       if (responses[0].status === 401 || responses[1].status === 401) {
@@ -877,7 +902,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var highFit     = allData.filter(function (d) { return d.lead_fit_tag === 'high_fit_ascension_ready'; }).length;
     var scorecards  = allData.filter(function (d) { return d.form_type === 'scorecard'; });
     var avgScore    = scorecards.length
-      ? Math.round(scorecards.reduce(function (sum, d) { return sum + (d.score || 0); }, 0) / scorecards.length)
+      ? Math.round(scorecards.reduce(function (sum, d) { return sum + safeNum(d.score); }, 0) / scorecards.length)
       : null;
     document.getElementById('stat-total').textContent      = allData.length;
     document.getElementById('stat-audits').textContent     = audits;
@@ -916,6 +941,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
   function scoreBadge(score) {
+    score = safeNum(score);
     var color = score >= 70 ? '#3A6830' : score >= 40 ? '#92610A' : '#991B1B';
     var bg    = score >= 70 ? '#EFF4EC'  : score >= 40 ? '#FFFBEB' : '#FEF2F2';
     return '<span class="badge" style="background:' + bg + ';color:' + color + ';">' + score + '/100</span>';
@@ -955,7 +981,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           ? '<span class="badge badge-audit">Audit</span>'
           : '<span class="badge badge-contact">Contact</span>';
 
-      var row = '<tr class="data-row' + (open ? ' active' : '') + '" onclick="toggle(\'' + r.id + '\')">' +
+      var row = '<tr class="data-row' + (open ? ' active' : '') + '" onclick="toggle(\'' + safeId(r.id) + '\')">' +
         '<td><div style="font-weight:600;font-size:14px;">' + date + '</div>' +
             '<div style="font-size:12px;color:var(--muted);">' + time + '</div></td>' +
         '<td>' + typeBadge + '</td>' +
@@ -995,29 +1021,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         '</div>';
     }).join('');
 
-    var replyHref = r.email ? 'mailto:' + r.email + '?subject=Re: Your ' +
-      (r.form_type === 'audit' ? 'Growth Leak Audit Application' : 'Message to thedamlek digital') : '#';
+    var replyHref = mailtoHref(r.email, 'Re: Your ' +
+      (r.form_type === 'audit' ? 'Growth Leak Audit Application' : 'Message to thedamlek digital'));
 
     var notesHtml = '<div class="notes-section">' +
       '<div class="df-label">Team Notes</div>' +
-      '<textarea class="notes-textarea" id="notes-' + r.id + '" placeholder="Add a note about this prospect…">' + esc(r.notes || '') + '</textarea>' +
-      '<br><button class="notes-save-btn" onclick="saveNote(\'' + r.id + '\', event)">Save Note</button>' +
-      '<span class="notes-status" id="notes-status-' + r.id + '"></span>' +
+      '<textarea class="notes-textarea" id="notes-' + safeId(r.id) + '" placeholder="Add a note about this prospect…">' + esc(r.notes || '') + '</textarea>' +
+      '<br><button class="notes-save-btn" onclick="saveNote(\'' + safeId(r.id) + '\', event)">Save Note</button>' +
+      '<span class="notes-status" id="notes-status-' + safeId(r.id) + '"></span>' +
       '</div>';
 
     return '<tr class="detail-tr"><td colspan="6">' +
       '<div class="detail-panel">' + cells +
       notesHtml +
       '<div class="detail-actions">' +
-      (r.email ? '<a href="' + replyHref + '" class="action-btn primary">Reply via Email</a>' : '') +
-      '<button type="button" class="action-btn danger" onclick="deleteLead(\'' + r.id + '\', \'' + r.form_type + '\', event)">Delete Lead</button>' +
+      (replyHref ? '<a href="' + replyHref + '" class="action-btn primary">Reply via Email</a>' : '') +
+      '<button type="button" class="action-btn danger" onclick="deleteLead(\'' + safeId(r.id) + '\', \'' + safeType(r.form_type) + '\', event)">Delete Lead</button>' +
       '</div></div></td></tr>';
   }
 
   function scorecardDetailRow(r) {
     var cats = Array.isArray(r.category_scores) ? r.category_scores : [];
     var circumference = 2 * Math.PI * 30;
-    var offset = circumference - ((r.score || 0) / 100) * circumference;
+    var offset = circumference - (safeNum(r.score) / 100) * circumference;
 
     var ringHtml = '<div class="sc-score-row">' +
       '<div class="sc-ring">' +
@@ -1028,7 +1054,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             ' stroke-dasharray="' + circumference.toFixed(1) + '"' +
             ' stroke-dashoffset="' + offset.toFixed(1) + '"></circle>' +
         '</svg>' +
-        '<div class="rnum">' + (r.score || 0) + '<span class="rof">/100</span></div>' +
+        '<div class="rnum">' + safeNum(r.score) + '<span class="rof">/100</span></div>' +
       '</div>' +
       '<div><div class="sc-tier">' + esc(r.tier || 'Unknown') + '</div></div>' +
     '</div>';
@@ -1053,8 +1079,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         cats.map(function (c) {
           return '<div class="sc-bar-row">' +
             '<span class="scbr-name">' + esc(c.name) + '</span>' +
-            '<div class="scbr-track"><div class="scbr-fill" style="width:' + (c.pct || 0) + '%"></div></div>' +
-            '<span class="scbr-pct">' + (c.pct || 0) + '%</span>' +
+            '<div class="scbr-track"><div class="scbr-fill" style="width:' + safeNum(c.pct) + '%"></div></div>' +
+            '<span class="scbr-pct">' + safeNum(c.pct) + '%</span>' +
           '</div>';
         }).join('') +
       '</div>';
@@ -1075,14 +1101,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
              '<div class="df-value">' + esc(qual[k].label) + '</div></div>';
     }).join('');
 
-    var replyHref = r.email ? 'mailto:' + r.email +
-      '?subject=Your%20Growth%20Readiness%20Score%20%E2%80%94%20' + encodeURIComponent(r.tier || '') : '#';
+    var replyHref = mailtoHref(r.email, 'Your Growth Readiness Score — ' + (r.tier || ''));
 
     var notesHtml = '<div class="notes-section">' +
       '<div class="df-label">Team Notes</div>' +
-      '<textarea class="notes-textarea" id="notes-' + r.id + '" placeholder="Add a note about this prospect…">' + esc(r.notes || '') + '</textarea>' +
-      '<br><button class="notes-save-btn" onclick="saveScorecardNote(\'' + r.id + '\', event)">Save Note</button>' +
-      '<span class="notes-status" id="notes-status-' + r.id + '"></span>' +
+      '<textarea class="notes-textarea" id="notes-' + safeId(r.id) + '" placeholder="Add a note about this prospect…">' + esc(r.notes || '') + '</textarea>' +
+      '<br><button class="notes-save-btn" onclick="saveScorecardNote(\'' + safeId(r.id) + '\', event)">Save Note</button>' +
+      '<span class="notes-status" id="notes-status-' + safeId(r.id) + '"></span>' +
       '</div>';
 
     return '<tr class="detail-tr"><td colspan="6">' +
@@ -1092,8 +1117,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         barsHtml +
         notesHtml +
         '<div class="detail-actions">' +
-          (r.email ? '<a href="' + replyHref + '" class="action-btn primary">Reply via Email</a>' : '') +
-          '<button type="button" class="action-btn danger" onclick="deleteLead(\'' + r.id + '\', \'' + r.form_type + '\', event)">Delete Lead</button>' +
+          (replyHref ? '<a href="' + replyHref + '" class="action-btn primary">Reply via Email</a>' : '') +
+          '<button type="button" class="action-btn danger" onclick="deleteLead(\'' + safeId(r.id) + '\', \'' + safeType(r.form_type) + '\', event)">Delete Lead</button>' +
         '</div>' +
       '</div></td></tr>';
   }
@@ -1105,7 +1130,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var btn      = e.target;
     btn.disabled = true; btn.textContent = 'Saving…'; status.textContent = '';
 
-    fetch('/api/notes', {
+    fetch('/api/leads', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: id, note: textarea.value, type: 'scorecard' })
@@ -1139,7 +1164,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     btn.textContent = 'Saving…';
     status.textContent = '';
 
-    fetch('/api/notes', {
+    fetch('/api/leads', {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + getToken(),
@@ -1179,7 +1204,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     e.stopPropagation();
     if (!confirm('Delete this lead? This cannot be undone.')) return;
 
-    var endpoint = formType === 'scorecard' ? '/api/scorecard-submissions' : '/api/submissions';
+    var endpoint = formType === 'scorecard' ? '/api/leads?type=scorecard' : '/api/leads?type=submission';
 
     fetch(endpoint, {
       method: 'DELETE',
@@ -1205,7 +1230,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   // ══════════════════════════════════════════════════════════════════════════
@@ -1218,7 +1244,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     document.getElementById('blog-table-body').innerHTML =
       '<tr><td colspan="4" class="loading"><span class="spinner"></span>Loading posts…</td></tr>';
 
-    fetch('/api/blog', { headers: { 'Authorization': 'Bearer ' + getToken() } })
+    fetch('/api/content?type=blog', { headers: { 'Authorization': 'Bearer ' + getToken() } })
       .then(function (res) {
         if (res.status === 401) { clearToken(); showLogin(); throw new Error('unauth'); }
         return res.json();
@@ -1252,8 +1278,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         '<td>' + badge + '</td>' +
         '<td style="color:var(--text);">' + updated + '</td>' +
         '<td><div class="row-actions">' +
-          '<button onclick="editBlogPost(\'' + p.id + '\')">Edit</button>' +
-          '<button class="danger" onclick="deleteBlogPost(\'' + p.id + '\')">Delete</button>' +
+          '<button onclick="editBlogPost(\'' + safeId(p.id) + '\')">Edit</button>' +
+          '<button class="danger" onclick="deleteBlogPost(\'' + safeId(p.id) + '\')">Delete</button>' +
         '</div></td>' +
       '</tr>';
     }).join('');
@@ -1317,7 +1343,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var btn = this;
     btn.disabled = true; btn.textContent = 'Saving…';
 
-    fetch('/api/blog', {
+    fetch('/api/content?type=blog', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1351,7 +1377,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   function deleteBlogPost(id) {
     if (!confirm('Delete this post? This cannot be undone.')) return;
-    fetch('/api/blog', {
+    fetch('/api/content?type=blog', {
       method: 'DELETE',
       headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: id })
@@ -1374,7 +1400,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     document.getElementById('portfolio-table-body').innerHTML =
       '<tr><td colspan="5" class="loading"><span class="spinner"></span>Loading items…</td></tr>';
 
-    fetch('/api/portfolio', { headers: { 'Authorization': 'Bearer ' + getToken() } })
+    fetch('/api/content?type=portfolio', { headers: { 'Authorization': 'Bearer ' + getToken() } })
       .then(function (res) {
         if (res.status === 401) { clearToken(); showLogin(); throw new Error('unauth'); }
         return res.json();
@@ -1409,8 +1435,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         '<td>' + badge + '</td>' +
         '<td style="color:var(--text);">' + updated + '</td>' +
         '<td><div class="row-actions">' +
-          '<button onclick="editPortfolioItem(\'' + p.id + '\')">Edit</button>' +
-          '<button class="danger" onclick="deletePortfolioItem(\'' + p.id + '\')">Delete</button>' +
+          '<button onclick="editPortfolioItem(\'' + safeId(p.id) + '\')">Edit</button>' +
+          '<button class="danger" onclick="deletePortfolioItem(\'' + safeId(p.id) + '\')">Delete</button>' +
         '</div></td>' +
       '</tr>';
     }).join('');
@@ -1510,7 +1536,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var btn = this;
     btn.disabled = true; btn.textContent = 'Saving…';
 
-    fetch('/api/portfolio', {
+    fetch('/api/content?type=portfolio', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1549,7 +1575,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   function deletePortfolioItem(id) {
     if (!confirm('Delete this portfolio item? This cannot be undone.')) return;
-    fetch('/api/portfolio', {
+    fetch('/api/content?type=portfolio', {
       method: 'DELETE',
       headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: id })
