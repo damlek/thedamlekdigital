@@ -50,9 +50,22 @@ function isAdmin(req) {
 }
 
 // ── Request helpers ─────────────────────────────────────────────────────────
+// Cloudflare's cf-connecting-ip header holds the real visitor IP, but anyone
+// who sends a request straight to Vercel (skipping Cloudflare) can fake it.
+// So it is only trusted when the request also carries the secret header that
+// a Cloudflare Transform Rule adds (x-tdm-edge = CF_EDGE_SECRET). Otherwise
+// Vercel's own x-real-ip is used, which Vercel sets itself and cannot be faked.
+function fromCloudflare(h) {
+  const secret = process.env.CF_EDGE_SECRET;
+  if (!secret) return !!h['cf-connecting-ip']; // not configured yet: previous behaviour
+  return typeof h['x-tdm-edge'] === 'string' && safeEqual(h['x-tdm-edge'], secret);
+}
+
 function clientIp(req) {
   const h = req.headers || {};
-  return String(h['cf-connecting-ip'] || h['x-real-ip'] || String(h['x-forwarded-for'] || '').split(',')[0] || 'unknown').trim();
+  const vercelIp = h['x-real-ip'] || String(h['x-forwarded-for'] || '').split(',')[0];
+  const ip = fromCloudflare(h) && h['cf-connecting-ip'] ? h['cf-connecting-ip'] : vercelIp;
+  return String(ip || 'unknown').trim();
 }
 
 // Best-effort limiter. Each serverless instance keeps its own counts, so this
