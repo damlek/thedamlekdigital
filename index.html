@@ -82,6 +82,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .hero .subhead{font-size:18px;color:#3f3b35;max-width:520px;margin-bottom:32px;line-height:1.65;}
   .hero-btns{display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
   .hero-btns .note{font-size:13px;color:#766f64;font-weight:600;margin-top:4px;width:100%;}
+  .hero-btns .scorecard-link{font-size:15px;font-weight:700;color:var(--black);text-decoration:underline;text-decoration-color:var(--orange);text-underline-offset:4px;margin-top:6px;}
+  .hero-btns .scorecard-link:hover{color:var(--orange);}
   .hero-visual{background:var(--black);border-radius:20px;padding:36px 32px;color:var(--white);}
   .hero-visual .hv-label{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#8c8578;margin-bottom:20px;}
   .hero-visual .hv-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #2a2822;}
@@ -161,10 +163,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   /* Animations */
   @keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
-  .hero-left .eyebrow{animation:fadeUp .6s ease both;}
-  .hero-left h1{animation:fadeUp .7s .1s ease both;}
-  .hero-left .subhead{animation:fadeUp .7s .2s ease both;}
-  .hero-left .hero-btns{animation:fadeUp .7s .32s ease both;}
   .hero-visual{animation:fadeUp .8s .18s ease both;}
 
   .reveal{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease;}
@@ -216,6 +214,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     nav{display:none;}
     .header-cta{display:none;}
     .nav-toggle{display:flex;}
+    .btn{white-space:normal;text-align:center;}
     .mobile-nav.open{display:flex;}
   }
 </style>
@@ -268,8 +267,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="subhead">thedamlek digital helps small businesses turn their offer, website, paid media, and tracking into a system that attracts, converts, and retains more customers.</p>
         <div class="hero-btns">
           <a href="growth-leak-audit.html" class="btn btn-primary btn-lg">Get a Free Growth Leak Audit</a>
-          <a href="#services" class="btn btn-outline btn-lg">See Our Services</a>
           <span class="note">Free. No obligation. Results in 48 hours.</span>
+          <a href="/scorecard" class="scorecard-link">Not ready yet? Take the 3-minute Growth Readiness Scorecard &rarr;</a>
         </div>
       </div>
       <div class="hero-visual">
@@ -430,7 +429,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
           <h3>Growth System Audit</h3>
           <p>A structured review of your entire customer acquisition system — website, offer, ads, tracking, and follow-up — to find exactly where leads and sales are slipping through the cracks.</p>
-          <span class="svc-link">Free audit available &rarr;</span>
+          <a href="growth-leak-audit.html" class="svc-link">Free audit available &rarr;</a>
         </div>
 
       </div>
@@ -661,6 +660,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     })
     .then(function(res) {
       if (res.ok) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'contact_form_submit', contact_topic: data.subject || '' });
         contactForm.style.display = 'none';
         cfSuccess.classList.add('show');
       } else {
