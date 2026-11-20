@@ -1,4 +1,36 @@
 {
+  "redirects": [
+    {
+      "source": "/growth-leak-audit",
+      "destination": "/#teardown-form",
+      "permanent": true
+    },
+    {
+      "source": "/growth-leak-audit.html",
+      "destination": "/#teardown-form",
+      "permanent": true
+    },
+    {
+      "source": "/audit",
+      "destination": "/#teardown-form",
+      "permanent": true
+    },
+    {
+      "source": "/audit.html",
+      "destination": "/#teardown-form",
+      "permanent": true
+    },
+    {
+      "source": "/free-audit",
+      "destination": "/#teardown-form",
+      "permanent": true
+    },
+    {
+      "source": "/free-audit.html",
+      "destination": "/#teardown-form",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/admin",
@@ -7,10 +39,6 @@
     {
       "source": "/scorecard",
       "destination": "/scorecard.html"
-    },
-    {
-      "source": "/growth-leak-audit",
-      "destination": "/growth-leak-audit.html"
     },
     {
       "source": "/tools/roas-calculator",
@@ -47,6 +75,18 @@
     {
       "source": "/api/portfolio",
       "destination": "/api/content?type=portfolio"
+    },
+    {
+      "source": "/audit-start",
+      "destination": "/audit-start.html"
+    },
+    {
+      "source": "/audit-terms",
+      "destination": "/audit-terms.html"
+    },
+    {
+      "source": "/apply",
+      "destination": "/apply.html"
     }
   ],
   "headers": [
@@ -123,6 +163,15 @@
         {
           "key": "X-Robots-Tag",
           "value": "noindex"
+        }
+      ]
+    },
+    {
+      "source": "/audit-start(.html)?",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
         }
       ]
     }

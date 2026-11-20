@@ -9,7 +9,9 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_KEY
 );
 
-const FORM_TYPES = ['contact', 'audit'];
+const FORM_TYPES = ['contact', 'audit', 'audit_intake', 'application'];
+const TITLES = { contact: 'Contact Message', audit: 'Teardown Request', audit_intake: 'Paid Audit Intake', application: 'Retainer Application' };
+const QUALIFIED_SPEND = ['$5,000–$20,000', '$20,000+'];
 const HIGH_BUDGETS = ['1000to3000', '3000to5000', 'over5000'];
 
 // Only these fields are stored or emailed; anything else in the body is dropped.
@@ -23,8 +25,8 @@ const FIELDS = [
   ['ideal_customer', 'Ideal Customer', 2000],
   ['challenge',      'Challenge',      5000],
   ['running_ads',    'Running Ads',    100],
-  ['platforms',      'Platforms',      300],
-  ['budget',         'Budget',         100],
+  ['platforms',      'Instagram / Facebook', 300],
+  ['budget',         'Monthly Meta Spend', 100],
   ['desired_result', 'Desired Result', 2000],
   ['open_to_help',   'Open To Help',   100],
   ['lead_fit_tag',   'Lead Fit Tag',   100],
@@ -32,23 +34,37 @@ const FIELDS = [
   ['message',        'Message',        5000],
 ];
 
+// Per-form label overrides, so the email reads correctly for each form.
+const LABEL_OVERRIDES = {
+  audit_intake: {
+    subject: 'Ad Account', budget: 'Meta Spend (30 days)', running_ads: 'Campaign History',
+    platforms: 'Email Platform', ideal_customer: 'Main Offer + Price', challenge: 'Frustration',
+    desired_result: 'What a Win Looks Like', open_to_help: 'Access Shared?', business_name: 'Brand',
+  },
+  application: {
+    business_name: 'Brand', budget: 'Meta Spend / Month', ideal_customer: 'Monthly Revenue',
+    running_ads: 'Who Runs Ads Now', platforms: 'Email Platform + List', desired_result: '90-Day Goal',
+    open_to_help: 'Start Timing', subject: 'Previous Teardown/Audit',
+  },
+};
+
 function buildEmailHtml(row) {
-  const isAudit = row.form_type === 'audit';
+  const overrides = LABEL_OVERRIDES[row.form_type] || {};
   const senderName = escapeHtml(row.name || row.business_name || 'Unknown');
 
   const rows = FIELDS
     .filter(([key]) => row[key])
     .map(([key, label]) => `
       <tr>
-        <td style="padding:10px 14px;background:#f8f7f5;font-weight:700;font-size:13px;color:#5d584e;white-space:nowrap;border-bottom:1px solid #e7e2dc;width:36%;">${label}</td>
+        <td style="padding:10px 14px;background:#f8f7f5;font-weight:700;font-size:13px;color:#5d584e;white-space:nowrap;border-bottom:1px solid #e7e2dc;width:36%;">${overrides[key] || label}</td>
         <td style="padding:10px 14px;font-size:14px;color:#15130F;border-bottom:1px solid #e7e2dc;">${escapeHtml(row[key]).replace(/\n/g, '<br>')}</td>
       </tr>
     `).join('');
 
   const highFitBadge = row.lead_fit_tag === 'high_fit_ascension_ready' ? `
     <div style="background:#FFF3EC;border:2px solid #E16638;border-radius:8px;padding:14px 18px;margin-top:20px;">
-      <strong style="color:#E16638;font-size:15px;">&#9889; High-fit lead</strong>
-      <p style="margin:4px 0 0;font-size:13px;color:#5d584e;">High budget + open to help. Prioritise follow-up.</p>
+      <strong style="color:#E16638;font-size:15px;">High-fit lead</strong>
+      <p style="margin:4px 0 0;font-size:13px;color:#5d584e;">High budget. Prioritise follow-up.</p>
     </div>
   ` : '';
 
@@ -56,7 +72,7 @@ function buildEmailHtml(row) {
     <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;color:#15130F;">
       <div style="background:#15130F;padding:28px 32px;border-radius:10px 10px 0 0;">
         <p style="color:#E16638;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">thedamlek digital</p>
-        <h1 style="color:#fff;font-size:22px;margin:0 0 6px;">New ${isAudit ? 'Growth Leak Audit Application' : 'Contact Message'}</h1>
+        <h1 style="color:#fff;font-size:22px;margin:0 0 6px;">New ${TITLES[row.form_type] || 'Submission'}</h1>
         <p style="color:#9a948a;font-size:13px;margin:0;">From: <strong style="color:#fff;">${senderName}</strong> &nbsp;·&nbsp; ${new Date().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })}</p>
       </div>
       <table style="width:100%;border-collapse:collapse;border:1px solid #e7e2dc;border-top:none;">
@@ -97,7 +113,9 @@ module.exports = async function handler(req, res) {
   row.lead_fit_tag = row.form_type === 'audit'
     ? (HIGH_BUDGETS.indexOf(row.budget) !== -1 && row.open_to_help === 'yes'
       ? 'high_fit_ascension_ready' : 'standard_audit_lead')
-    : null;
+    : row.form_type === 'application'
+      ? (QUALIFIED_SPEND.indexOf(row.budget) !== -1 ? 'high_fit_ascension_ready' : 'standard_application')
+      : null;
 
   // Same address flooding the form → stop after a handful per hour.
   const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
@@ -125,9 +143,7 @@ module.exports = async function handler(req, res) {
     });
 
     const senderName = String(row.name || 'Someone').replace(/[\r\n]+/g, ' ').slice(0, 80);
-    const subject = row.form_type === 'audit'
-      ? `New Audit Application — ${senderName}`
-      : `New Contact Message — ${senderName}`;
+    const subject = `New ${TITLES[row.form_type] || 'Submission'} — ${senderName}`;
 
     await transporter.sendMail({
       from: `"thedamlek digital" <${process.env.GMAIL_USER}>`,

@@ -261,7 +261,7 @@ module.exports = async function handler(req, res) {
       from: `"thedamlek digital" <${process.env.GMAIL_USER}>`,
       to: process.env.GMAIL_USER,
       replyTo: email,
-      subject: `${isHotLead(data) ? '🔥 HOT LEAD — ' : ''}New Scorecard Submission — ${String(data.name || data.business_name || 'Someone').replace(/[\r\n]+/g, ' ').slice(0, 80)} (${data.score}/100)`,
+      subject: `${isHotLead(data) ? 'HOT LEAD — ' : ''}New Scorecard Submission — ${String(data.name || data.business_name || 'Someone').replace(/[\r\n]+/g, ' ').slice(0, 80)} (${data.score}/100)`,
       html: buildEmailHtml(data),
     });
   } catch (emailErr) {

@@ -19,7 +19,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:url" content="https://thedamlekdigital.com/scorecard">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="favicon.png">
 <style>
   :root{
@@ -31,8 +31,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     --tint-orange:#FFF3EC;
     --tint-sage:#F3F6EF;
     --border:#E7E2DC;
-    --serif:'Playfair Display', serif;
-    --sans:'DM Sans', sans-serif;
+    --serif:'Archivo', sans-serif;
+    --sans:'Archivo', sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -710,8 +710,8 @@ var CATEGORIES = ['Offer Strength','Audience Clarity','Message Clarity','Funnel 
    they fall back to the contact form.
 ──────────────────────────────────────────────── */
 var BOOKING_URL   = 'https://calendly.com/thedamlekdigital/free-strategy-session';
-var CONTACT_URL   = 'index.html#contact';
-var AUDIT_URL     = 'growth-leak-audit.html';
+var CONTACT_URL   = '/#teardown-form';
+var AUDIT_URL     = '/#teardown-form';
 var ROAS_CALC_URL = 'tools/roas-calculator.html';
 var CALENDLY_JS   = 'https://assets.calendly.com/assets/external/widget.js';
 
@@ -1105,13 +1105,13 @@ function getCta(score, tier, weakest, lead){
   var gapNames = weakest.map(function(c){ return c.name; }).join(' and ');
 
   var book = { label:'Book My Free Strategy Session', kind:'book' };
-  var audit = { label:'Get My Free Growth Leak Audit', href: AUDIT_URL, kind:'audit' };
+  var audit = { label:'Get My Free Ad Leak Teardown', href: AUDIT_URL, kind:'audit' };
 
   var cta;
   if (tier.name === 'Foundation Gap') {
     cta = {
       title: 'Fix The Foundations First',
-      desc: 'With a score of ' + score + ', putting more money into ads right now would mostly amplify the leaks. Start with a free Growth Leak Audit — we review your offer, message, and funnel and send you the fixes to make first.',
+      desc: 'With a score of ' + score + ', putting more money into ads right now would mostly amplify the leaks. Start with a free Ad Leak Teardown: a recorded walkthrough of your live Meta ads and landing pages, with the fixes to make first.',
       primary: audit,
       secondary: { label:'Prefer to talk it through? Book a free strategy session', kind:'book' }
     };
@@ -1119,18 +1119,18 @@ function getCta(score, tier, weakest, lead){
       cta.title = "Let's Build Your Foundations Properly";
       cta.desc = "You've told us you'd like expert help, and you have the budget to move quickly. On a free strategy session we'll go through your answers and map out how to fix " + gapNames + ' before a dollar goes into ads.';
       cta.primary = book;
-      cta.secondary = { label:'Not ready to talk? Get a free Growth Leak Audit instead', href: AUDIT_URL, kind:'audit' };
+      cta.secondary = { label:'Not ready to talk? Get a free Ad Leak Teardown instead', href: AUDIT_URL, kind:'audit' };
     }
   } else if (tier.name === 'Growth System Gap') {
     cta = {
       title: "Let's Close Your Two Biggest Gaps",
       desc: 'Your biggest gaps are ' + gapNames + '. On a free Growth Accelerator Strategy Session we\'ll walk through your answers together and map out exactly what to fix first, in order.',
       primary: book,
-      secondary: { label:'Not ready to talk? Get a free Growth Leak Audit instead', href: AUDIT_URL, kind:'audit' }
+      secondary: { label:'Not ready to talk? Get a free Ad Leak Teardown instead', href: AUDIT_URL, kind:'audit' }
     };
     if (help === 'diy') {
       cta.title = 'Get Your Step-By-Step Fix List';
-      cta.desc = "You'd rather do it yourself — good. Get a free Growth Leak Audit and we'll send you a prioritised list of fixes for " + gapNames + ' that you can work through on your own.';
+      cta.desc = "You'd rather do it yourself — good. Get a free Ad Leak Teardown and I'll show you what to fix first around " + gapNames + ', ranked by impact, so you can work through it on your own.';
       cta.primary = audit;
       cta.secondary = { label:'Want a second pair of eyes? Book a free strategy session', kind:'book' };
     }

@@ -16,8 +16,8 @@ function notFoundPage() {
   return `<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><title>Case Study Not Found | thedamlek digital</title>
 <meta name="robots" content="noindex">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
-<style>body{font-family:'DM Sans',sans-serif;background:#F5F4F1;color:#15130F;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;}
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{font-family:'Archivo',sans-serif;background:#F5F4F1;color:#15130F;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;}
 a{color:#E16638;font-weight:700;text-decoration:none;}</style></head>
 <body><div><h1>Case study not found</h1><p><a href="/portfolio">&larr; Back to Portfolio</a></p></div></body></html>`;
 }
@@ -92,12 +92,12 @@ ${cover ? `<meta property="og:image" content="${esc(cover)}">` : ''}
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --orange:#E16638; --soft-orange:#FF9972; --sage:#95AD7C;
     --black:#15130F; --white:#FFFFFF; --tint-orange:#FFF3EC; --tint-sage:#F3F6EF;
-    --border:#E7E2DC; --serif:'Playfair Display', serif; --sans:'DM Sans', sans-serif;
+    --border:#E7E2DC; --serif:'Archivo', sans-serif; --sans:'Archivo', sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:var(--sans);color:var(--black);background:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased;}
@@ -149,7 +149,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <a href="/"><img src="/logo.png" alt="thedamlek digital" style="height:52px;width:auto;"></a>
     <nav>
-      <a href="/blog">Blog</a>
+      <a href="https://thedamlek.com">Blog</a>
       <a href="/portfolio">Portfolio</a>
       <a href="/" class="btn">Back to Site</a>
     </nav>
