@@ -27,12 +27,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --orange:#E16638; --soft-orange:#FF9972; --sage:#95AD7C;
     --black:#15130F; --white:#FFFFFF; --tint-orange:#FFF3EC; --tint-sage:#F3F6EF;
-    --border:#E7E2DC; --serif:'Playfair Display', serif; --sans:'DM Sans', sans-serif;
+    --border:#E7E2DC; --serif:'Archivo', sans-serif; --sans:'Archivo', sans-serif;
     --green-text:#3A6830;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -158,8 +158,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <a href="/"><img src="/logo.png" alt="thedamlek digital" style="height:52px;width:auto;"></a>
     <nav>
-      <a href="/blog">Blog</a>
-      <a href="/growth-leak-audit" class="btn btn-primary">Free Growth Audit</a>
+      <a href="https://thedamlek.com">Blog</a>
+      <a href="/#teardown-form" class="btn btn-primary">Get my free teardown</a>
     </nav>
   </div>
 </header>
@@ -286,7 +286,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="cta-box" id="cta-box">
         <h2 id="cta-headline"></h2>
         <p id="cta-body"></p>
-        <a href="/growth-leak-audit" class="btn btn-primary btn-lg" id="cta-btn"></a>
+        <a href="/#teardown-form" class="btn btn-primary btn-lg" id="cta-btn"></a>
       </div>
     </div>
   </section>
@@ -463,8 +463,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       ctaBox.className = 'cta-box profit';
       document.getElementById('cta-headline').textContent = 'You’re ' + fmtMoneyRound(buffer) + ' ahead per customer. Let’s push it further.';
-      document.getElementById('cta-body').textContent = 'A Free Growth Leak Audit finds the specific places — offer, landing page, tracking, follow-up — where you can stretch that ' + fmtMoneyRound(buffer) + ' buffer even further, so the same ad spend returns even more.';
-      document.getElementById('cta-btn').textContent = 'Get My Free Growth Leak Audit';
+      document.getElementById('cta-body').textContent = 'A free Ad Leak Teardown shows where your live Meta ads are wasting spend, so you can stretch that ' + fmtMoneyRound(buffer) + ' buffer even further.';
+      document.getElementById('cta-btn').textContent = 'Get my free teardown';
 
       lastResult = { isProfitable: true, breakEvenROAS: breakEvenROAS, currentROAS: currentROAS, maxCAC: maxCAC, breakEvenAOV: breakEvenAOV, purchases: purchases, pct: bufferPct, currency: currency };
     } else {
@@ -476,8 +476,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       ctaBox.className = 'cta-box loss';
       document.getElementById('cta-headline').textContent = 'You’re ' + fmtMoneyRound(gap) + ' short per customer — let’s close that gap.';
-      document.getElementById('cta-body').textContent = 'A Free Growth Leak Audit (48 hours, no cost) shows you exactly how to close this ' + fmtMoneyRound(gap) + ' gap — by lowering CAC toward ' + fmtMoney(maxCAC) + ', raising AOV toward ' + fmtMoney(breakEvenAOV) + ', or both.';
-      document.getElementById('cta-btn').textContent = 'Claim My Free Growth Leak Audit';
+      document.getElementById('cta-body').textContent = 'A free Ad Leak Teardown shows where your live Meta ads are leaking spend: the first step to closing this ' + fmtMoneyRound(gap) + ' gap — by lowering CAC toward ' + fmtMoney(maxCAC) + ', raising AOV toward ' + fmtMoney(breakEvenAOV) + ', or both.';
+      document.getElementById('cta-btn').textContent = 'Get my free teardown';
 
       lastResult = { isProfitable: false, breakEvenROAS: breakEvenROAS, currentROAS: currentROAS, maxCAC: maxCAC, breakEvenAOV: breakEvenAOV, purchases: purchases, pct: gapPct, currency: currency };
     }
@@ -571,8 +571,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   function loadFonts(){
     var specs = [
-      '800 22px "DM Sans"', '700 42px "DM Sans"', '700 20px "DM Sans"',
-      '800 34px "DM Sans"', '900 80px "Playfair Display"', '800 50px "Playfair Display"'
+      '800 22px "Archivo"', '700 42px "Archivo"', '700 20px "Archivo"',
+      '800 34px "Archivo"', '900 80px "Archivo"', '800 50px "Archivo"'
     ];
     if (!window.document.fonts) return Promise.resolve();
     return Promise.all(specs.map(function(spec){ return document.fonts.load(spec); })).then(function(){
@@ -610,7 +610,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       var tagText = 'ROAS BREAK-EVEN CALCULATOR';
-      ctx.font = '800 22px "DM Sans"';
+      ctx.font = '800 22px "Archivo"';
       var tagPadX = 22, tagPadY = 13;
       var tagW = ctx.measureText(tagText).width + tagPadX * 2;
       var tagH = 22 + tagPadY * 2;
@@ -624,7 +624,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       ctx.textBaseline = 'alphabetic';
 
       var headlineY = tagY + tagH + 110;
-      ctx.font = '900 80px "Playfair Display"';
+      ctx.font = '900 80px "Archivo"';
       var line1 = result.isProfitable ? 'You’re ' : 'You’re losing ';
       var line1Em = result.isProfitable ? 'profitable.' : 'money.';
       ctx.fillStyle = '#fff';
@@ -633,7 +633,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       ctx.fillStyle = '#E16638';
       ctx.fillText(line1Em, 80 + w1, headlineY);
 
-      ctx.font = '700 42px "DM Sans"';
+      ctx.font = '700 42px "Archivo"';
       ctx.fillStyle = '#cfcabf';
       var subline = result.pct + '% ' + (result.isProfitable ? 'above' : 'below') + ' break-even';
       ctx.fillText(subline, 80, headlineY + 66);
@@ -660,10 +660,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         var row = Math.floor(i / 2);
         var x = 80 + col * 460;
         var y = gridTop + row * rowH;
-        ctx.font = '700 20px "DM Sans"';
+        ctx.font = '700 20px "Archivo"';
         ctx.fillStyle = '#8c8578';
         ctx.fillText(cell.label, x, y);
-        ctx.font = '800 50px "Playfair Display"';
+        ctx.font = '800 50px "Archivo"';
         ctx.fillStyle = '#fff';
         ctx.fillText(cell.value, x, y + 60);
       });
@@ -675,10 +675,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       ctx.fill();
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.font = '800 34px "DM Sans"';
+      ctx.font = '800 34px "Archivo"';
       ctx.fillStyle = '#fff';
       ctx.fillText('Calculate Yours Free →', 540, ctaY + 50);
-      ctx.font = '700 25px "DM Sans"';
+      ctx.font = '700 25px "Archivo"';
       ctx.fillStyle = '#FFE0D2';
       ctx.fillText('thedamlekdigital.com/tools/roas-calculator', 540, ctaY + 94);
       ctx.textAlign = 'left';

@@ -5,8 +5,9 @@ const SITE = 'https://thedamlekdigital.com';
 const STATIC_PATHS = [
   { path: '/', priority: '1.0' },
   { path: '/scorecard', priority: '0.8' },
-  { path: '/growth-leak-audit', priority: '0.8' },
   { path: '/tools/roas-calculator', priority: '0.8' },
+  { path: '/apply', priority: '0.6' },
+  { path: '/audit-terms', priority: '0.3' },
   { path: '/blog', priority: '0.7' },
   { path: '/portfolio', priority: '0.7' },
 ];
