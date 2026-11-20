@@ -248,7 +248,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     btn.disabled = true; btn.textContent = 'Sending…';
     fetch('/api/submit', { method: 'POST', body: JSON.stringify(d), headers: { 'Content-Type': 'application/json' } })
       .then(function (res) {
-        if (!res.ok) return res.json().then(function (j) { throw new Error(j.error || 'Something went wrong.'); });
+        if (!res.ok) return res.json().catch(function () { return {}; }).then(function (j) { throw new Error(j.error || 'Something went wrong.'); });
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ event: 'retainer_application_submit', qualified: qualified, meta_spend: d.budget });
         form.style.display = 'none';

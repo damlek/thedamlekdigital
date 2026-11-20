@@ -828,7 +828,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           success.focus();
           requestAnimationFrame(function(){ success.classList.add('drawn'); });
         } else {
-          return res.json().then(function(j){ throw new Error(j.error || 'Something went wrong.'); });
+          return res.json().catch(function () { return {}; }).then(function(j){ throw new Error(j.error || 'Something went wrong.'); });
         }
       })
       .catch(function(ex){
