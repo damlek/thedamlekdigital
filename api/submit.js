@@ -147,7 +147,7 @@ module.exports = async function handler(req, res) {
 
     await transporter.sendMail({
       from: `"thedamlek digital" <${process.env.GMAIL_USER}>`,
-      to: process.env.GMAIL_USER,
+      to: process.env.NOTIFY_TO || 'damilola@thedamlekdigital.com',
       replyTo: email,
       subject,
       html: buildEmailHtml(row),
