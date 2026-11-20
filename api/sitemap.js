@@ -1,6 +1,6 @@
 const { createClient } = require('@supabase/supabase-js');
 
-const SITE = 'https://thedamlekdigital.com';
+const SITE = 'https://www.thedamlekdigital.com';
 
 const STATIC_PATHS = [
   { path: '/', priority: '1.0' },
