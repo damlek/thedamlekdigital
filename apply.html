@@ -221,10 +221,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </footer>
 
 <script>
-  // Booking page for retainer application calls (Google Calendar appointment schedule).
-  // "Retainer application call (30 min)". If emptied, qualified applicants are told you'll email them to book.
-  var RETAINER_BOOKING_URL = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ18Kiavb51hJLRzzmsCD58259S441QThJiFW-q2MovSU_MJyTw60SWlg8Nb-HMn2ulSMTWtRQ1l';
-  var QUALIFIED_SPEND = ['$5,000–$20,000', '$20,000+'];
+  // The server decides who qualifies and only then returns the booking link,
+  // so the "Retainer application call (30 min)" link never sits in this page's source.
 
   var form = document.getElementById('apply-form');
   var btn = form.querySelector('button[type=submit]');
@@ -243,26 +241,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
     var d = Object.fromEntries(new FormData(form).entries());
     d.form_type = 'application';
-    var qualified = QUALIFIED_SPEND.indexOf(d.budget) !== -1;
 
     btn.disabled = true; btn.textContent = 'Sending…';
     fetch('/api/submit', { method: 'POST', body: JSON.stringify(d), headers: { 'Content-Type': 'application/json' } })
       .then(function (res) {
-        if (!res.ok) return res.json().catch(function () { return {}; }).then(function (j) { throw new Error(j.error || 'Something went wrong.'); });
+        return res.json().catch(function () { return {}; }).then(function (j) {
+          if (!res.ok) throw new Error(j.error || 'Something went wrong.');
+          return j;
+        });
+      })
+      .then(function (j) {
+        var bookingUrl = j.bookingUrl || '';
+        var qualified = !!bookingUrl;
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ event: 'retainer_application_submit', qualified: qualified, meta_spend: d.budget });
         form.style.display = 'none';
         var box = document.getElementById(qualified ? 'apply-fit' : 'apply-early');
         if (qualified) {
           var slot = document.getElementById('retainer-booking');
-          if (RETAINER_BOOKING_URL) {
-            var src = RETAINER_BOOKING_URL + (RETAINER_BOOKING_URL.indexOf('?') === -1 ? '?gv=true' : '&gv=true');
-            slot.innerHTML = '<iframe class="booking-frame" title="Book your application call"></iframe>' +
-              '<p style="margin-top:10px;font-size:15px;"><a class="text-link" target="_blank" rel="noopener" href="' + RETAINER_BOOKING_URL + '">Open the booking page in a new tab &rarr;</a></p>';
-            slot.querySelector('iframe').src = src;
-          } else {
-            box.querySelector('p').textContent = "From what you've shared, this looks like a good fit. I'll email you within 2 business days with times for a 30-minute call to go through your account and goals.";
-          }
+          var src = bookingUrl + (bookingUrl.indexOf('?') === -1 ? '?gv=true' : '&gv=true');
+          slot.innerHTML = '<iframe class="booking-frame" title="Book your application call"></iframe>' +
+            '<p style="margin-top:10px;font-size:15px;"><a class="text-link" target="_blank" rel="noopener">Open the booking page in a new tab &rarr;</a></p>';
+          slot.querySelector('iframe').src = src;
+          slot.querySelector('a').href = bookingUrl;
         }
         box.classList.add('show');
         box.focus();

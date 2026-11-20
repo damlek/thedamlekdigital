@@ -933,7 +933,8 @@
   function getFiltered() {
     var q = document.getElementById('search').value.toLowerCase().trim();
     return allData.filter(function (d) {
-      var typeOk = activeFilter === 'all' || d.form_type === activeFilter;
+      var typeOk = activeFilter === 'all' || d.form_type === activeFilter ||
+        (activeFilter === 'audit_intake' && d.form_type === 'access_confirmed');
       var searchOk = !q ||
         (d.name          && d.name.toLowerCase().includes(q)) ||
         (d.email         && d.email.toLowerCase().includes(q)) ||
@@ -981,6 +982,8 @@
         ? '<span class="badge badge-scorecard">Scorecard</span>'
         : r.form_type === 'audit_intake'
           ? '<span class="badge badge-highfit">Paid Audit</span>'
+        : r.form_type === 'access_confirmed'
+          ? '<span class="badge badge-highfit">Access Shared</span>'
         : r.form_type === 'application'
           ? '<span class="badge badge-audit">Application</span>'
         : isAudit
@@ -1028,7 +1031,7 @@
     }).join('');
 
     var replyHref = mailtoHref(r.email, 'Re: Your ' +
-      (r.form_type === 'audit' ? 'Teardown Request' : r.form_type === 'audit_intake' ? '7-Day Audit' : r.form_type === 'application' ? 'Retainer Application' : 'Message to thedamlek digital'));
+      (r.form_type === 'audit' ? 'Teardown Request' : (r.form_type === 'audit_intake' || r.form_type === 'access_confirmed') ? '7-Day Audit' : r.form_type === 'application' ? 'Retainer Application' : 'Message to thedamlek digital'));
 
     var notesHtml = '<div class="notes-section">' +
       '<div class="df-label">Team Notes</div>' +

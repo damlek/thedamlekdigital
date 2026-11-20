@@ -11,7 +11,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-MX5G8NK5');</script>
 <!-- End Google Tag Manager -->
 <title>Your Audit Has Started | thedamlek digital</title>
-<meta name="description" content="Next steps for your 7-Day Ad Profit Leak Audit: share view access, fill in the intake form and book your walkthrough call.">
+<meta name="description" content="Next steps for your 7-Day Ad Profit Leak Audit: fill in the intake form, share view access and book your walkthrough call.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,9 +28,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .timeline{margin-top:24px;border-top:1px solid var(--ink);}
   .timeline li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--rule);font-size:15px;}
   .timeline .mono{flex-shrink:0;color:var(--muted);}
+  /* Locked steps: visible so buyers see the whole process, opened in order. */
+  .steps>li.locked h3{color:var(--muted);}
+  .steps>li.locked .n{border-color:var(--rule);color:var(--muted);}
+  .steps>li.done .n{background:var(--marker);color:var(--ink);}
+  .lock-msg{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:15px;margin-top:4px;}
+  .lock-msg svg{width:14px;height:14px;flex-shrink:0;}
+  .step-body[hidden],.lock-msg[hidden]{display:none;}
+  .confirm-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:22px;}
+  .confirm-row .btn{width:auto;}
+  .confirm-row a.text-link{font-size:15px;font-weight:500;}
   @media (max-width:980px){
     .start-main,.start-side{grid-column:1 / -1;}
     .start-side{position:static;margin-top:40px;}
+  }
+  @media (max-width:560px){
+    .confirm-row .btn{width:100%;}
   }
 </style>
 </head>
@@ -49,7 +62,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <div class="wrap">
       <p class="fig">AUDIT STARTED</p>
       <h1>You're in. Here's what happens next.</h1>
-      <p class="lede">Thanks for booking the 7-Day Ad Profit Leak Audit. Stripe is emailing your receipt now. Your 7 days start as soon as I have view access to your account and your answers to the short form below.</p>
+      <p class="lede">Thanks for booking the 7-Day Ad Profit Leak Audit. Stripe is emailing your receipt now. Work through the steps below in order. Your 7 days start once I have your answers and view access to your account.</p>
     </div>
   </section>
 
@@ -57,27 +70,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <div class="wrap start-grid">
       <div class="start-main">
         <ol class="steps">
-          <!-- STEP 1: ACCESS -->
-          <li id="access">
-            <span class="n">01</span>
-            <div>
-              <h3>Share view access</h3>
-              <p>I only need to look. I never change settings, edit ads or spend money in your account.</p>
-              <ul class="sub">
-                <li><strong>Meta ad account:</strong> in Meta Business Settings, go to <em>Partners</em>, choose <em>Add</em>, then <em>Give a partner access to your assets</em>. Enter my Business ID below and share your ad account with <em>View performance</em> access.</li>
-                <li><strong>Pixel / dataset:</strong> share it the same way, with view access, so I can check tracking in Events Manager.</li>
-                <li><strong>Email platform</strong> (Klaviyo, Mailchimp, Kit and so on): add <strong>damilola@thedamlekdigital.com</strong> as a read-only or analyst user.</li>
-              </ul>
-              <div class="note-box">
-                <p class="mono">MY META BUSINESS ID</p>
-                <p><strong style="font-family:var(--mono);font-size:18px;letter-spacing:.02em;">257293375522147</strong></p>
-              </div>
-            </div>
-          </li>
-
-          <!-- STEP 2: INTAKE -->
+          <!-- STEP 1: INTAKE -->
           <li id="intake">
-            <span class="n">02</span>
+            <span class="n">01</span>
             <div>
               <h3>Fill in the intake form</h3>
               <p>About 5 minutes. It tells me where to look first.</p>
@@ -167,15 +162,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     <textarea id="i-win" name="desired_result"></textarea>
                   </div>
                   <div class="field">
-                    <label for="i-access">Have you shared access yet? *</label>
-                    <select id="i-access" name="open_to_help" required>
-                      <option value="" disabled selected>Select one</option>
-                      <option>Yes, access is shared</option>
-                      <option>Not yet, I'll do it today</option>
-                      <option>I need help sharing access</option>
-                    </select>
-                  </div>
-                  <div class="field">
                     <label for="i-notes">Anything else I should know? <span class="opt">(optional)</span></label>
                     <textarea id="i-notes" name="message"></textarea>
                   </div>
@@ -183,21 +169,51 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   <p class="form-err" id="intake-err" role="alert"></p>
                 </form>
                 <div class="success" id="intake-success" tabindex="-1">
-                  <h3>Got it. Your 7 days start once access is in.</h3>
-                  <p class="muted" style="margin-top:10px;">I'll email you to confirm the start date. Next, book your walkthrough call below.</p>
+                  <h3>Got it. Next, share view access.</h3>
+                  <p class="muted" style="margin-top:10px;">Step 2 below is now open.</p>
                 </div>
               </div>
             </div>
           </li>
 
-          <!-- STEP 3: BOOK -->
-          <li id="book">
+          <!-- STEP 2: ACCESS (opens after the intake form) -->
+          <li id="access" class="locked">
+            <span class="n">02</span>
+            <div>
+              <h3>Share view access</h3>
+              <p class="lock-msg" id="access-lock"><svg viewBox="0 0 14 14" aria-hidden="true"><rect x="2.5" y="6" width="9" height="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4.5 6V4.5a2.5 2.5 0 0 1 5 0V6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Opens after you send the intake form.</p>
+              <div class="step-body" id="access-body" hidden>
+                <p>I only need to look. I never change settings, edit ads or spend money in your account.</p>
+                <ul class="sub">
+                  <li><strong>Meta ad account:</strong> in Meta Business Settings, go to <em>Partners</em>, choose <em>Add</em>, then <em>Give a partner access to your assets</em>. Enter my Business ID below and share your ad account with <em>View performance</em> access.</li>
+                  <li><strong>Pixel / dataset:</strong> share it the same way, with view access, so I can check tracking in Events Manager.</li>
+                  <li><strong>Email platform</strong> (Klaviyo, Mailchimp, Kit and so on): add <strong>damilola@thedamlekdigital.com</strong> as a read-only or analyst user.</li>
+                </ul>
+                <div class="note-box">
+                  <p class="mono">MY META BUSINESS ID</p>
+                  <p><strong id="business-id" style="font-family:var(--mono);font-size:18px;letter-spacing:.02em;"></strong></p>
+                </div>
+                <div class="confirm-row">
+                  <button type="button" class="btn btn-primary" id="access-btn">I've shared access</button>
+                  <a class="text-link" href="mailto:damilola@thedamlekdigital.com?subject=Help%20sharing%20access">Need help? Email me</a>
+                </div>
+                <p class="form-err" id="access-err" role="alert"></p>
+                <div class="success" id="access-success" tabindex="-1">
+                  <p style="margin-top:16px;"><strong>Thanks. I'll confirm your start date by email.</strong> Next, book your walkthrough call.</p>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <!-- STEP 3: BOOK (opens after access is confirmed) -->
+          <li id="book" class="locked">
             <span class="n">03</span>
             <div>
               <h3>Book your 60-minute walkthrough</h3>
-              <p>Pick a time at least 7 days from today. If your start date moves, I'll help you reschedule.</p>
-              <div id="booking" style="margin-top:18px;">
-                <p><a class="btn btn-primary" href="https://calendar.app.google/C249AQKdEJp5niJHA" target="_blank" rel="noopener">Book my walkthrough call</a></p>
+              <p class="lock-msg" id="book-lock"><svg viewBox="0 0 14 14" aria-hidden="true"><rect x="2.5" y="6" width="9" height="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4.5 6V4.5a2.5 2.5 0 0 1 5 0V6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Opens after you've shared access.</p>
+              <div class="step-body" id="book-body" hidden>
+                <p>Pick a time at least 7 days from today. If your start date moves, I'll help you reschedule.</p>
+                <div id="booking" style="margin-top:18px;"></div>
               </div>
             </div>
           </li>
@@ -221,7 +237,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <a href="/audit-terms" class="text-link">Read the full terms &rarr;</a>
         </div>
         <ul class="timeline">
-          <li><span>Access + intake received</span><span class="mono">DAY 0</span></li>
+          <li><span>Intake + access received</span><span class="mono">DAY 0</span></li>
           <li><span>Account, tracking and email review</span><span class="mono">DAYS 1–6</span></li>
           <li><span>Leak report + roadmap delivered</span><span class="mono">DAY 7</span></li>
           <li><span>60-minute walkthrough call</span><span class="mono">DAY 7+</span></li>
@@ -241,23 +257,62 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </footer>
 
 <script>
-  // Google Calendar booking page (Workspace appointment schedule).
-  // Paste the booking page link here, e.g. https://calendar.google.com/calendar/appointments/schedules/XXXX
-  var BOOKING_URL = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2MJeHD0lUlTkiHB11fHWOUPGOYlOPYRHlVAABdg6hKW4nzwD94RrEoC0dAjO0HFSY2haKXEod5';
+  // The Business ID and the booking link come from the server only after each step is done,
+  // so neither sits in this page's source. Progress is kept in this browser so a reload doesn't lose it.
+  var STORE_KEY = 'tdm_audit_start';
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(STORE_KEY) || '{}') || {}; } catch (e) { state = {}; }
+  function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {} }
 
-  if (BOOKING_URL) {
-    var box = document.getElementById('booking');
-    var src = BOOKING_URL + (BOOKING_URL.indexOf('?') === -1 ? '?gv=true' : '&gv=true');
-    box.innerHTML = '<iframe class="booking-frame" title="Book your walkthrough call" loading="lazy"></iframe>' +
-      '<p style="margin-top:10px;font-size:15px;"><a class="text-link" target="_blank" rel="noopener" href="https://calendar.app.google/C249AQKdEJp5niJHA">Open the booking page in a new tab &rarr;</a></p>';
-    box.querySelector('iframe').src = src;
+  function post(data) {
+    return fetch('/api/submit', { method: 'POST', body: JSON.stringify(data), headers: { 'Content-Type': 'application/json' } })
+      .then(function (res) {
+        return res.json().catch(function () { return {}; }).then(function (j) {
+          if (!res.ok) throw new Error(j.error || 'Something went wrong.');
+          return j;
+        });
+      });
   }
 
-  // Intake form -> existing /api/submit backend (form_type "audit_intake")
+  function unlock(stepId, lockId, bodyId) {
+    document.getElementById(stepId).classList.remove('locked');
+    document.getElementById(lockId).hidden = true;
+    document.getElementById(bodyId).hidden = false;
+  }
+
+  function showAccess() {
+    document.getElementById('intake-form').style.display = 'none';
+    document.getElementById('intake-success').classList.add('show');
+    document.getElementById('intake').classList.add('done');
+    document.getElementById('business-id').textContent = state.businessId || 'I\'ll email it to you shortly.';
+    unlock('access', 'access-lock', 'access-body');
+  }
+
+  function showBooking() {
+    document.getElementById('access-btn').parentNode.style.display = 'none';
+    document.getElementById('access-success').classList.add('show');
+    document.getElementById('access').classList.add('done');
+    unlock('book', 'book-lock', 'book-body');
+    var box = document.getElementById('booking');
+    if (!state.bookingUrl) {
+      box.innerHTML = '<p>I\'ll email you a booking link shortly.</p>';
+      return;
+    }
+    var src = state.bookingUrl + (state.bookingUrl.indexOf('?') === -1 ? '?gv=true' : '&gv=true');
+    box.innerHTML = '<iframe class="booking-frame" title="Book your walkthrough call"></iframe>' +
+      '<p style="margin-top:10px;font-size:15px;"><a class="text-link" target="_blank" rel="noopener">Open the booking page in a new tab &rarr;</a></p>';
+    box.querySelector('iframe').src = src;
+    box.querySelector('a').href = state.bookingUrl;
+  }
+
+  // Restore progress on reload.
+  if (state.intakeSent) showAccess();
+  if (state.accessConfirmed) showBooking();
+
+  // Step 1: intake form (form_type "audit_intake")
   var form = document.getElementById('intake-form');
   var btn = form.querySelector('button[type=submit]');
   var err = document.getElementById('intake-err');
-  var success = document.getElementById('intake-success');
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -286,26 +341,43 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       ideal_customer: d.ideal_customer,
       challenge: d.challenge,
       desired_result: d.desired_result || '',
-      open_to_help: d.open_to_help,
       message: d.message || ''
     };
     btn.disabled = true; btn.textContent = 'Sending…';
-    fetch('/api/submit', { method: 'POST', body: JSON.stringify(data), headers: { 'Content-Type': 'application/json' } })
-      .then(function (res) {
-        if (res.ok) {
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({ event: 'audit_intake_submit' });
-          form.style.display = 'none';
-          success.classList.add('show');
-          success.focus();
-        } else {
-          return res.json().catch(function () { return {}; }).then(function (j) { throw new Error(j.error || 'Something went wrong.'); });
-        }
+    post(data).then(function (j) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'audit_intake_submit' });
+      state = { intakeSent: true, name: d.name, email: d.email, business_name: d.business_name, businessId: j.businessId || '' };
+      save();
+      showAccess();
+      document.getElementById('access').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }).catch(function (ex) {
+      btn.disabled = false; btn.textContent = 'Send my intake form';
+      err.textContent = ex.message + ' You can also email damilola@thedamlekdigital.com.';
+      err.classList.add('show');
+    });
+  });
+
+  // Step 2: confirm access (form_type "access_confirmed") -> server returns the booking link
+  var accessBtn = document.getElementById('access-btn');
+  var accessErr = document.getElementById('access-err');
+  accessBtn.addEventListener('click', function () {
+    accessErr.classList.remove('show');
+    accessBtn.disabled = true; accessBtn.textContent = 'Sending…';
+    post({ form_type: 'access_confirmed', name: state.name, email: state.email, business_name: state.business_name })
+      .then(function (j) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'audit_access_confirmed' });
+        state.accessConfirmed = true;
+        state.bookingUrl = j.bookingUrl || '';
+        save();
+        showBooking();
+        document.getElementById('book').scrollIntoView({ behavior: 'smooth', block: 'start' });
       })
       .catch(function (ex) {
-        btn.disabled = false; btn.textContent = 'Send my intake form';
-        err.textContent = ex.message + ' You can also email damilola@thedamlekdigital.com.';
-        err.classList.add('show');
+        accessBtn.disabled = false; accessBtn.textContent = "I've shared access";
+        accessErr.textContent = ex.message + ' You can also email damilola@thedamlekdigital.com.';
+        accessErr.classList.add('show');
       });
   });
 </script>

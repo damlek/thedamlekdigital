@@ -9,8 +9,18 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_KEY
 );
 
-const FORM_TYPES = ['contact', 'audit', 'audit_intake', 'application'];
-const TITLES = { contact: 'Contact Message', audit: 'Teardown Request', audit_intake: 'Paid Audit Intake', application: 'Retainer Application' };
+const FORM_TYPES = ['contact', 'audit', 'audit_intake', 'access_confirmed', 'application'];
+const TITLES = {
+  contact: 'Contact Message', audit: 'Teardown Request', audit_intake: 'Paid Audit Intake',
+  access_confirmed: 'Access Shared', application: 'Retainer Application',
+};
+
+// Handed back only at the step where the visitor has earned them, so they never sit in page source.
+const META_BUSINESS_ID = process.env.META_BUSINESS_ID || '257293375522147';
+const AUDIT_BOOKING_URL = process.env.AUDIT_BOOKING_URL
+  || 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2MJeHD0lUlTkiHB11fHWOUPGOYlOPYRHlVAABdg6hKW4nzwD94RrEoC0dAjO0HFSY2haKXEod5';
+const RETAINER_BOOKING_URL = process.env.RETAINER_BOOKING_URL
+  || 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ18Kiavb51hJLRzzmsCD58259S441QThJiFW-q2MovSU_MJyTw60SWlg8Nb-HMn2ulSMTWtRQ1l';
 const QUALIFIED_SPEND = ['$5,000–$20,000', '$20,000+'];
 const HIGH_BUDGETS = ['1000to3000', '3000to5000', 'over5000'];
 
@@ -117,15 +127,27 @@ module.exports = async function handler(req, res) {
       ? (QUALIFIED_SPEND.indexOf(row.budget) !== -1 ? 'high_fit_ascension_ready' : 'standard_application')
       : null;
 
-  // Same address flooding the form → stop after a handful per hour.
-  const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-  const { count } = await supabase
-    .from('submissions')
-    .select('id', { count: 'exact', head: true })
-    .eq('email', email)
-    .gte('created_at', since);
-  if (count >= 3) {
-    return res.status(429).json({ error: 'We already have your message — we\'ll be in touch soon.' });
+  if (row.form_type === 'access_confirmed') {
+    // The walkthrough booking link is only released to someone who has already sent the intake form.
+    const { count: intakes } = await supabase
+      .from('submissions')
+      .select('id', { count: 'exact', head: true })
+      .eq('email', email)
+      .eq('form_type', 'audit_intake');
+    if (!intakes) {
+      return res.status(400).json({ error: 'Please send the intake form first, using the same email.' });
+    }
+  } else {
+    // Same address flooding the form → stop after a handful per hour.
+    const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { count } = await supabase
+      .from('submissions')
+      .select('id', { count: 'exact', head: true })
+      .eq('email', email)
+      .gte('created_at', since);
+    if (count >= 3) {
+      return res.status(429).json({ error: 'We already have your message — we\'ll be in touch soon.' });
+    }
   }
 
   // 1 — Save to Supabase
@@ -160,5 +182,11 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: 'Could not save your submission. Please try again.' });
   }
 
-  return res.status(200).json({ success: true });
+  const reply = { success: true };
+  if (row.form_type === 'audit_intake') reply.businessId = META_BUSINESS_ID;
+  if (row.form_type === 'access_confirmed') reply.bookingUrl = AUDIT_BOOKING_URL;
+  if (row.form_type === 'application' && row.lead_fit_tag === 'high_fit_ascension_ready') {
+    reply.bookingUrl = RETAINER_BOOKING_URL;
+  }
+  return res.status(200).json(reply);
 };
